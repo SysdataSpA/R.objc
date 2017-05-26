@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "R.h"
 
 @interface ViewController ()
 
@@ -14,14 +15,11 @@
 
 @implementation ViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-}
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    
+    self.imageView.image = R.image.testImage;
 }
 
 

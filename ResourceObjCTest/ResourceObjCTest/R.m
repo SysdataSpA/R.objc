@@ -15,7 +15,7 @@
 
 @implementation Images
 
-- (UIImage*) testImage { [UIImage imageNamed:@"TestImage"]; }
+- (UIImage*) testImage { return [UIImage imageNamed:@"TestImage"]; }
 
 
 @end
@@ -42,7 +42,27 @@
 }
 
 + (Strings*) string { return [[R sharedInstance] string]; }
+
+- (Strings*) string
+{
+    if (!_string)
+    {
+        _string = [Strings new];
+    }
+    return _string;
+}
+
 + (Images*) image { return [[R sharedInstance] image]; }
+
+- (Images*) image
+{
+    if (!_image)
+    {
+        _image = [Images new];
+    }
+    return _image;
+}
+
 
 
 @end
