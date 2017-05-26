@@ -18,14 +18,15 @@
 
 @interface StringsResource : NSObject
 @property (nonatomic, strong) NSString* path;
-@property (nonatomic, readonly) NSString* filename;
-@property (nonatomic, readonly) NSString* localePath;
-@property (nonatomic, readonly) NSString* basePath;
-@property (nonatomic, readonly) NSString* locale;
-@property (nonatomic, readonly) NSDictionary* fileContent;
-@property (nonatomic, readonly) NSInteger numberOfKeys;
-@property (nonatomic, readonly) NSString* className;
-@property (nonatomic, readonly) NSString* methodName;
+@property (nonatomic, readonly, strong) NSString* filename;
+@property (nonatomic, readonly, strong) NSString* localePath;
+@property (nonatomic, readonly, strong) NSString* basePath;
+@property (nonatomic, readonly, strong) NSString* locale;
+@property (nonatomic, strong) NSDictionary* fileContent;
+@property (nonatomic, strong) NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSString*>*>* contentByLocale;
+@property (nonatomic, readonly, assign) NSInteger numberOfKeys;
+@property (nonatomic, readonly, strong) NSString* className;
+@property (nonatomic, readonly, strong) NSString* methodName;
 @end
 
 @implementation StringsResource
@@ -39,17 +40,29 @@
         _filename = _path.lastPathComponent;
         _localePath = self.path.stringByDeletingLastPathComponent;
         _basePath = self.localePath.stringByDeletingLastPathComponent;
-        _locale = [self.localePath.lastPathComponent stringByReplacingOccurrencesOfString:@".lproj" withString:@""];
+        if ([self.localePath.lastPathComponent containsString:@".lproj"])
+        {
+            _locale = [self.localePath.lastPathComponent stringByReplacingOccurrencesOfString:@".lproj" withString:@""];
+        }
+        else
+        {
+            _locale = @"Undefined";
+        }
         _fileContent = [NSDictionary dictionaryWithContentsOfFile:self.path];
         if (!self.fileContent)
         {
             return nil;
         }
-        _numberOfKeys = self.fileContent.count;
+        self.contentByLocale = [NSMutableDictionary new];
         _className = [[NSString stringWithFormat:@"%@%@", [self.filename substringToIndex:1].uppercaseString, [self.filename substringFromIndex:1]] stringByReplacingOccurrencesOfString:@".strings" withString:@"Strings"];
         _methodName = [[NSString stringWithFormat:@"%@%@", [self.filename substringToIndex:1].lowercaseString, [self.filename substringFromIndex:1]] stringByReplacingOccurrencesOfString:@".strings" withString:@""];
     }
     return self;
+}
+
+- (NSInteger)numberOfKeys
+{
+    return self.fileContent.count;
 }
 
 @end
@@ -107,25 +120,47 @@
             return;
         }
         
-        if (self.translationsByPath[resource.basePath] != nil)
+        if (self.translationsByPath[resource.filename] != nil)
         {
-            StringsResource* oldRes = self.translationsByPath[resource.basePath];
+            StringsResource* oldRes = self.translationsByPath[resource.filename];
+        
             if (oldRes.numberOfKeys < resource.numberOfKeys)
             {
                 [CommonUtils logVerbose:@"Strings file %@ with locale %@ substitutes file with locale %@ because it has %ld keys versus %ld", resource.filename, resource.locale, oldRes.locale, resource.numberOfKeys, oldRes.numberOfKeys];
-                self.translationsByPath[resource.basePath] = resource;
             }
             else if (resource.numberOfKeys < oldRes.numberOfKeys)
             {
                 [CommonUtils logVerbose:@"Strings file %@ with locale %@ has %ld keys less than file with locale %@", resource.filename, resource.locale, (oldRes.numberOfKeys - resource.numberOfKeys), oldRes.locale];
+            }
+            
+            NSMutableDictionary *dict = oldRes.fileContent.mutableCopy;
+            [dict addEntriesFromDictionary:resource.fileContent];
+            oldRes.fileContent = dict.copy;
+            
+            for (NSString* key in resource.fileContent.allKeys)
+            {
+                NSMutableDictionary* dict = oldRes.contentByLocale[key];
+                if (!dict)
+                {
+                    dict = [NSMutableDictionary new];
+                }
+
+                dict[resource.locale] = resource.fileContent[key];
+                oldRes.contentByLocale[key] = dict;
+   
             }
         }
         else
         {
             if (resource.fileContent.count > 0)
             {
-                self.translationsByPath[resource.basePath] = resource;
+                self.translationsByPath[resource.filename] = resource;
                 [CommonUtils logVerbose:@"Strings file %@ with locale %@ found", resource.filename, resource.locale];
+                
+                for (NSString* key in resource.fileContent.allKeys)
+                {
+                    resource.contentByLocale[key] = [NSMutableDictionary dictionaryWithObject:resource.fileContent[key] forKey:resource.locale];
+                }
             }
         }
     }
@@ -165,8 +200,12 @@
         for (NSString* key in allKeys)
         {
             NSString* codableKey = [CommonUtils codableNameFromString:key];
-            NSString* methodString = [[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.h"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:@"NSString"] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:codableKey];
-            
+            NSString* methodString = [[[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.h"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:@"NSString"] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:codableKey] stringByAppendingString:@"\n"];
+            [classString insertString:[NSString stringWithFormat:@"/// key: \"%@\"\n///\n", key] atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
+            for (NSString *locale in [res.contentByLocale[key] allKeys])
+            {
+                [classString insertString:[NSString stringWithFormat:@"///\n/// %@: \"%@\"\n", locale, res.contentByLocale[key][locale]] atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
+            }
             [classString insertString:methodString atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
             
             NSString* valueString = res.fileContent[key];

@@ -15,6 +15,8 @@
 		06056E7E1ED829F400DFCF79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06056E711ED8265200DFCF79 /* Assets.xcassets */; };
 		0649BF081ED8742A00A0EF93 /* R.m in Sources */ = {isa = PBXBuildFile; fileRef = 0649BF071ED8742A00A0EF93 /* R.m */; };
 		0649BF0B1ED87EC800A0EF93 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0649BF0A1ED87EC800A0EF93 /* ViewController.m */; };
+		0649BF111ED87FE800A0EF93 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0649BF101ED87FE800A0EF93 /* Localizable.strings */; };
+		0649BF121ED8851D00A0EF93 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0649BF141ED8851D00A0EF93 /* Localizable.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,9 @@
 		0649BF071ED8742A00A0EF93 /* R.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = R.m; sourceTree = "<group>"; };
 		0649BF091ED87EC800A0EF93 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = ../../../R.objc/ResourceObjCTest/ResourceObjCTest/ViewController.h; sourceTree = "<group>"; };
 		0649BF0A1ED87EC800A0EF93 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = ../../../R.objc/ResourceObjCTest/ResourceObjCTest/ViewController.m; sourceTree = "<group>"; };
+		0649BF101ED87FE800A0EF93 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		0649BF131ED8851D00A0EF93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0649BF151ED8852000A0EF93 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,8 +88,28 @@
 				0649BF061ED8742A00A0EF93 /* R.h */,
 				0649BF071ED8742A00A0EF93 /* R.m */,
 				06056E661ED8265200DFCF79 /* main.m */,
+				0649BF0C1ED87FC000A0EF93 /* Strings1 */,
+				0649BF0D1ED87FC000A0EF93 /* Strings2 */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0649BF0C1ED87FC000A0EF93 /* Strings1 */ = {
+			isa = PBXGroup;
+			children = (
+				0649BF141ED8851D00A0EF93 /* Localizable.strings */,
+			);
+			name = Strings1;
+			path = ../../../R.objc/ResourceObjCTest/ResourceObjCTest/Strings1;
+			sourceTree = "<group>";
+		};
+		0649BF0D1ED87FC000A0EF93 /* Strings2 */ = {
+			isa = PBXGroup;
+			children = (
+				0649BF101ED87FE800A0EF93 /* Localizable.strings */,
+			);
+			name = Strings2;
+			path = ../../../R.objc/ResourceObjCTest/ResourceObjCTest/Strings2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -145,6 +170,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0649BF121ED8851D00A0EF93 /* Localizable.strings in Resources */,
+				0649BF111ED87FE800A0EF93 /* Localizable.strings in Resources */,
 				06056E751ED8265200DFCF79 /* LaunchScreen.storyboard in Resources */,
 				06056E7D1ED8298B00DFCF79 /* TestImage@2x.png in Resources */,
 				06056E7E1ED829F400DFCF79 /* Assets.xcassets in Resources */,
@@ -183,6 +210,15 @@
 				06056E741ED8265200DFCF79 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		0649BF141ED8851D00A0EF93 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0649BF131ED8851D00A0EF93 /* Base */,
+				0649BF151ED8852000A0EF93 /* en */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

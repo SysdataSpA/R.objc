@@ -20,6 +20,7 @@
     [super viewDidLoad];
     
     self.imageView.image = R.image.testImage;
+    self.label.text = R.string.localizable._34563456KeyB;
 }
 
 

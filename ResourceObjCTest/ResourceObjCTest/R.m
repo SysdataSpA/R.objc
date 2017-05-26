@@ -1,11 +1,33 @@
 #import "R.h"
 
+@interface LocalizableStrings ()
+
+@end
+
+@implementation LocalizableStrings
+
+- (NSString*) _34563456KeyB { return NSLocalizedStringFromTable(@"34563456-.,.,-.,-.,-.,-,-., @@@@@key B", @"Localizable", nil); }
+- (NSString*) keyA { return NSLocalizedStringFromTable(@"key A", @"Localizable", nil); }
+- (NSString*) keyA2 { return NSLocalizedStringFromTable(@"key A2", @"Localizable", nil); }
+- (NSString*) keyC { return NSLocalizedStringFromTable(@"key C", @"Localizable", nil); }
+
+
+@end
 @interface Strings ()
+@property(nonatomic, strong) LocalizableStrings* localizable;
 
 @end
 
 @implementation Strings
 
+- (LocalizableStrings*) localizable
+{
+    if (!_localizable)
+    {
+        _localizable = [LocalizableStrings new];
+    }
+    return _localizable;
+}
 
 
 @end
