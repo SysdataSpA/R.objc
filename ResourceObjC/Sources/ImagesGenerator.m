@@ -137,19 +137,19 @@
 
 - (BOOL)writeInHeaderFileWithError:(NSError *__autoreleasing *)error
 {
-    NSMutableString *generatorString = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.h"]];
-    [generatorString replaceOccurrencesOfString:GENERATOR_CLASS withString:self.className options:0 range:[generatorString rangeOfString:generatorString]];
+    NSMutableString *generatorImages = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.h"]];
+    [generatorImages replaceOccurrencesOfString:GENERATOR_CLASS withString:self.className options:0 range:[generatorImages rangeOfString:generatorImages]];
     
     for (ImagesResource* res in self.images)
     {
         NSMutableString *method = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.h"]];
         [method replaceOccurrencesOfString:PROPERTY_CLASS withString:@"UIImage" options:0 range:[method rangeOfString:method]];
         [method replaceOccurrencesOfString:PROPERTY_NAME withString:res.methodName options:0 range:[method rangeOfString:method]];
-        [generatorString insertString:method atIndex:[generatorString rangeOfString:GENERATOR_INTERFACE_BODY].location];
+        [generatorImages insertString:method atIndex:[generatorImages rangeOfString:GENERATOR_INTERFACE_BODY].location];
     }
-    [generatorString replaceOccurrencesOfString:GENERATOR_INTERFACE_BODY withString:@"" options:0 range:[generatorString rangeOfString:generatorString]];
+    [generatorImages replaceOccurrencesOfString:GENERATOR_INTERFACE_BODY withString:@"" options:0 range:[generatorImages rangeOfString:generatorImages]];
     
-    if (![self writeString:generatorString inFile:self.resourceFileHeaderPath beforePlaceholder:R_INTERFACE_HEADER withError:error])
+    if (![self writeString:generatorImages inFile:self.resourceFileHeaderPath beforePlaceholder:R_INTERFACE_HEADER withError:error])
     {
         return NO;
     }
@@ -159,18 +159,18 @@
 
 - (BOOL)writeInImplementationFileWithError:(NSError *__autoreleasing *)error
 {
-    NSMutableString *generatorString = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.m"]];
-    [generatorString replaceOccurrencesOfString:GENERATOR_CLASS withString:self.className options:0 range:[generatorString rangeOfString:generatorString]];
+    NSMutableString *generatorImages = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.m"]];
+    [generatorImages replaceOccurrencesOfString:GENERATOR_CLASS withString:self.className options:0 range:[generatorImages rangeOfString:generatorImages]];
     
     for (ImagesResource* res in self.images)
     {
         NSString* methodString = [NSString stringWithFormat:@"- (UIImage*) %@ { return [UIImage imageNamed:@\"%@\"]; }\n", res.methodName, res.originalName];
-        [generatorString insertString:methodString atIndex:[generatorString rangeOfString:GENERATOR_IMPLEMENTATION_BODY].location];
+        [generatorImages insertString:methodString atIndex:[generatorImages rangeOfString:GENERATOR_IMPLEMENTATION_BODY].location];
     }
-    [generatorString replaceOccurrencesOfString:GENERATOR_PRIVATE_INTERFACE_BODY withString:@"" options:0 range:[generatorString rangeOfString:generatorString]];
-    [generatorString replaceOccurrencesOfString:GENERATOR_IMPLEMENTATION_BODY withString:@"" options:0 range:[generatorString rangeOfString:generatorString]];
+    [generatorImages replaceOccurrencesOfString:GENERATOR_PRIVATE_INTERFACE_BODY withString:@"" options:0 range:[generatorImages rangeOfString:generatorImages]];
+    [generatorImages replaceOccurrencesOfString:GENERATOR_IMPLEMENTATION_BODY withString:@"" options:0 range:[generatorImages rangeOfString:generatorImages]];
     
-    if (![self writeString:generatorString inFile:self.resourceFileImplementationPath beforePlaceholder:R_IMPLEMENTATION_HEADER withError:error])
+    if (![self writeString:generatorImages inFile:self.resourceFileImplementationPath beforePlaceholder:R_IMPLEMENTATION_HEADER withError:error])
     {
         return NO;
     }

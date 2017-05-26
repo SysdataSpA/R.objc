@@ -16,6 +16,7 @@
 #import "Session.h"
 #import "StringsGenerator.h"
 #import "ImagesGenerator.h"
+#import "ThemesGenerator.h"
 
 @implementation RGenerator
 
@@ -28,14 +29,19 @@
     
     NSMutableArray<BaseGenerator<GeneratorProtocol>*>* generators = [NSMutableArray new];
     
-    if ([[Session shared] resourcesToGenerate] | ResourceTypeStrings)
+    if ([[Session shared] resourcesToGenerate] & ResourceTypeStrings)
     {
         [generators addObject:[[StringsGenerator alloc] initWithResourceFinder:self.finder]];
     }
     
-    if ([[Session shared] resourcesToGenerate] | ResourceTypeImages)
+    if ([[Session shared] resourcesToGenerate] & ResourceTypeImages)
     {
         [generators addObject:[[ImagesGenerator alloc] initWithResourceFinder:self.finder]];
+    }
+    
+    if ([[Session shared] resourcesToGenerate] & ResourceTypeThemes)
+    {
+        [generators addObject:[[ThemesGenerator alloc] initWithResourceFinder:self.finder]];
     }
     
     BOOL success = YES;

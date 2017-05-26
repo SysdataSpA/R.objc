@@ -170,7 +170,12 @@ static Session* _session;
 
 - (ResourceType)resourcesToGenerate
 {
-    return ResourceTypeStrings & ResourceTypeImages;
+    ResourceType result = ResourceTypeStrings | ResourceTypeImages;
+    if (self.isSysdataVersion)
+    {
+        result = result | ResourceTypeThemes;
+    }
+    return result;
 }
 
 @end

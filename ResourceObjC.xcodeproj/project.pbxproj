@@ -21,6 +21,7 @@
 		06803EC91ED5EC630006208A /* StringsGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 06803EC81ED5EC630006208A /* StringsGenerator.m */; };
 		06803ECD1ED5EDE20006208A /* BaseGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 06803ECC1ED5EDE20006208A /* BaseGenerator.m */; };
 		AD8D6EDC1ED77538009CF948 /* FormattedStringParser.m in Sources */ = {isa = PBXBuildFile; fileRef = AD8D6EDB1ED77538009CF948 /* FormattedStringParser.m */; };
+		ADD731E01ED8C8A2006B0E51 /* ThemesGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = ADD731DF1ED8C8A2006B0E51 /* ThemesGenerator.m */; };
 		ADDA17951ED6E40700AA0C51 /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDA17941ED6E40700AA0C51 /* Session.m */; };
 		ADDA17981ED6E75700AA0C51 /* CommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = ADDA17971ED6E75700AA0C51 /* CommonUtils.m */; };
 /* End PBXBuildFile section */
@@ -76,6 +77,8 @@
 		06803ECC1ED5EDE20006208A /* BaseGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseGenerator.m; sourceTree = "<group>"; };
 		AD8D6EDA1ED77538009CF948 /* FormattedStringParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormattedStringParser.h; sourceTree = "<group>"; };
 		AD8D6EDB1ED77538009CF948 /* FormattedStringParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormattedStringParser.m; sourceTree = "<group>"; };
+		ADD731DE1ED8C8A2006B0E51 /* ThemesGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemesGenerator.h; sourceTree = "<group>"; };
+		ADD731DF1ED8C8A2006B0E51 /* ThemesGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemesGenerator.m; sourceTree = "<group>"; };
 		ADDA17931ED6E40700AA0C51 /* Session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Session.h; sourceTree = "<group>"; };
 		ADDA17941ED6E40700AA0C51 /* Session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Session.m; sourceTree = "<group>"; };
 		ADDA17961ED6E75700AA0C51 /* CommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtils.h; sourceTree = "<group>"; };
@@ -149,6 +152,8 @@
 				06803EC81ED5EC630006208A /* StringsGenerator.m */,
 				06056E561ED7570500DFCF79 /* ImagesGenerator.h */,
 				06056E571ED7570500DFCF79 /* ImagesGenerator.m */,
+				ADD731DE1ED8C8A2006B0E51 /* ThemesGenerator.h */,
+				ADD731DF1ED8C8A2006B0E51 /* ThemesGenerator.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -234,6 +239,7 @@
 				06803EBA1ED5C53F0006208A /* ResourceFinder.m in Sources */,
 				AD8D6EDC1ED77538009CF948 /* FormattedStringParser.m in Sources */,
 				06056E4D1ED710FE00DFCF79 /* TemplatesManager.m in Sources */,
+				ADD731E01ED8C8A2006B0E51 /* ThemesGenerator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
