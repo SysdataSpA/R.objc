@@ -1,13 +1,11 @@
-ObjC Resources Accessor
-=======================
+R.objc
+======
 
 Introduction
 ------------
 
-Freely inspired by [R.swift](https://github.com/mac-cain13/R.swift) (thank you,
-guys): get autocompleted localizable strings and asset catalogue images names.
-
- 
+Freely inspired by [R.swift](https://github.com/mac-cain13/R.swift) (Thank you,
+guys!): get autocompleted localizable strings and asset catalogue images names.
 
 You can have:
 
@@ -21,8 +19,6 @@ Installation
 
 [CocoaPods](http://cocoapods.org/) is the recommended way of installation, as
 this avoids including any binary files into your project.
-
- 
 
 1.  Add `pod 'R.objc'` to your [Podfile](http://cocoapods.org/#get_started) and
     run `pod install`
@@ -46,8 +42,6 @@ this avoids including any binary files into your project.
 At every build, the generated file will update automatically and there's no need
 to do anything.
 
- 
-
 Normally, you would write code like this:
 
 `[self.buttonProceed setTitle:NSLocalizedString(@"home_proceed", nil)
@@ -60,8 +54,6 @@ stringWithFormat:NSLocalizedString(@"home_title_welcome", nil), @"John"];
 `self.radioButtonImageView.image = selected ? [UIImage
 imageNamed:@"checkedRadioButton"] : [UIImage
 imageNamed:@"uncheckedRadioButton"];`
-
- 
 
 Now you can write
 
