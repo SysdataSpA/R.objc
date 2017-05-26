@@ -1,0 +1,1 @@
+- (<#Property_class>*) <#Property_name>;
