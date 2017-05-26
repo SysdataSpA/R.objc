@@ -14,6 +14,7 @@
 
 #import "StringsGenerator.h"
 #import "FormattedStringParser.h"
+#import "Session.h"
 
 @interface StringsResource : NSObject
 @property (nonatomic, strong) NSString* path;
@@ -326,12 +327,13 @@
 
 - (NSString*) localizedStringWithKey:(NSString*)key fromTable:(NSString*)table
 {
-#if SYSDATA
-    return [NSString stringWithFormat:@"SDLocalizedStringFromTable(@\"%@\", @\"%@\")", key, table];
-#else
-    table = [table stringByReplacingOccurrencesOfString:@".strings" withString:@""];
-    return [NSString stringWithFormat:@"NSLocalizedStringFromTable(@\"%@\", @\"%@\", nil)", key, table];
-#endif
+    if (Session.shared.isSysdataVersion)
+    {
+        return [NSString stringWithFormat:@"SDLocalizedStringFromTable(@\"%@\", @\"%@\")", key, table];
+    } else {
+        table = [table stringByReplacingOccurrencesOfString:@".strings" withString:@""];
+        return [NSString stringWithFormat:@"NSLocalizedStringFromTable(@\"%@\", @\"%@\", nil)", key, table];
+    }
 }
 
 @end

@@ -29,11 +29,11 @@ this avoids including any binary files into your project.
     a `New Run Script Phase` by clicking the little plus icon in the top left
 
 4.  Drag the new `Run Script` phase **above** the `Compile Sources` phase,
-    expand it and paste the following script: `"$SRCROOT/rswift" "$SRCROOT"`
+    expand it and paste the following script: `"${PODS_ROOT}/robjc" "$SRCROOT"`
 
-5.  Build your project, in Finder you will now see a `R.generated.swift` in
-    the `$SRCROOT`-folder, drag the `R.generated.swift` files into your project
-    and **uncheck** `Copy items if needed`
+5.  Build your project; in Finder you will now see `R.h` and `R.m` files in
+    the `$SRCROOT` folder: drag them into your project and **uncheck** `Copy
+    items if needed`
 
 6.  Repeat point 3 and 4 for every target in your project
 

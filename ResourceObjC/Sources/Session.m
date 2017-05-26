@@ -24,6 +24,7 @@ typedef NS_ENUM(NSUInteger, ArgType) {
 @interface Session ()
 
 @property (nonatomic, assign) BOOL isVerboseLoggingEnabled;
+@property (nonatomic, assign) BOOL isSysdataVersion;
 @property (nonatomic, strong) NSURL* _baseURL;
 @property (nonatomic, strong) NSMutableArray<NSURL *>* _excludedDirs;
 
@@ -58,6 +59,11 @@ static Session* _session;
         else if ([s isEqualToString:@"-v"] || [s isEqualToString:@"--verbose"])
         {
             [self shared].isVerboseLoggingEnabled = true;
+            continue;
+        }
+        else if ([s isEqualToString:@"-s"] || [s isEqualToString:@"--sysdata"])
+        {
+            [self shared].isSysdataVersion = true;
             continue;
         }
         
