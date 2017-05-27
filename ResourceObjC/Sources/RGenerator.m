@@ -17,6 +17,7 @@
 #import "StringsGenerator.h"
 #import "ImagesGenerator.h"
 #import "ThemesGenerator.h"
+#import "StoryboardsGenerator.h"
 
 @implementation RGenerator
 
@@ -42,6 +43,11 @@
     if ([[Session shared] resourcesToGenerate] & ResourceTypeThemes)
     {
         [generators addObject:[[ThemesGenerator alloc] initWithResourceFinder:self.finder]];
+    }
+    
+    if ([[Session shared] resourcesToGenerate] & ResourceTypeStoryboards)
+    {
+        [generators addObject:[[StoryboardsGenerator alloc] initWithResourceFinder:self.finder]];
     }
     
     BOOL success = YES;
@@ -81,6 +87,9 @@
     {
         return NO;
     }
+    
+    NSString* basePath = [self.resourceFileHeaderPath stringByReplacingOccurrencesOfString:self.resourceFileHeaderPath.lastPathComponent withString:@""];
+    [CommonUtils log:@"R files written in %@", basePath];
     
     return YES;
 }

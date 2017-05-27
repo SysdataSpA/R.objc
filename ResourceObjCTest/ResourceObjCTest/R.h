@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+
 @interface LocalizableStrings : NSObject
 /// key: "34563456-.,.,-.,-.,-.,-,-., @@@@@key B"
 ///
@@ -29,20 +30,43 @@
 /// en: "Chi? Si!!!"
 - (NSString*) keyC;
 
-
 @end
+
 @interface Strings : NSObject
 - (LocalizableStrings*) localizable;
-
 @end
+
 @interface Images : NSObject
 - (UIImage*) testImage;
+@end
+
+@interface LaunchScreen : NSObject
+- (id) instantiateInitialViewController;
+@end
+
+
+@interface Main : NSObject
+- (id) instantiateInitialViewController;
+- (id) nextViewController;
 
 @end
+
+
+@interface Some : NSObject
+- (id) instantiateInitialViewController;
+@end
+
+@interface Storyboards : NSObject
+- (LaunchScreen*) launchScreen;
+- (Main*) main;
+- (Some*) some;
+@end
+
 
 
 @interface R : NSObject
 + (Strings*) string;
 + (Images*) image;
++ (Storyboards*) storyboard;
 
 @end

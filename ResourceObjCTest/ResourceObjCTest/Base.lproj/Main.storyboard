@@ -38,11 +38,41 @@
                     <connections>
                         <outlet property="imageView" destination="tvn-B6-FrS" id="3ee-G7-Oeq"/>
                         <outlet property="label" destination="8kX-NH-AiF" id="gTg-0Q-uxn"/>
+                        <segue destination="asI-WZ-88X" kind="show" id="vlu-Jy-XGR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="24.800000000000001" y="36.431784107946029"/>
+        </scene>
+        <!--Next View Controller-->
+        <scene sceneID="HSV-db-KGT">
+            <objects>
+                <viewController storyboardIdentifier="NextViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="asI-WZ-88X" customClass="NextViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7lW-WU-uGC"/>
+                        <viewControllerLayoutGuide type="bottom" id="mfj-R1-vlF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NGl-Yy-Zsw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="62T-p0-jzj" kind="show" id="Zhd-wg-C38"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IPn-lZ-lXg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="729" y="37"/>
+        </scene>
+        <!--Some-->
+        <scene sceneID="Af8-Na-j93">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Some" id="62T-p0-jzj" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ck9-Nd-sxR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1354" y="36"/>
         </scene>
     </scenes>
 </document>

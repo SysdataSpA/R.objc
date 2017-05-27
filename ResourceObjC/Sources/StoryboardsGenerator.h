@@ -12,25 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import <Foundation/Foundation.h>
+#import "BaseGenerator.h"
 
-typedef NS_OPTIONS(NSUInteger, ResourceType) {
-    ResourceTypeStrings = 1 << 0,
-    ResourceTypeImages = 1 << 1,
-    ResourceTypeThemes = 1 << 2,
-    ResourceTypeStoryboards = 1 << 3
-};
-
-@interface Session : NSObject
-
-@property (nonatomic, readonly) BOOL isVerboseLoggingEnabled;
-@property (nonatomic, readonly) BOOL isSysdataVersion;
-
-+ (int) initWith:(int)argc params:(const char **)argv;
-+ (Session*) shared;
-
-- (NSURL*) baseURL;
-- (NSArray<NSURL *>*) excludedDirs;
-- (ResourceType)resourcesToGenerate;
+@interface StoryboardsGenerator : BaseGenerator
 
 @end
