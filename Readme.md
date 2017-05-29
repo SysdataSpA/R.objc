@@ -1,9 +1,8 @@
 R.objc
 ======
 
-[![Version](https://img.shields.io/cocoapods/v/R.objc.svg?style=flat)](https://cocoapods.org/pods/R.objc)
-[![License](https://img.shields.io/cocoapods/l/R.objc.svg?style=flat)](https://cocoapods.org/pods/R.objc)
-[![Platform](https://img.shields.io/cocoapods/p/R.objc.svg?style=flat)](https://cocoapods.org/pods/R.objc)
+<https://cocoapods.org/pods/R.objc> <https://cocoapods.org/pods/R.objc>
+<https://cocoapods.org/pods/R.objc>
 
 Introduction
 ------------
@@ -25,6 +24,8 @@ Installation
 [CocoaPods](http://cocoapods.org/) is the recommended way of installation, as
 this avoids including any binary files into your project.
 
+### Cocoapods
+
 1.  Add `pod 'R.objc'` to your [Podfile](http://cocoapods.org/#get_started) and
     run `pod install`
 
@@ -41,6 +42,34 @@ this avoids including any binary files into your project.
     items if needed`
 
 6.  Repeat point 3 and 4 for every target in your project
+
+### Manual
+
+Since there are some problems with Cocoapods, you can manually install R.objc
+
+1.  Download latest version from the [releases
+    section](https://github.com/SysdataSpA/R.objc/releases)
+
+2.  Unzip in a folder anywhere you want.
+
+3.  In XCode, click on your project in the Project Navigator
+
+4.  Choose your target under `TARGETS`, click the `Build Phases` tab and add
+    a `New Run Script Phase` by clicking the little plus icon in the top left
+
+5.  Drag the new `Run Script` phase **above** the `Compile Sources` phase,
+    expand it and paste the following script: `"<path to the unzipped
+    folder>/robjc" "$SRCROOT" `(we suggest to unzip the folder somewhere within
+    your project folder, in order to use the `$SRCROOT` shortcut for the path.
+    **Don't add anything to your Xcode project, or it won't build anymore**)
+
+6.  Build your project; in Finder you will now see `R.h` and `R.m` files in
+    the `$SRCROOT` folder: drag them into your project and **uncheck** `Copy
+    items if needed`
+
+7.  Repeat point 3 and 4 for every target in your project
+
+ 
 
  
 
