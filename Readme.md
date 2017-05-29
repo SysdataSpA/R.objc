@@ -1,6 +1,10 @@
 R.objc
 ======
 
+[![Version](https://img.shields.io/cocoapods/v/R.objc.svg?style=flat)](https://cocoapods.org/pods/R.objc)
+[![License](https://img.shields.io/cocoapods/l/R.objc.svg?style=flat)](https://cocoapods.org/pods/R.objc)
+[![Platform](https://img.shields.io/cocoapods/p/R.objc.svg?style=flat)](https://cocoapods.org/pods/R.objc)
+
 Introduction
 ------------
 
