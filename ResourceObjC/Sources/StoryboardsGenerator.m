@@ -37,13 +37,15 @@
 - (NSString *)className
 {
     if (self.name.length == 0) return nil;
-    return [NSString stringWithFormat:@"%@%@", [self.name substringToIndex:1].uppercaseString, [self.name substringFromIndex:1]];
+    NSString* name = [NSString stringWithFormat:@"%@%@", [self.name substringToIndex:1].uppercaseString, [self.name substringFromIndex:1]];
+    return [name stringByReplacingOccurrencesOfString:@" " withString:@""];
 }
 
 - (NSString *)methodName
 {
     if (self.name.length == 0) return nil;
-    return [NSString stringWithFormat:@"%@%@", [self.name substringToIndex:1].lowercaseString, [self.name substringFromIndex:1]];
+    NSString* name = [NSString stringWithFormat:@"%@%@", [self.name substringToIndex:1].lowercaseString, [self.name substringFromIndex:1]];
+    return [name stringByReplacingOccurrencesOfString:@" " withString:@""];
 }
 
 @end
@@ -93,6 +95,7 @@
     for (NSURL* url in urls)
     {
         NSString* name = [url.path.lastPathComponent stringByReplacingOccurrencesOfString:@".storyboard" withString:@""];
+        name = [name stringByReplacingOccurrencesOfString:@" " withString:@""];
         
         NSDictionary* storyboard = [NSDictionary dictionaryWithXMLFile:url.path];
         
