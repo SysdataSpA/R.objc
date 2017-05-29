@@ -5,7 +5,8 @@ Introduction
 ------------
 
 Freely inspired by [R.swift](https://github.com/mac-cain13/R.swift) (Thank you,
-guys!): get autocompleted localizable strings and asset catalogue images names.
+guys!): get autocompleted localizable strings, asset catalogue images names and
+storyboard objects.
 
 You can have:
 
