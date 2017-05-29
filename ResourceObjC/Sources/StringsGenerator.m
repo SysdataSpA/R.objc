@@ -204,7 +204,8 @@
             [classString insertString:[NSString stringWithFormat:@"/// key: \"%@\"\n///\n", key] atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
             for (NSString *locale in [res.contentByLocale[key] allKeys])
             {
-                [classString insertString:[NSString stringWithFormat:@"///\n/// %@: \"%@\"\n", locale, res.contentByLocale[key][locale]] atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
+                NSString* contentByLocale = [res.contentByLocale[key][locale] stringByReplacingOccurrencesOfString:@"\n" withString:@"\\n"];
+                [classString insertString:[NSString stringWithFormat:@"///\n/// %@: \"%@\"\n", locale, contentByLocale] atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
             }
             [classString insertString:methodString atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
             
