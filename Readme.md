@@ -1,8 +1,8 @@
 R.objc
 ======
 
-<https://cocoapods.org/pods/R.objc> <https://cocoapods.org/pods/R.objc>
-<https://cocoapods.org/pods/R.objc>
+\<https://cocoapods.org/pods/R.objc https://cocoapods.org/pods/R.objc
+https://cocoapods.org/pods/R.objc\>
 
 Introduction
 ------------
@@ -35,7 +35,9 @@ this avoids including any binary files into your project.
     a `New Run Script Phase` by clicking the little plus icon in the top left
 
 4.  Drag the new `Run Script` phase **above** the `Compile Sources` phase,
-    expand it and paste the following script: `"${PODS_ROOT}/robjc" "$SRCROOT"`
+    expand it and paste the following script: `"${PODS_ROOT}/Robjc" -p
+    "$SRCROOT" `(after -p option, you have to specify the root folder of your
+    project, from where to scan your code)
 
 5.  Build your project; in Finder you will now see `R.h` and `R.m` files in
     the `$SRCROOT` folder: drag them into your project and **uncheck** `Copy
@@ -59,17 +61,17 @@ Since there are some problems with Cocoapods, you can manually install R.objc
 
 5.  Drag the new `Run Script` phase **above** the `Compile Sources` phase,
     expand it and paste the following script: `"<path to the unzipped
-    folder>/robjc" "$SRCROOT" `(we suggest to unzip the folder somewhere within
-    your project folder, in order to use the `$SRCROOT` shortcut for the path.
-    **Don't add anything to your Xcode project, or it won't build anymore**)
+    folder>/Robjc" -p "$SRCROOT"` (we suggest to unzip the folder somewhere
+    within your project folder, in order to use the `$SRCROOT` shortcut for the
+    path. **Don't add anything to your Xcode project, or it won't build
+    anymore**) (after -p option, you have to specify the root folder of your
+    project, from where to scan your code)
 
 6.  Build your project; in Finder you will now see `R.h` and `R.m` files in
     the `$SRCROOT` folder: drag them into your project and **uncheck** `Copy
     items if needed`
 
 7.  Repeat point 3 and 4 for every target in your project
-
- 
 
  
 
