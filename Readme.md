@@ -1,9 +1,6 @@
 R.objc
 ======
 
-\<https://cocoapods.org/pods/R.objc https://cocoapods.org/pods/R.objc
-https://cocoapods.org/pods/R.objc\>
-
 ![](https://github.com/SysdataSpA/R.objc/blob/master/R.objc_example.gif)
 
 Introduction
