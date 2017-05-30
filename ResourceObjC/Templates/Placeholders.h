@@ -12,16 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#define R_INTERFACE_HEADER @"<#R_interface_header>"
-#define R_INTERFACE_BODY @"<#R_interface_body>"
-#define R_IMPLEMENTATION_HEADER @"<#R_implementation_header>"
-#define R_PRIVATE_INTERFACE_BODY @"<#R_private_interface_body>"
-#define R_IMPLEMENTATION_BODY @"<#R_implementation_body>"
-
-#define GENERATOR_CLASS @"<#Generator_class>"
-#define GENERATOR_INTERFACE_BODY @"<#Generator_interface_body>"
-#define GENERATOR_PRIVATE_INTERFACE_BODY @"<#Generator_private_interface_body>"
-#define GENERATOR_IMPLEMENTATION_BODY @"<#Generator_implementation_body>"
-
-#define PROPERTY_CLASS @"<#Property_class>"
-#define PROPERTY_NAME @"<#Property_name>"
+#define R_SHARED_INSTANCE @" \
+\n\tstatic dispatch_once_t pred;\n \
+\tstatic id sharedInstance_ = nil;\n \
+\n \
+\tdispatch_once(&pred, ^{\n \
+\t\tsharedInstance_ = [[self alloc] init];\n \
+\t});\n \
+\n \
+\treturn sharedInstance_;\n"

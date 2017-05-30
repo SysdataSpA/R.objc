@@ -21,6 +21,7 @@
 		0649BF0B1ED87EC800A0EF93 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0649BF0A1ED87EC800A0EF93 /* ViewController.m */; };
 		0649BF111ED87FE800A0EF93 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0649BF101ED87FE800A0EF93 /* Localizable.strings */; };
 		0649BF121ED8851D00A0EF93 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0649BF141ED8851D00A0EF93 /* Localizable.strings */; };
+		0673D4E61EDA2B2E00880207 /* SomeSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0673D4E51EDA2B2E00880207 /* SomeSegue.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,8 @@
 		0649BF101ED87FE800A0EF93 /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		0649BF131ED8851D00A0EF93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		0649BF151ED8852000A0EF93 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		0673D4E41EDA2B2E00880207 /* SomeSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SomeSegue.h; sourceTree = "<group>"; };
+		0673D4E51EDA2B2E00880207 /* SomeSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SomeSegue.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +89,8 @@
 				0617A98C1ED9B819007ECB92 /* NextViewController.m */,
 				0617A9901ED9B87D007ECB92 /* SomeViewController.h */,
 				0617A9911ED9B87D007ECB92 /* SomeViewController.m */,
+				0673D4E41EDA2B2E00880207 /* SomeSegue.h */,
+				0673D4E51EDA2B2E00880207 /* SomeSegue.m */,
 				06056E6E1ED8265200DFCF79 /* Main.storyboard */,
 				0617A98E1ED9B85C007ECB92 /* Some.storyboard */,
 				06056E711ED8265200DFCF79 /* Assets.xcassets */,
@@ -204,6 +209,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0673D4E61EDA2B2E00880207 /* SomeSegue.m in Sources */,
 				0617A9921ED9B87D007ECB92 /* SomeViewController.m in Sources */,
 				0617A98D1ED9B819007ECB92 /* NextViewController.m in Sources */,
 				0649BF081ED8742A00A0EF93 /* R.m in Sources */,

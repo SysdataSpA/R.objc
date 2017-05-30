@@ -14,9 +14,11 @@
 
 #import <Foundation/Foundation.h>
 #import "ResourceFinder.h"
-#import "TemplatesManager.h"
 #import "Placeholders.h"
 #import "CommonUtils.h"
+#import "GeneratedStructures.h"
+
+#define END_CONTEXT @"@end\n\n"
 
 @protocol GeneratorProtocol <NSObject>
 
@@ -29,12 +31,14 @@
 @interface BaseGenerator : NSObject <GeneratorProtocol>
 
 @property (nonatomic, readonly) ResourceFinder *finder;
+@property (nonatomic, strong) RClass *clazz;
+@property (nonatomic, strong) NSMutableArray<RClass*>* otherClasses;
+
 
 - (instancetype)initWithResourceFinder:(ResourceFinder*)finder;
 
 - (NSString*)resourceFileHeaderPath;
 - (NSString*)resourceFileImplementationPath;
 
-- (BOOL)writeString:(NSString *)string inFile:(NSString*)path beforePlaceholder:(NSString *)placeholder withError:(NSError *__autoreleasing *)error;
-
+- (BOOL)writeStringInRFilesWithError:(NSError *__autoreleasing *)error;
 @end

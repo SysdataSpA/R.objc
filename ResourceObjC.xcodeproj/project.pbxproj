@@ -8,16 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		02BE678EB0857B8BA94B0361 /* libPods-ResourceObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F51E8BA7EF7330F748C967A7 /* libPods-ResourceObjC.a */; };
-		06056E3B1ED6371A00DFCF79 /* GeneratorTemplate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06056E371ED6250A00DFCF79 /* GeneratorTemplate.h */; };
-		06056E3C1ED6371A00DFCF79 /* GeneratorTemplate.m in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06056E381ED6250A00DFCF79 /* GeneratorTemplate.m */; };
-		06056E3E1ED6B0A500DFCF79 /* PropertyTemplate.m in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06056E3D1ED6B09700DFCF79 /* PropertyTemplate.m */; };
-		06056E411ED6E49400DFCF79 /* RTemplate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06056E3F1ED6E48700DFCF79 /* RTemplate.h */; };
-		06056E421ED6E49400DFCF79 /* RTemplate.m in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06056E401ED6E48700DFCF79 /* RTemplate.m */; };
 		06056E471ED6ECCE00DFCF79 /* RGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 06056E461ED6ECCE00DFCF79 /* RGenerator.m */; };
-		06056E4A1ED70ED300DFCF79 /* PropertyTemplate.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 06056E491ED70EC900DFCF79 /* PropertyTemplate.h */; };
-		06056E4D1ED710FE00DFCF79 /* TemplatesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 06056E4C1ED710FE00DFCF79 /* TemplatesManager.m */; };
 		06056E581ED7570500DFCF79 /* ImagesGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 06056E571ED7570500DFCF79 /* ImagesGenerator.m */; };
 		0617A98A1ED9B46A007ECB92 /* StoryboardsGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0617A9891ED9B46A007ECB92 /* StoryboardsGenerator.m */; };
+		0673D4E91EDCBFD900880207 /* GeneratedStructures.m in Sources */ = {isa = PBXBuildFile; fileRef = 0673D4E81EDCBFD900880207 /* GeneratedStructures.m */; };
 		06803EB11ED5BDEE0006208A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 06803EB01ED5BDEE0006208A /* main.m */; };
 		06803EBA1ED5C53F0006208A /* ResourceFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 06803EB91ED5C53F0006208A /* ResourceFinder.m */; };
 		06803EC91ED5EC630006208A /* StringsGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 06803EC81ED5EC630006208A /* StringsGenerator.m */; };
@@ -35,12 +29,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
-				06056E4A1ED70ED300DFCF79 /* PropertyTemplate.h in CopyFiles */,
-				06056E411ED6E49400DFCF79 /* RTemplate.h in CopyFiles */,
-				06056E421ED6E49400DFCF79 /* RTemplate.m in CopyFiles */,
-				06056E3E1ED6B0A500DFCF79 /* PropertyTemplate.m in CopyFiles */,
-				06056E3B1ED6371A00DFCF79 /* GeneratorTemplate.h in CopyFiles */,
-				06056E3C1ED6371A00DFCF79 /* GeneratorTemplate.m in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,21 +44,15 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		06056E371ED6250A00DFCF79 /* GeneratorTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneratorTemplate.h; sourceTree = "<group>"; };
-		06056E381ED6250A00DFCF79 /* GeneratorTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratorTemplate.m; sourceTree = "<group>"; };
-		06056E3D1ED6B09700DFCF79 /* PropertyTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PropertyTemplate.m; sourceTree = "<group>"; };
-		06056E3F1ED6E48700DFCF79 /* RTemplate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RTemplate.h; sourceTree = "<group>"; };
-		06056E401ED6E48700DFCF79 /* RTemplate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RTemplate.m; sourceTree = "<group>"; };
 		06056E451ED6ECCE00DFCF79 /* RGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGenerator.h; sourceTree = "<group>"; };
 		06056E461ED6ECCE00DFCF79 /* RGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGenerator.m; sourceTree = "<group>"; };
 		06056E481ED7091D00DFCF79 /* Placeholders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Placeholders.h; path = ../Templates/Placeholders.h; sourceTree = "<group>"; };
-		06056E491ED70EC900DFCF79 /* PropertyTemplate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyTemplate.h; sourceTree = "<group>"; };
-		06056E4B1ED710FE00DFCF79 /* TemplatesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TemplatesManager.h; sourceTree = "<group>"; };
-		06056E4C1ED710FE00DFCF79 /* TemplatesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TemplatesManager.m; sourceTree = "<group>"; };
 		06056E561ED7570500DFCF79 /* ImagesGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesGenerator.h; sourceTree = "<group>"; };
 		06056E571ED7570500DFCF79 /* ImagesGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesGenerator.m; sourceTree = "<group>"; };
 		0617A9881ED9B46A007ECB92 /* StoryboardsGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryboardsGenerator.h; sourceTree = "<group>"; };
 		0617A9891ED9B46A007ECB92 /* StoryboardsGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryboardsGenerator.m; sourceTree = "<group>"; };
+		0673D4E71EDCBFD900880207 /* GeneratedStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneratedStructures.h; sourceTree = "<group>"; };
+		0673D4E81EDCBFD900880207 /* GeneratedStructures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedStructures.m; sourceTree = "<group>"; };
 		06803EAD1ED5BDED0006208A /* Robjc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Robjc; sourceTree = BUILT_PRODUCTS_DIR; };
 		06803EB01ED5BDEE0006208A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		06803EB81ED5C53F0006208A /* ResourceFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceFinder.h; sourceTree = "<group>"; };
@@ -104,19 +86,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		06056E361ED6105A00DFCF79 /* Templates */ = {
-			isa = PBXGroup;
-			children = (
-				06056E371ED6250A00DFCF79 /* GeneratorTemplate.h */,
-				06056E381ED6250A00DFCF79 /* GeneratorTemplate.m */,
-				06056E491ED70EC900DFCF79 /* PropertyTemplate.h */,
-				06056E3D1ED6B09700DFCF79 /* PropertyTemplate.m */,
-				06056E3F1ED6E48700DFCF79 /* RTemplate.h */,
-				06056E401ED6E48700DFCF79 /* RTemplate.m */,
-			);
-			path = Templates;
-			sourceTree = "<group>";
-		};
 		06803EA41ED5BDED0006208A = {
 			isa = PBXGroup;
 			children = (
@@ -140,7 +109,6 @@
 			children = (
 				06803EB01ED5BDEE0006208A /* main.m */,
 				06803EB71ED5C3CA0006208A /* Sources */,
-				06056E361ED6105A00DFCF79 /* Templates */,
 			);
 			path = ResourceObjC;
 			sourceTree = "<group>";
@@ -150,8 +118,6 @@
 			children = (
 				ADDA17921ED6E3EE00AA0C51 /* Utils */,
 				06056E481ED7091D00DFCF79 /* Placeholders.h */,
-				06056E4B1ED710FE00DFCF79 /* TemplatesManager.h */,
-				06056E4C1ED710FE00DFCF79 /* TemplatesManager.m */,
 				06803EB81ED5C53F0006208A /* ResourceFinder.h */,
 				06803EB91ED5C53F0006208A /* ResourceFinder.m */,
 				06803ECB1ED5EDE20006208A /* BaseGenerator.h */,
@@ -166,6 +132,8 @@
 				ADD731DF1ED8C8A2006B0E51 /* ThemesGenerator.m */,
 				0617A9881ED9B46A007ECB92 /* StoryboardsGenerator.h */,
 				0617A9891ED9B46A007ECB92 /* StoryboardsGenerator.m */,
+				0673D4E71EDCBFD900880207 /* GeneratedStructures.h */,
+				0673D4E81EDCBFD900880207 /* GeneratedStructures.m */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -296,6 +264,7 @@
 				0617A98A1ED9B46A007ECB92 /* StoryboardsGenerator.m in Sources */,
 				06803ECD1ED5EDE20006208A /* BaseGenerator.m in Sources */,
 				06056E471ED6ECCE00DFCF79 /* RGenerator.m in Sources */,
+				0673D4E91EDCBFD900880207 /* GeneratedStructures.m in Sources */,
 				ADDA17951ED6E40700AA0C51 /* Session.m in Sources */,
 				06803EB11ED5BDEE0006208A /* main.m in Sources */,
 				06803EC91ED5EC630006208A /* StringsGenerator.m in Sources */,
@@ -303,7 +272,6 @@
 				06056E581ED7570500DFCF79 /* ImagesGenerator.m in Sources */,
 				06803EBA1ED5C53F0006208A /* ResourceFinder.m in Sources */,
 				AD8D6EDC1ED77538009CF948 /* FormattedStringParser.m in Sources */,
-				06056E4D1ED710FE00DFCF79 /* TemplatesManager.m in Sources */,
 				ADD731E01ED8C8A2006B0E51 /* ThemesGenerator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

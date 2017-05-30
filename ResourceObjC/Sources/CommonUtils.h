@@ -19,5 +19,7 @@
 + (void) logVerbose:(NSString *)format, ...;
 + (void) log:(NSString *)format, ...;
 + (NSString*)codableNameFromString:(NSString*)string;
++ (NSString*)classNameFromFilename:(NSString*)filename removingExtension:(NSString*)extension;
++ (NSString*)methodNameFromFilename:(NSString*)filename removingExtension:(NSString*)extension;
 
 @end

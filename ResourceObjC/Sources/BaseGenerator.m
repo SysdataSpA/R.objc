@@ -22,6 +22,8 @@
     if (self)
     {
         _finder = finder;
+        _clazz = [[RClass alloc] initWithName:self.className];
+        _otherClasses = [NSMutableArray new];
     }
     return self;
 }
@@ -51,18 +53,56 @@
     return [self.finder.outputURL.path stringByAppendingPathComponent:@"R.m"];
 }
 
-- (BOOL)writeString:(NSString *)string inFile:(NSString*)path beforePlaceholder:(NSString *)placeholder withError:(NSError *__autoreleasing *)error
+- (BOOL)writeStringInRFilesWithError:(NSError *__autoreleasing *)error
 {
-    NSMutableString* content = [NSMutableString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:error];
+    BOOL hResult = [self writeStringInInterfaceWithError:error];
+    BOOL mResult = [self writeStringInImplementationWithError:error];
+    
+    return hResult && mResult;
+}
+
+- (BOOL)writeStringInInterfaceWithError:(NSError *__autoreleasing *)error
+{
+    NSMutableString* content = [NSMutableString stringWithContentsOfFile:self.resourceFileHeaderPath encoding:NSUTF8StringEncoding error:error];
     if (!content)
     {
-        [CommonUtils log:@"Unable to read %@", path.lastPathComponent];
+        [CommonUtils log:@"Unable to read %@", self.resourceFileHeaderPath.lastPathComponent];
         return NO;
     }
     
-    NSUInteger offset = [content rangeOfString:placeholder].location;
-    [content insertString:string atIndex:offset];
-    return [content writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:error];
+    NSMutableString* interface = [NSMutableString new];
+    for (RClass* c in self.otherClasses)
+    {
+        [interface appendString:[c generateInterfaceString]];
+    }
+    
+    [interface appendString:[self.clazz generateInterfaceString]];
+
+    [content appendString:interface];
+    
+    return [content writeToFile:self.resourceFileHeaderPath atomically:YES encoding:NSUTF8StringEncoding error:error];
+}
+
+- (BOOL)writeStringInImplementationWithError:(NSError *__autoreleasing *)error
+{
+    NSMutableString* content = [NSMutableString stringWithContentsOfFile:self.resourceFileImplementationPath encoding:NSUTF8StringEncoding error:error];
+    if (!content)
+    {
+        [CommonUtils log:@"Unable to read %@", self.resourceFileImplementationPath.lastPathComponent];
+        return NO;
+    }
+    
+    NSMutableString* implementation = [NSMutableString new];
+    for (RClass* c in self.otherClasses)
+    {
+        [implementation appendString:[c generateImplementationString]];
+    }
+    
+    [implementation appendString:[self.clazz generateImplementationString]];
+    
+    [content appendString:implementation];
+    
+    return [content writeToFile:self.resourceFileImplementationPath atomically:YES encoding:NSUTF8StringEncoding error:error];
 }
 
 @end

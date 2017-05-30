@@ -26,6 +26,7 @@
 @property (nonatomic, strong) NSMutableDictionary<NSString*, NSMutableDictionary<NSString*, NSString*>*>* contentByLocale;
 @property (nonatomic, readonly, assign) NSInteger numberOfKeys;
 @property (nonatomic, readonly, strong) NSString* className;
+@property (nonatomic, readonly, strong) NSString* classType;
 @property (nonatomic, readonly, strong) NSString* methodName;
 @end
 
@@ -54,8 +55,9 @@
             return nil;
         }
         self.contentByLocale = [NSMutableDictionary new];
-        _className = [[NSString stringWithFormat:@"%@%@", [self.filename substringToIndex:1].uppercaseString, [self.filename substringFromIndex:1]] stringByReplacingOccurrencesOfString:@".strings" withString:@"Strings"];
-        _methodName = [[NSString stringWithFormat:@"%@%@", [self.filename substringToIndex:1].lowercaseString, [self.filename substringFromIndex:1]] stringByReplacingOccurrencesOfString:@".strings" withString:@""];
+        _className = [CommonUtils classNameFromFilename:self.filename removingExtension:@".strings"];
+        _classType = [NSString stringWithFormat:@"%@*", self.className];
+        _methodName = [CommonUtils methodNameFromFilename:self.filename removingExtension:@".strings"];
     }
     return self;
 }
@@ -168,122 +170,69 @@
 
 - (BOOL)writeInResourceFileWithError:(NSError *__autoreleasing *)error
 {
-    if (![self writeInHeaderFileWithError:error])
-    {
-        return NO;
-    }
-    
-    if (![self writeInImplementationFileWithError:error])
-    {
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)writeInHeaderFileWithError:(NSError *__autoreleasing *)error
-{
-    NSMutableArray *classesStrings = [NSMutableArray new];
-    
-    NSMutableString *generatorString = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.h"]];
-    [generatorString replaceOccurrencesOfString:GENERATOR_CLASS withString:self.className options:0 range:[generatorString rangeOfString:generatorString]];
-    
     for (StringsResource* res in self.translationsByPath.allValues)
     {
-        NSString* methodString = [[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.h"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:res.className] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:res.methodName];
-        [generatorString insertString:methodString atIndex:[generatorString rangeOfString:GENERATOR_INTERFACE_BODY].location];
+        // generates Strings interface methods
+        RMethodSignature* method = [[RMethodSignature alloc] initWithReturnType:res.classType signature:res.methodName];
+        [self.clazz.interface.methods addObject:method];
         
-        NSMutableString *classString = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.h"]];
-        [classString replaceOccurrencesOfString:GENERATOR_CLASS withString:res.className options:0 range:[classString rangeOfString:classString]];
+        // localized table class
+        RClass* clazz = [[RClass alloc] initWithName:res.className];
+        [self.otherClasses addObject:clazz];
         
+        // property declaration in extension and lazy getter implementation for every clazz
+        NSString* codableKey = [CommonUtils codableNameFromString:res.methodName];
+        
+        RProperty* property = [[RProperty alloc] initWithClass:res.classType name:codableKey];
+        [self.clazz.extension.properties addObject:property];
+        
+        RLazyGetterImplementation *lazy = [[RLazyGetterImplementation alloc] initReturnType:res.className name:codableKey];
+        [self.clazz.implementation.lazyGetters addObject:lazy];
+        
+        // sort keys in alphabetic order
         NSArray* allKeys = [[res.fileContent allKeys] sortedArrayUsingSelector:@selector(compare:)];
         for (NSString* key in allKeys)
         {
-            NSString* codableKey = [CommonUtils codableNameFromString:key];
-            NSString* methodString = [[[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.h"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:@"NSString"] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:codableKey] stringByAppendingString:@"\n"];
-            [classString insertString:[NSString stringWithFormat:@"/// key: \"%@\"\n///\n", key] atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
-            for (NSString *locale in [res.contentByLocale[key] allKeys])
-            {
-                [classString insertString:[NSString stringWithFormat:@"///\n/// %@: \"%@\"\n", locale, res.contentByLocale[key][locale]] atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
-            }
-            [classString insertString:methodString atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
+            codableKey = [CommonUtils codableNameFromString:key];
+            
+            // method declaration for key
+            method = [[RMethodSignature alloc] initWithReturnType:@"NSString*" signature:codableKey];
+            method.comment = [self commentForStringResource:res key:key];
+            [clazz.interface.methods addObject:method];
+            
+            // implementation for key
+            NSString* implString = [NSString stringWithFormat:@"return %@;", [self localizedStringWithKey:key fromTable:res.filename]];
+            RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"NSString*" signature:codableKey implementation:implString];
+            [clazz.implementation.methods addObject:impl];
             
             NSString* valueString = res.fileContent[key];
             if ([self stringContainsFormat:valueString])
             {
+                // method declaration for keys with formats
                 codableKey = [self methodNameFromMethod:codableKey withFormat:valueString];
-                methodString = [[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.h"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:@"NSString"] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:codableKey];
+                method = [[RMethodSignature alloc] initWithReturnType:@"NSString*" signature:codableKey];
+                [clazz.interface.methods addObject:method];
                 
-                [classString insertString:methodString atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
+                // implementation for keys with formats
+                NSString* implString = [NSString stringWithFormat:@"return [NSString stringWithFormat:%@%@];", [self localizedStringWithKey:key fromTable:res.filename], [self parametersSequenceFromFormat:valueString]];
+                RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"NSString*" signature:codableKey implementation:implString];
+                [clazz.implementation.methods addObject:impl];
             }
         }
-        [classString replaceOccurrencesOfString:GENERATOR_INTERFACE_BODY withString:@"" options:0 range:[classString rangeOfString:classString]];
-        [classesStrings addObject:classString];
-    }
-    [generatorString replaceOccurrencesOfString:GENERATOR_INTERFACE_BODY withString:@"" options:0 range:[generatorString rangeOfString:generatorString]];
-    
-    NSString* completeString = [classesStrings componentsJoinedByString:@"\n"];
-    completeString = [completeString stringByAppendingString:generatorString];
-    
-    if (![self writeString:completeString inFile:self.resourceFileHeaderPath beforePlaceholder:R_INTERFACE_HEADER withError:error])
-    {
-        return NO;
     }
     
-    return YES;
+    return [self writeStringInRFilesWithError:error];
 }
 
-- (BOOL)writeInImplementationFileWithError:(NSError *__autoreleasing *)error
+- (RComment*)commentForStringResource:(StringsResource*)res key:(NSString*)key
 {
-    NSMutableArray *classesStrings = [NSMutableArray new];
-    
-    NSMutableString *generatorString = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.m"]];
-    [generatorString replaceOccurrencesOfString:GENERATOR_CLASS withString:self.className options:0 range:[generatorString rangeOfString:generatorString]];
-    
-    for (StringsResource* res in self.translationsByPath.allValues)
+    RComment* comment = [RComment new];
+    [comment.lines addObject:[NSString stringWithFormat:@"key: \"%@\"", key]];
+    for (NSString *locale in [res.contentByLocale[key] allKeys])
     {
-        NSString* propertyString = [NSString stringWithFormat:@"@property(nonatomic, strong) %@* %@;\n", res.className, res.methodName];
-        [generatorString insertString:propertyString atIndex:[generatorString rangeOfString:GENERATOR_PRIVATE_INTERFACE_BODY].location];
-        
-        NSString* methodString = [[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.m"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:res.className] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:res.methodName];
-        [generatorString insertString:methodString atIndex:[generatorString rangeOfString:GENERATOR_IMPLEMENTATION_BODY].location];
-        
-        NSMutableString *classString = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.m"]];
-        [classString replaceOccurrencesOfString:GENERATOR_CLASS withString:res.className options:0 range:[classString rangeOfString:classString]];
-        
-        NSArray* allKeys = [[res.fileContent allKeys] sortedArrayUsingSelector:@selector(compare:)];
-        for (NSString* key in allKeys)
-        {
-            NSString* codableKey = [CommonUtils codableNameFromString:key];
-            NSString* methodString = [NSString stringWithFormat:@"- (NSString*) %@ { return %@; }\n", codableKey, [self localizedStringWithKey:key fromTable:res.filename]];
-            
-            [classString insertString:methodString atIndex:[classString rangeOfString:GENERATOR_IMPLEMENTATION_BODY].location];
-            
-            NSString* valueString = res.fileContent[key];
-            if ([self stringContainsFormat:valueString])
-            {
-                codableKey = [self methodNameFromMethod:codableKey withFormat:valueString];
-                methodString = [NSString stringWithFormat:@"- (NSString*) %@ { return [NSString stringWithFormat:%@ %@]; }\n", codableKey, [self localizedStringWithKey:key fromTable:res.filename], [self parametersSequenceFromFormat:valueString]];
-
-                [classString insertString:methodString atIndex:[classString rangeOfString:GENERATOR_IMPLEMENTATION_BODY].location];
-            }
-        }
-        [classString replaceOccurrencesOfString:GENERATOR_PRIVATE_INTERFACE_BODY withString:@"" options:0 range:[classString rangeOfString:classString]];
-        [classString replaceOccurrencesOfString:GENERATOR_IMPLEMENTATION_BODY withString:@"" options:0 range:[classString rangeOfString:classString]];
-        [classesStrings addObject:classString];
+        [comment.lines addObject:[NSString stringWithFormat:@"%@: \"%@\"", locale, res.contentByLocale[key][locale]]];
     }
-    [generatorString replaceOccurrencesOfString:GENERATOR_PRIVATE_INTERFACE_BODY withString:@"" options:0 range:[generatorString rangeOfString:generatorString]];
-    [generatorString replaceOccurrencesOfString:GENERATOR_IMPLEMENTATION_BODY withString:@"" options:0 range:[generatorString rangeOfString:generatorString]];
-    
-    NSString* completeString = [classesStrings componentsJoinedByString:@"\n"];
-    completeString = [completeString stringByAppendingString:generatorString];
-    
-    if (![self writeString:completeString inFile:self.resourceFileImplementationPath beforePlaceholder:R_IMPLEMENTATION_HEADER withError:error])
-    {
-        return NO;
-    }
-    
-    return YES;
+    return comment;
 }
 
 #pragma mark - Utils
