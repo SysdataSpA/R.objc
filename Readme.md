@@ -4,6 +4,8 @@ R.objc
 \<https://cocoapods.org/pods/R.objc https://cocoapods.org/pods/R.objc
 https://cocoapods.org/pods/R.objc\>
 
+![](https://github.com/SysdataSpA/R.objc/blob/master/R.objc_example.gif)
+
 Introduction
 ------------
 
@@ -36,7 +38,7 @@ this avoids including any binary files into your project.
 
 4.  Drag the new `Run Script` phase **above** the `Compile Sources` phase,
     expand it and paste the following script: `"${PODS_ROOT}/Robjc" -p
-    "$SRCROOT" `(after -p option, you have to specify the root folder of your
+    "$SRCROOT"`(after -p option, you have to specify the root folder of your
     project, from where to scan your code)
 
 5.  Build your project; in Finder you will now see `R.h` and `R.m` files in
