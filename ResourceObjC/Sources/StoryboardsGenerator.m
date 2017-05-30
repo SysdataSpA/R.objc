@@ -99,6 +99,7 @@
     for (NSURL* url in urls)
     {
         NSString* name = [url.path.lastPathComponent stringByReplacingOccurrencesOfString:@".storyboard" withString:@""];
+        name = [name stringByReplacingOccurrencesOfString:@" " withString:@""];
         
         NSDictionary* storyboard = [NSDictionary dictionaryWithXMLFile:url.path];
         
