@@ -39,6 +39,7 @@
                         <outlet property="imageView" destination="tvn-B6-FrS" id="3ee-G7-Oeq"/>
                         <outlet property="label" destination="8kX-NH-AiF" id="gTg-0Q-uxn"/>
                         <segue destination="asI-WZ-88X" kind="show" identifier="openNext" id="vlu-Jy-XGR"/>
+                        <segue destination="jMu-cY-bEk" kind="show" id="EDt-YO-Ju8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -65,6 +66,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IPn-lZ-lXg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="729" y="37"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Oe7-1V-6Eg">
+            <objects>
+                <viewController id="jMu-cY-bEk" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="XOR-ji-SxE"/>
+                        <viewControllerLayoutGuide type="bottom" id="etg-G2-z7w"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="HZO-tC-2U8">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LlM-nU-fxE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="729" y="790"/>
         </scene>
         <!--Some-->
         <scene sceneID="Af8-Na-j93">

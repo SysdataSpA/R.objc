@@ -83,7 +83,7 @@
 - (SegueResource*)resourceForViewController:(NSString*)className
 {
     NSUInteger index = [self.resources indexOfObjectPassingTest:^BOOL(SegueResource * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj.className isEqualToString:className])
+        if ([obj.sourceClassName isEqualToString:className])
         {
             *stop = YES;
             return YES;
