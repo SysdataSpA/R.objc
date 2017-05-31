@@ -132,7 +132,6 @@
                 
                 NSString* implString = [NSString stringWithFormat:@"return SDThemeManagerValueForConstant(@\"%@\");", key];
                 impl = [[RMethodImplementation alloc] initWithReturnType:valueType signature:key implementation:implString];
-                [clazz.implementation.methods addObject:impl];
             } else {
                 NSString* codableKey = [CommonUtils codableNameFromString:key];
                 method = [[RMethodSignature alloc] initWithReturnType:@"void" signature:[codableKey stringByAppendingString:@":"]];
