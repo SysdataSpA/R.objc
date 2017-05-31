@@ -1,8 +1,9 @@
 R.objc
 ======
 
-<http://cocoapods.org/pods/R.objc> <http://cocoapods.org/pods/R.objc>
-<http://cocoapods.org/pods/R.objc>
+[![Version](https://img.shields.io/cocoapods/v/R.objc.svg?style=flat)](http://cocoapods.org/pods/R.objc)
+[![License](https://img.shields.io/cocoapods/l/R.objc.svg?style=flat)](http://cocoapods.org/pods/R.objc)
+[![Platform](https://img.shields.io/cocoapods/p/R.objc.svg?style=flat)](http://cocoapods.org/pods/R.objc)
 
 ![](https://github.com/SysdataSpA/R.objc/blob/master/R.objc_example.gif)
 
@@ -37,9 +38,14 @@ this avoids including any binary files into your project.
     a `New Run Script Phase` by clicking the little plus icon in the top left
 
 4.  Drag the new `Run Script` phase **above** the `Compile Sources` phase,
-    expand it and paste the following script: `"${PODS_ROOT}/Robjc" -p
-    "$SRCROOT"`(after -p option, you have to specify the root folder of your
-    project, from where to scan your code)
+    expand it and paste the following script: 
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    "${PODS_ROOT}/R.objc/Robjc" -p "$SRCROOT"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    (after -p option, you have to specify the root folder of your project, from
+    where to scan your code)
 
 5.  Build your project; in Finder you will now see `R.h` and `R.m` files in
     the `$SRCROOT` folder: drag them into your project and **uncheck** `Copy
@@ -60,18 +66,32 @@ this avoids including any binary files into your project.
     a `New Run Script Phase` by clicking the little plus icon in the top left
 
 5.  Drag the new `Run Script` phase **above** the `Compile Sources` phase,
-    expand it and paste the following script: `"<path to the unzipped
-    folder>/Robjc" -p "$SRCROOT"` (we suggest to unzip the folder somewhere
-    within your project folder, in order to use the `$SRCROOT` shortcut for the
-    path. **Don't add anything to your Xcode project, or it won't build
-    anymore**) (after -p option, you have to specify the root folder of your
-    project, from where to scan your code)
+    expand it and paste the following script: 
+
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    "<path to the unzipped folder>/Robjc" -p "$SRCROOT"
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    (we suggest to unzip the folder somewhere within your project folder, in
+    order to use the `$SRCROOT` shortcut for the path. **Don't add anything to
+    your Xcode project, or it won't build anymore**) (after -p option, you have
+    to specify the root folder of your project, from where to scan your code)
 
 6.  Build your project; in Finder you will now see `R.h` and `R.m` files in
     the `$SRCROOT` folder: drag them into your project and **uncheck** `Copy
     items if needed`
 
 7.  Repeat point 3 and 4 for every target in your project
+
+Options available to invoke the script:
+
+-   `-p` (or --path): path to the root of the project or from where you want the
+    scan to begin
+
+-   `-e` (or --excluded): excluded dir path; all dirs within this path will be
+    excluded; you can use `-e` option more than once
+
+-   `-v` (or `--verbose`): verbose logging
 
  
 
@@ -82,13 +102,7 @@ Normally, you would write code like this:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 [self.buttonProceed setTitle:NSLocalizedString(@"home_proceed", nil) forState:UIControlStateNormal];
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 self.welcomeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"home_title_welcome", nil), @"John"]; //"hello %@"
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 self.radioButtonImageView.image = selected ? [UIImage imageNamed:@"checkedRadioButton"] : [UIImage imageNamed:@"uncheckedRadioButton"];
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -96,13 +110,7 @@ Now you can write
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 [self.buttonProceed setTitle:R.string.localizable.homeProceed forState:UIControlStateNormal];
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 self.welcomeLabel.text = [R.string.localizable homeTitleWelcome:@"John"];
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 self.radioButtonImageView.image = selected ? R.image.checkedRadioButton : R.image.uncheckedRadioButton;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
