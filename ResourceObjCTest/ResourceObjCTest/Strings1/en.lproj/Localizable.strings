@@ -9,3 +9,4 @@
 "key A" = "Key A";
 "34563456-.,.,-.,-.,-.,-,-., @@@@@key B" = "B";
 "key C" = "Chi? Si!!!";
+"Key format" = "Try %.2f %@";

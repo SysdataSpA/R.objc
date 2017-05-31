@@ -12,14 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import <Foundation/Foundation.h>
-
-@interface CommonUtils : NSObject
-
-+ (void) logVerbose:(NSString *)format, ...;
-+ (void) log:(NSString *)format, ...;
-+ (NSString*)codableNameFromString:(NSString*)string;
-+ (NSString*)classNameFromFilename:(NSString*)filename removingExtension:(NSString*)extension;
-+ (NSString*)methodNameFromFilename:(NSString*)filename removingExtension:(NSString*)extension;
-
-@end
+#define R_SHARED_INSTANCE @" \
+\n\tstatic dispatch_once_t pred;\n \
+\tstatic id sharedInstance_ = nil;\n \
+\n \
+\tdispatch_once(&pred, ^{\n \
+\t\tsharedInstance_ = [[self alloc] init];\n \
+\t});\n \
+\n \
+\treturn sharedInstance_;\n"

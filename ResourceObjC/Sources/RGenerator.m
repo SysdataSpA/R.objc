@@ -18,8 +18,14 @@
 #import "ImagesGenerator.h"
 #import "ThemesGenerator.h"
 #import "StoryboardsGenerator.h"
+#import "SeguesGenerator.h"
 
 @implementation RGenerator
+
+- (NSString *)className
+{
+    return @"R";
+}
 
 - (BOOL)generateResourceFileWithError:(NSError *__autoreleasing *)error
 {
@@ -50,10 +56,17 @@
         [generators addObject:[[StoryboardsGenerator alloc] initWithResourceFinder:self.finder]];
     }
     
+    if ([[Session shared] resourcesToGenerate] & ResourceTypeSegues)
+    {
+        [generators addObject:[[SeguesGenerator alloc] initWithResourceFinder:self.finder]];
+    }
+    
+    // shared instance implementation
+    RClassMethodImplementation* shared = [[RClassMethodImplementation alloc] initWithReturnType:@"instancetype" signature:@"sharedInstance" implementation:R_SHARED_INSTANCE];
+    shared.indent = YES;
+    [self.clazz.implementation.methods addObject:shared];
+    
     BOOL success = YES;
-    NSMutableString *rInterface = [NSMutableString string];
-    NSMutableString *rPrivImpl = [NSMutableString string];
-    NSMutableString *rImplementation = [NSMutableString string];
     for (BaseGenerator<GeneratorProtocol>* generator in generators)
     {
         success = [generator generateResourceFileWithError:error];
@@ -61,29 +74,26 @@
         {
             return NO;
         }
-        [rInterface appendFormat:@"+ (%@*) %@;\n", generator.className, generator.propertyName];
-        [rPrivImpl appendFormat:@"@property(nonatomic, strong) %@* %@;\n", generator.className, generator.propertyName];
-        [rImplementation appendFormat:@"+ (%@*) %@ { return [[R sharedInstance] %@]; }\n\n", generator.className, generator.propertyName, generator.propertyName];
-        NSString* methodString = [[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.m"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:generator.className] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:generator.propertyName];
-        [rImplementation appendFormat:@"%@\n", methodString];
+        
+        // method in interface
+        RClassMethodSignature* method = [[RClassMethodSignature alloc] initWithReturnType:[generator.className stringByAppendingString:@"*"] signature:generator.propertyName];
+        [self.clazz.interface.methods addObject:method];
+        
+        // property in extension
+        RProperty* property = [[RProperty alloc] initWithClass:[generator.className stringByAppendingString:@"*"] name:generator.propertyName];
+        [self.clazz.extension.properties addObject:property];
+        
+        // lazy getter
+        RLazyGetterImplementation* lazy = [[RLazyGetterImplementation alloc] initReturnType:generator.className name:generator.propertyName];
+        [self.clazz.implementation.lazyGetters addObject:lazy];
+        
+        // class getter
+        NSString* impl = [NSString stringWithFormat:@"return [[R sharedInstance] %@];", generator.propertyName];
+        RClassMethodImplementation* classGetter = [[RClassMethodImplementation alloc] initWithReturnType:[generator.className stringByAppendingString:@"*"] signature:generator.propertyName implementation:impl];
+        [self.clazz.implementation.methods addObject:classGetter];
     }
     
-    if (![self writeString:rInterface inFile:self.resourceFileHeaderPath beforePlaceholder:R_INTERFACE_BODY withError:error])
-    {
-        return NO;
-    }
-    
-    if (![self writeString:rPrivImpl inFile:self.resourceFileImplementationPath beforePlaceholder:R_PRIVATE_INTERFACE_BODY withError:error])
-    {
-        return NO;
-    }
-    
-    if (![self writeString:rImplementation inFile:self.resourceFileImplementationPath beforePlaceholder:R_IMPLEMENTATION_BODY withError:error])
-    {
-        return NO;
-    }
-    
-    if (![self cleanPlaceholdersWithError:error])
+    if (![self writeStringInRFilesWithError:error])
     {
         return NO;
     }
@@ -92,6 +102,50 @@
     [CommonUtils log:@"R files written in %@", basePath];
     
     return YES;
+}
+
+- (BOOL)writeStringInRFilesWithError:(NSError *__autoreleasing *)error
+{
+    BOOL hResult = [self writeStringInInterfaceWithError:error];
+    BOOL mResult = [self writeStringInImplementationWithError:error];
+    
+    return hResult && mResult;
+}
+
+- (BOOL)writeStringInInterfaceWithError:(NSError *__autoreleasing *)error
+{
+    NSMutableString* content = [NSMutableString stringWithContentsOfFile:self.resourceFileHeaderPath encoding:NSUTF8StringEncoding error:error];
+    if (!content)
+    {
+        [CommonUtils log:@"Unable to read %@", self.resourceFileHeaderPath.lastPathComponent];
+        return NO;
+    }
+    
+    NSMutableString* interface = [NSMutableString new];
+    
+    [interface appendString:[self.clazz generateInterfaceString]];
+    
+    [content appendString:interface];
+    
+    return [content writeToFile:self.resourceFileHeaderPath atomically:YES encoding:NSUTF8StringEncoding error:error];
+}
+
+- (BOOL)writeStringInImplementationWithError:(NSError *__autoreleasing *)error
+{
+    NSMutableString* content = [NSMutableString stringWithContentsOfFile:self.resourceFileImplementationPath encoding:NSUTF8StringEncoding error:error];
+    if (!content)
+    {
+        [CommonUtils log:@"Unable to read %@", self.resourceFileImplementationPath.lastPathComponent];
+        return NO;
+    }
+    
+    NSMutableString* implementation = [NSMutableString new];
+    
+    [implementation appendString:[self.clazz generateImplementationString]];
+    
+    [content appendString:implementation];
+    
+    return [content writeToFile:self.resourceFileImplementationPath atomically:YES encoding:NSUTF8StringEncoding error:error];
 }
 
 - (BOOL)createResourceFileIfNeededWithError:(NSError *__autoreleasing *)error
@@ -123,7 +177,7 @@
         }
     }
     
-    BOOL hCreated = [[[TemplatesManager shared] contentForTemplate:@"RTemplate.h"] writeToFile:self.resourceFileHeaderPath atomically:YES encoding:NSUTF8StringEncoding error:error];
+    BOOL hCreated = [@"#import <UIKit/UIKit.h>\n\n" writeToFile:self.resourceFileHeaderPath atomically:YES encoding:NSUTF8StringEncoding error:error];
     if (!hCreated)
     {
         *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotCreateFile userInfo:@{NSFilePathErrorKey:rHPath}];
@@ -131,49 +185,11 @@
         return NO;
     }
     
-    BOOL mCreated = [[[TemplatesManager shared] contentForTemplate:@"RTemplate.m"] writeToFile:self.resourceFileImplementationPath atomically:YES encoding:NSUTF8StringEncoding error:error];
+    BOOL mCreated = [@"#import \"R.h\"\n\n" writeToFile:self.resourceFileImplementationPath atomically:YES encoding:NSUTF8StringEncoding error:error];
     if (!mCreated)
     {
         *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotCreateFile userInfo:@{NSFilePathErrorKey:rMPath}];
         [CommonUtils log:@"Cannot create R.m file at path %@ with error %@", rMPath, [*error localizedDescription]];
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL) cleanPlaceholdersWithError:(NSError *__autoreleasing *)error
-{
-    NSMutableString *hContent = [[NSMutableString alloc] initWithContentsOfFile:self.resourceFileHeaderPath encoding:NSUTF8StringEncoding error:error];
-    if (!hContent)
-    {
-        [CommonUtils log:@"Error reading R.h"];
-        return NO;
-    }
-    
-    NSMutableString *mContent = [[NSMutableString alloc] initWithContentsOfFile:self.resourceFileImplementationPath encoding:NSUTF8StringEncoding error:error];
-    if (!mContent)
-    {
-        [CommonUtils log:@"Error reading R.m"];
-        return NO;
-    }
-    
-    [hContent replaceOccurrencesOfString:R_INTERFACE_HEADER withString:@"" options:0 range:[hContent rangeOfString:hContent]];
-    [hContent replaceOccurrencesOfString:R_INTERFACE_BODY withString:@"" options:0 range:[hContent rangeOfString:hContent]];
-    
-    [mContent replaceOccurrencesOfString:R_IMPLEMENTATION_HEADER withString:@"" options:0 range:[mContent rangeOfString:mContent]];
-    [mContent replaceOccurrencesOfString:R_PRIVATE_INTERFACE_BODY withString:@"" options:0 range:[mContent rangeOfString:mContent]];
-    [mContent replaceOccurrencesOfString:R_IMPLEMENTATION_BODY withString:@"" options:0 range:[mContent rangeOfString:mContent]];
-    
-    if (![hContent writeToFile:self.resourceFileHeaderPath atomically:YES encoding:NSUTF8StringEncoding error:error])
-    {
-        [CommonUtils log:@"Error writing R.h"];
-        return NO;
-    }
-    
-    if (![mContent writeToFile:self.resourceFileImplementationPath atomically:YES encoding:NSUTF8StringEncoding error:error])
-    {
-        [CommonUtils log:@"Error writing R.m"];
         return NO;
     }
     

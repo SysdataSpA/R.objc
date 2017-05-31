@@ -32,11 +32,6 @@ int main(int argc, const char * argv[]) {
             return -1;
         }
         
-        if ([[TemplatesManager shared] setup] == -1)
-        {
-            return -1;
-        }
-        
         ResourceFinder* finder = [[ResourceFinder alloc] initWithBasePath:Session.shared.baseURL excludedDirs:Session.shared.excludedDirs];
         [finder exploreBasePath];
         

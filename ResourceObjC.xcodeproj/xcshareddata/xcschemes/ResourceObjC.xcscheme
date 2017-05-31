@@ -64,14 +64,14 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "--sysdata"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-p"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "/Users/guidosabatini/LAVORO/AllianzInsurance/AllianzNOW/codice/Project"
+            argument = "~/Documents/R.objc/ResourceObjCTest/ResourceObjCTest"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>

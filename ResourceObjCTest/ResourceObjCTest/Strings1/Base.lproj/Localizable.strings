@@ -8,3 +8,4 @@
 
 "key A" = "Key A";
 "34563456-.,.,-.,-.,-.,-,-., @@@@@key B" = "key B";
+"Key format" = "Prova %.2f %@";

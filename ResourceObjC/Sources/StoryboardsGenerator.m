@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSString* name;
 @property (nonatomic, strong) NSMutableArray<NSString*>* viewControllers;
 @property (nonatomic, readonly, strong) NSString* className;
+@property (nonatomic, readonly, strong) NSString* classType;
 @property (nonatomic, readonly, strong) NSString* methodName;
 @end
 @implementation StoryboardResource
@@ -37,15 +38,18 @@
 - (NSString *)className
 {
     if (self.name.length == 0) return nil;
-    NSString* name = [NSString stringWithFormat:@"%@%@", [self.name substringToIndex:1].uppercaseString, [self.name substringFromIndex:1]];
-    return [name stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return [CommonUtils classNameFromFilename:self.name removingExtension:nil];
+}
+
+- (NSString *)classType
+{
+    return self.className ? [NSString stringWithFormat:@"%@*", self.className] : nil;
 }
 
 - (NSString *)methodName
 {
     if (self.name.length == 0) return nil;
-    NSString* name = [NSString stringWithFormat:@"%@%@", [self.name substringToIndex:1].lowercaseString, [self.name substringFromIndex:1]];
-    return [name stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return [CommonUtils methodNameFromFilename:self.name removingExtension:nil];
 }
 
 @end
@@ -138,114 +142,50 @@
 
 - (BOOL)writeInResourceFileWithError:(NSError *__autoreleasing *)error
 {
-    if (![self writeInHeaderFileWithError:error])
-    {
-        return NO;
-    }
-    
-    if (![self writeInImplementationFileWithError:error])
-    {
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)writeInHeaderFileWithError:(NSError *__autoreleasing *)error
-{
-    NSMutableArray *classesStrings = [NSMutableArray new];
-    
-    NSMutableString *generatorString = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.h"]];
-    [generatorString replaceOccurrencesOfString:GENERATOR_CLASS withString:self.className options:0 range:[generatorString rangeOfString:generatorString]];
-    
     for (StoryboardResource* res in self.storyboards)
     {
-        NSString* methodString = [[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.h"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:res.className] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:res.methodName];
-        [generatorString insertString:methodString atIndex:[generatorString rangeOfString:GENERATOR_INTERFACE_BODY].location];
+        // generates Storyboard interface methods
+        RMethodSignature* method = [[RMethodSignature alloc] initWithReturnType:res.classType signature:res.methodName];
+        [self.clazz.interface.methods addObject:method];
         
-        NSMutableString *classString = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.h"]];
-        [classString replaceOccurrencesOfString:GENERATOR_CLASS withString:res.className options:0 range:[classString rangeOfString:classString]];
+        // storyboard resource class
+        RClass* clazz = [[RClass alloc] initWithName:res.className];
+        [self.otherClasses addObject:clazz];
         
-        methodString = [[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.h"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:@"id"] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:@"instantiateInitialViewController"];
-        methodString = [methodString stringByReplacingOccurrencesOfString:@"*" withString:@""];
+        // property declaration in extension and lazy getter implementation for every clazz
+        NSString* codableKey = [CommonUtils codableNameFromString:res.methodName];
         
-        [classString insertString:methodString atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
+        RProperty* property = [[RProperty alloc] initWithClass:res.classType name:codableKey];
+        [self.clazz.extension.properties addObject:property];
         
+        RLazyGetterImplementation *lazy = [[RLazyGetterImplementation alloc] initReturnType:res.className name:codableKey];
+        [self.clazz.implementation.lazyGetters addObject:lazy];
+        
+        // instantiateInitialViewController declaration and implementation in resource class
+        method = [[RMethodSignature alloc] initWithReturnType:@"id" signature:@"instantiateInitialViewController"];
+        [clazz.interface.methods addObject:method];
+        NSString* implString = [NSString stringWithFormat:@"return [[UIStoryboard storyboardWithName:@\"%@\" bundle:nil] instantiateInitialViewController];", res.name];
+        RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"id" signature:@"instantiateInitialViewController" implementation:implString];
+        [clazz.implementation.methods addObject:impl];
+        
+        // sort view controllers in alphabetic order
         NSArray* viewControllers = [res.viewControllers sortedArrayUsingSelector:@selector(compare:)];
         for (NSString* viewController in viewControllers)
         {
-            NSString* codableKey = [CommonUtils codableNameFromString:viewController];
-            NSString* methodString = [[[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.h"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:@"id"] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:codableKey] stringByAppendingString:@"\n"];
-            methodString = [methodString stringByReplacingOccurrencesOfString:@"*" withString:@""];
+            codableKey = [CommonUtils codableNameFromString:viewController];
             
-            [classString insertString:methodString atIndex:[classString rangeOfString:GENERATOR_INTERFACE_BODY].location];
+            // method declaration for view controller
+            method = [[RMethodSignature alloc] initWithReturnType:@"id" signature:codableKey];
+            [clazz.interface.methods addObject:method];
+            
+            // implementation for view controller
+            implString = [NSString stringWithFormat:@"return [[UIStoryboard storyboardWithName:@\"%@\" bundle:nil] instantiateViewControllerWithIdentifier:@\"%@\"];", res.name, viewController];
+            RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"id" signature:codableKey implementation:implString];
+            [clazz.implementation.methods addObject:impl];
         }
-        [classString replaceOccurrencesOfString:GENERATOR_INTERFACE_BODY withString:@"" options:0 range:[classString rangeOfString:classString]];
-        [classesStrings addObject:classString];
-    }
-    [generatorString replaceOccurrencesOfString:GENERATOR_INTERFACE_BODY withString:@"" options:0 range:[generatorString rangeOfString:generatorString]];
-    
-    NSString* completeString = [classesStrings componentsJoinedByString:@"\n"];
-    completeString = [completeString stringByAppendingString:generatorString];
-    completeString = [completeString stringByAppendingString:@"\n"];
-    
-    if (![self writeString:completeString inFile:self.resourceFileHeaderPath beforePlaceholder:R_INTERFACE_HEADER withError:error])
-    {
-        return NO;
     }
     
-    return YES;
-}
-
-- (BOOL)writeInImplementationFileWithError:(NSError *__autoreleasing *)error
-{
-    NSMutableArray *classesStrings = [NSMutableArray new];
-    
-    NSMutableString *generatorString = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.m"]];
-    [generatorString replaceOccurrencesOfString:GENERATOR_CLASS withString:self.className options:0 range:[generatorString rangeOfString:generatorString]];
-    
-    for (StoryboardResource* res in self.storyboards)
-    {
-        NSString* propertyString = [NSString stringWithFormat:@"@property(nonatomic, strong) %@* %@;\n", res.className, res.methodName];
-        [generatorString insertString:propertyString atIndex:[generatorString rangeOfString:GENERATOR_PRIVATE_INTERFACE_BODY].location];
-        
-        NSString* methodString = [[[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.m"] stringByReplacingOccurrencesOfString:PROPERTY_CLASS withString:res.className] stringByReplacingOccurrencesOfString:PROPERTY_NAME withString:res.methodName];
-        [generatorString insertString:methodString atIndex:[generatorString rangeOfString:GENERATOR_IMPLEMENTATION_BODY].location];
-        
-        NSMutableString *classString = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.m"]];
-        [classString replaceOccurrencesOfString:GENERATOR_CLASS withString:res.className options:0 range:[classString rangeOfString:classString]];
-        
-        methodString = [NSString stringWithFormat:@"- (id) instantiateInitialViewController { return [[UIStoryboard storyboardWithName:@\"%@\" bundle:nil] instantiateInitialViewController]; }\n", res.name];
-        methodString = [methodString stringByReplacingOccurrencesOfString:@"*" withString:@""];
-        
-        [classString insertString:methodString atIndex:[classString rangeOfString:GENERATOR_IMPLEMENTATION_BODY].location];
-        
-        NSArray* viewControllers = [res.viewControllers sortedArrayUsingSelector:@selector(compare:)];
-        for (NSString* viewController in viewControllers)
-        {
-            
-            NSString* codableKey = [CommonUtils codableNameFromString:viewController];
-            NSString* methodString = [NSString stringWithFormat:@"- (id) %@ { return [[UIStoryboard storyboardWithName:@\"%@\" bundle:nil] instantiateViewControllerWithIdentifier:@\"%@\"]; }\n", codableKey, res.name, viewController];
-            methodString = [methodString stringByReplacingOccurrencesOfString:@"*" withString:@""];
-            
-            [classString insertString:methodString atIndex:[classString rangeOfString:GENERATOR_IMPLEMENTATION_BODY].location];
-        }
-        [classString replaceOccurrencesOfString:GENERATOR_PRIVATE_INTERFACE_BODY withString:@"" options:0 range:[classString rangeOfString:classString]];
-        [classString replaceOccurrencesOfString:GENERATOR_IMPLEMENTATION_BODY withString:@"" options:0 range:[classString rangeOfString:classString]];
-        [classesStrings addObject:classString];
-    }
-    [generatorString replaceOccurrencesOfString:GENERATOR_PRIVATE_INTERFACE_BODY withString:@"" options:0 range:[generatorString rangeOfString:generatorString]];
-    [generatorString replaceOccurrencesOfString:GENERATOR_IMPLEMENTATION_BODY withString:@"" options:0 range:[generatorString rangeOfString:generatorString]];
-    
-    NSString* completeString = [classesStrings componentsJoinedByString:@"\n"];
-    completeString = [completeString stringByAppendingString:generatorString];
-    
-    if (![self writeString:completeString inFile:self.resourceFileImplementationPath beforePlaceholder:R_IMPLEMENTATION_HEADER withError:error])
-    {
-        return NO;
-    }
-    
-    return YES;
+    return [self writeStringInRFilesWithError:error];
 }
 
 @end

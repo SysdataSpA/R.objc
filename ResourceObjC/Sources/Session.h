@@ -18,7 +18,8 @@ typedef NS_OPTIONS(NSUInteger, ResourceType) {
     ResourceTypeStrings = 1 << 0,
     ResourceTypeImages = 1 << 1,
     ResourceTypeThemes = 1 << 2,
-    ResourceTypeStoryboards = 1 << 3
+    ResourceTypeStoryboards = 1 << 3,
+    ResourceTypeSegues = 1 << 4
 };
 
 @interface Session : NSObject

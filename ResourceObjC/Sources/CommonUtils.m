@@ -79,4 +79,26 @@
     return strippedString;
 }
 
++ (NSString *)classNameFromFilename:(NSString *)filename removingExtension:(NSString *)extension
+{
+    NSString* retval = [NSString stringWithFormat:@"%@%@", [filename substringToIndex:1].uppercaseString, [filename substringFromIndex:1]];
+    if (extension.length > 0)
+    {
+        retval = [retval stringByReplacingOccurrencesOfString:extension withString:@""];
+    }
+    retval = [retval stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return retval;
+}
+
++ (NSString *)methodNameFromFilename:(NSString *)filename removingExtension:(NSString *)extension
+{
+     NSString* retval = [NSString stringWithFormat:@"%@%@", [filename substringToIndex:1].lowercaseString, [filename substringFromIndex:1]];
+    if (extension.length > 0)
+    {
+        retval = [retval stringByReplacingOccurrencesOfString:extension withString:@""];
+    }
+    retval = [retval stringByReplacingOccurrencesOfString:@" " withString:@""];
+    return retval;
+}
+
 @end

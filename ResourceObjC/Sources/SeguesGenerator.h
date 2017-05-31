@@ -12,12 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import <Foundation/Foundation.h>
+#import "BaseGenerator.h"
 
-@interface TemplatesManager : NSObject
-
-+ (instancetype) shared;
-- (int) setup;
-- (NSString*)contentForTemplate:(NSString*)filename;
+@interface SeguesGenerator : BaseGenerator
 
 @end
