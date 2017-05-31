@@ -23,6 +23,11 @@
     self.imageView.image = R.image.testImage;
     self.label.text = R.string.localizable._34563456KeyB;
     NSLog(@"%@", R.segue.viewController.openNext.identifier);
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     [R.segue.viewController.openNext performWithSource:self sender:@"trySender"];
 }
 

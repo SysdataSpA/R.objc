@@ -16,7 +16,8 @@
 #import <XMLDictionary/XMLDictionary.h>
 
 @interface SegueResource : NSObject
-@property (nonatomic, strong) NSMutableArray* segues;
+@property (nonatomic, strong) NSMutableOrderedSet* segues;
+@property (nonatomic, strong) NSString* sourceOriginalClass;
 @property (nonatomic, strong) NSString* sourceClassName;
 @property (nonatomic, readonly) NSString* sourceClassType;
 @property (nonatomic, readonly) NSString* methodName;
@@ -28,7 +29,7 @@
     self = [super init];
     if (self)
     {
-        self.segues = [NSMutableArray new];
+        self.segues = [NSMutableOrderedSet new];
     }
     return self;
 }
@@ -83,7 +84,7 @@
 - (SegueResource*)resourceForViewController:(NSString*)className
 {
     NSUInteger index = [self.resources indexOfObjectPassingTest:^BOOL(SegueResource * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        if ([obj.className isEqualToString:className])
+        if ([obj.sourceOriginalClass isEqualToString:className])
         {
             *stop = YES;
             return YES;
@@ -98,6 +99,7 @@
     
     SegueResource* res = [SegueResource new];
     res.sourceClassName = className;
+    res.sourceOriginalClass = className;
     [self.resources addObject:res];
     return res;
 }
@@ -214,7 +216,7 @@
             [self.clazz.implementation.lazyGetters addObject:lazy];
             
             // sort segues in alphabetic order
-            NSArray* segues = [res.segues sortedArrayUsingSelector:@selector(compare:)];
+            NSArray* segues = [res.segues.array sortedArrayUsingSelector:@selector(compare:)];
             for (NSString* segue in segues)
             {
                 codableKey = [CommonUtils codableNameFromString:segue];
