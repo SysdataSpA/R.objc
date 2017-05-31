@@ -95,13 +95,87 @@
 @end
 
 
+
+@implementation RSegue
+- (void)performWithSource:(UIViewController*)sourceViewController sender:(id)sender { [sourceViewController performSegueWithIdentifier:self.identifier sender:sender]; }
+@end
+
+
+@interface ViewControllerSegues ()
+@property (nonatomic, strong) RSegue* openNext;
+@end
+
+@implementation ViewControllerSegues
+
+- (RSegue*)openNext
+{	
+	if (!_openNext)
+	{
+		_openNext = [RSegue new];
+		_openNext.identifier = @"openNext";
+	}
+	return _openNext;
+}
+
+@end
+
+
+@interface NextViewControllerSegues ()
+@property (nonatomic, strong) RSegue* openSome;
+@end
+
+@implementation NextViewControllerSegues
+
+- (RSegue*)openSome
+{	
+	if (!_openSome)
+	{
+		_openSome = [RSegue new];
+		_openSome.identifier = @"openSome";
+	}
+	return _openSome;
+}
+
+@end
+
+
+@interface Segues ()
+@property (nonatomic, strong) ViewControllerSegues* viewController;
+@property (nonatomic, strong) NextViewControllerSegues* nextViewController;
+@end
+
+@implementation Segues
+
+- (ViewControllerSegues*)viewController
+{
+	if (!_viewController)
+	{
+		_viewController = [ViewControllerSegues new];
+	}
+	return _viewController;
+}
+
+- (NextViewControllerSegues*)nextViewController
+{
+	if (!_nextViewController)
+	{
+		_nextViewController = [NextViewControllerSegues new];
+	}
+	return _nextViewController;
+}
+
+@end
+
+
 @interface R ()
 @property (nonatomic, strong) Strings* string;
 @property (nonatomic, strong) Images* image;
 @property (nonatomic, strong) Storyboards* storyboard;
+@property (nonatomic, strong) Segues* segue;
 @end
 
 @implementation R
+
 + (instancetype)sharedInstance
 {	 
 	static dispatch_once_t pred;
@@ -118,6 +192,7 @@
 + (Strings*)string { return [[R sharedInstance] string]; }
 + (Images*)image { return [[R sharedInstance] image]; }
 + (Storyboards*)storyboard { return [[R sharedInstance] storyboard]; }
++ (Segues*)segue { return [[R sharedInstance] segue]; }
 
 - (Strings*)string
 {
@@ -144,6 +219,15 @@
 		_storyboard = [Storyboards new];
 	}
 	return _storyboard;
+}
+
+- (Segues*)segue
+{
+	if (!_segue)
+	{
+		_segue = [Segues new];
+	}
+	return _segue;
 }
 
 @end

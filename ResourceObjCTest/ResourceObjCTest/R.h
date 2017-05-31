@@ -74,10 +74,33 @@ en: "Chi? Si!!!"
 @end
 
 
+@interface RSegue: NSObject
+@property (nonatomic, strong) NSString* identifier;
+- (void)performWithSource:(UIViewController*)sourceViewController sender:(id)sender;
+@end
+
+
+@interface ViewControllerSegues: NSObject
+- (RSegue*)openNext;
+@end
+
+
+@interface NextViewControllerSegues: NSObject
+- (RSegue*)openSome;
+@end
+
+
+@interface Segues: NSObject
+- (ViewControllerSegues*)viewController;
+- (NextViewControllerSegues*)nextViewController;
+@end
+
+
 @interface R: NSObject
 + (Strings*)string;
 + (Images*)image;
 + (Storyboards*)storyboard;
++ (Segues*)segue;
 @end
 
 

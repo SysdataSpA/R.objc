@@ -12,6 +12,7 @@
 		06056E581ED7570500DFCF79 /* ImagesGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 06056E571ED7570500DFCF79 /* ImagesGenerator.m */; };
 		0617A98A1ED9B46A007ECB92 /* StoryboardsGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0617A9891ED9B46A007ECB92 /* StoryboardsGenerator.m */; };
 		0673D4E91EDCBFD900880207 /* GeneratedStructures.m in Sources */ = {isa = PBXBuildFile; fileRef = 0673D4E81EDCBFD900880207 /* GeneratedStructures.m */; };
+		0673D4EC1EDE999600880207 /* SeguesGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0673D4EB1EDE999600880207 /* SeguesGenerator.m */; };
 		06803EB11ED5BDEE0006208A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 06803EB01ED5BDEE0006208A /* main.m */; };
 		06803EBA1ED5C53F0006208A /* ResourceFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = 06803EB91ED5C53F0006208A /* ResourceFinder.m */; };
 		06803EC91ED5EC630006208A /* StringsGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 06803EC81ED5EC630006208A /* StringsGenerator.m */; };
@@ -46,6 +47,8 @@
 		0617A9891ED9B46A007ECB92 /* StoryboardsGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryboardsGenerator.m; sourceTree = "<group>"; };
 		0673D4E71EDCBFD900880207 /* GeneratedStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneratedStructures.h; sourceTree = "<group>"; };
 		0673D4E81EDCBFD900880207 /* GeneratedStructures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedStructures.m; sourceTree = "<group>"; };
+		0673D4EA1EDE999600880207 /* SeguesGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeguesGenerator.h; sourceTree = "<group>"; };
+		0673D4EB1EDE999600880207 /* SeguesGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeguesGenerator.m; sourceTree = "<group>"; };
 		06803EAD1ED5BDED0006208A /* Robjc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Robjc; sourceTree = BUILT_PRODUCTS_DIR; };
 		06803EB01ED5BDEE0006208A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		06803EB81ED5C53F0006208A /* ResourceFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceFinder.h; sourceTree = "<group>"; };
@@ -127,6 +130,8 @@
 				ADD731DF1ED8C8A2006B0E51 /* ThemesGenerator.m */,
 				0617A9881ED9B46A007ECB92 /* StoryboardsGenerator.h */,
 				0617A9891ED9B46A007ECB92 /* StoryboardsGenerator.m */,
+				0673D4EA1EDE999600880207 /* SeguesGenerator.h */,
+				0673D4EB1EDE999600880207 /* SeguesGenerator.m */,
 				0673D4E71EDCBFD900880207 /* GeneratedStructures.h */,
 				0673D4E81EDCBFD900880207 /* GeneratedStructures.m */,
 			);
@@ -264,6 +269,7 @@
 				06803EC91ED5EC630006208A /* StringsGenerator.m in Sources */,
 				ADDA17981ED6E75700AA0C51 /* CommonUtils.m in Sources */,
 				06056E581ED7570500DFCF79 /* ImagesGenerator.m in Sources */,
+				0673D4EC1EDE999600880207 /* SeguesGenerator.m in Sources */,
 				06803EBA1ED5C53F0006208A /* ResourceFinder.m in Sources */,
 				AD8D6EDC1ED77538009CF948 /* FormattedStringParser.m in Sources */,
 				ADD731E01ED8C8A2006B0E51 /* ThemesGenerator.m in Sources */,
