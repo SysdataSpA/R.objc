@@ -1,0 +1,411 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		421EA130CC908CFB125D57F3 /* libPods-R.objc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ABD65E8A82B84A1A097BF99A /* libPods-R.objc.a */; };
+		AD928D521EDC04CD00F2FF35 /* LICENSE in CopyFiles */ = {isa = PBXBuildFile; fileRef = AD928D511EDC04CD00F2FF35 /* LICENSE */; };
+		ADB494FD1EDF5F36007255EF /* BaseGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494E51EDF5F36007255EF /* BaseGenerator.m */; };
+		ADB494FE1EDF5F36007255EF /* CommonUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494E71EDF5F36007255EF /* CommonUtils.m */; };
+		ADB494FF1EDF5F36007255EF /* FormattedStringParser.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494E91EDF5F36007255EF /* FormattedStringParser.m */; };
+		ADB495001EDF5F36007255EF /* GeneratedStructures.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494EB1EDF5F36007255EF /* GeneratedStructures.m */; };
+		ADB495011EDF5F36007255EF /* ImagesGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494ED1EDF5F36007255EF /* ImagesGenerator.m */; };
+		ADB495021EDF5F36007255EF /* ResourceFinder.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494F01EDF5F36007255EF /* ResourceFinder.m */; };
+		ADB495031EDF5F36007255EF /* RGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494F21EDF5F36007255EF /* RGenerator.m */; };
+		ADB495041EDF5F36007255EF /* SeguesGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494F41EDF5F36007255EF /* SeguesGenerator.m */; };
+		ADB495051EDF5F36007255EF /* Session.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494F61EDF5F36007255EF /* Session.m */; };
+		ADB495061EDF5F36007255EF /* StoryboardsGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494F81EDF5F36007255EF /* StoryboardsGenerator.m */; };
+		ADB495071EDF5F36007255EF /* StringsGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494FA1EDF5F36007255EF /* StringsGenerator.m */; };
+		ADB495081EDF5F36007255EF /* ThemesGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB494FC1EDF5F36007255EF /* ThemesGenerator.m */; };
+		ADB4950B1EDF5F68007255EF /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ADB4950A1EDF5F68007255EF /* main.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		06056E3A1ED6370900DFCF79 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				AD928D521EDC04CD00F2FF35 /* LICENSE in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		06803EAD1ED5BDED0006208A /* Robjc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Robjc; sourceTree = BUILT_PRODUCTS_DIR; };
+		18C13112009EA32D40691109 /* Pods-R.objc.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-R.objc.debug.xcconfig"; path = "Pods/Target Support Files/Pods-R.objc/Pods-R.objc.debug.xcconfig"; sourceTree = "<group>"; };
+		2FF7613DC3430DBD2D0C30FC /* Pods-R.objc.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-R.objc.release.xcconfig"; path = "Pods/Target Support Files/Pods-R.objc/Pods-R.objc.release.xcconfig"; sourceTree = "<group>"; };
+		ABD65E8A82B84A1A097BF99A /* libPods-R.objc.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-R.objc.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD928D511EDC04CD00F2FF35 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		ADB494E41EDF5F36007255EF /* BaseGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseGenerator.h; sourceTree = "<group>"; };
+		ADB494E51EDF5F36007255EF /* BaseGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseGenerator.m; sourceTree = "<group>"; };
+		ADB494E61EDF5F36007255EF /* CommonUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtils.h; sourceTree = "<group>"; };
+		ADB494E71EDF5F36007255EF /* CommonUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonUtils.m; sourceTree = "<group>"; };
+		ADB494E81EDF5F36007255EF /* FormattedStringParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FormattedStringParser.h; sourceTree = "<group>"; };
+		ADB494E91EDF5F36007255EF /* FormattedStringParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FormattedStringParser.m; sourceTree = "<group>"; };
+		ADB494EA1EDF5F36007255EF /* GeneratedStructures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneratedStructures.h; sourceTree = "<group>"; };
+		ADB494EB1EDF5F36007255EF /* GeneratedStructures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedStructures.m; sourceTree = "<group>"; };
+		ADB494EC1EDF5F36007255EF /* ImagesGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesGenerator.h; sourceTree = "<group>"; };
+		ADB494ED1EDF5F36007255EF /* ImagesGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesGenerator.m; sourceTree = "<group>"; };
+		ADB494EE1EDF5F36007255EF /* Placeholders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Placeholders.h; sourceTree = "<group>"; };
+		ADB494EF1EDF5F36007255EF /* ResourceFinder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResourceFinder.h; sourceTree = "<group>"; };
+		ADB494F01EDF5F36007255EF /* ResourceFinder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResourceFinder.m; sourceTree = "<group>"; };
+		ADB494F11EDF5F36007255EF /* RGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGenerator.h; sourceTree = "<group>"; };
+		ADB494F21EDF5F36007255EF /* RGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGenerator.m; sourceTree = "<group>"; };
+		ADB494F31EDF5F36007255EF /* SeguesGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeguesGenerator.h; sourceTree = "<group>"; };
+		ADB494F41EDF5F36007255EF /* SeguesGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeguesGenerator.m; sourceTree = "<group>"; };
+		ADB494F51EDF5F36007255EF /* Session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Session.h; sourceTree = "<group>"; };
+		ADB494F61EDF5F36007255EF /* Session.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Session.m; sourceTree = "<group>"; };
+		ADB494F71EDF5F36007255EF /* StoryboardsGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryboardsGenerator.h; sourceTree = "<group>"; };
+		ADB494F81EDF5F36007255EF /* StoryboardsGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StoryboardsGenerator.m; sourceTree = "<group>"; };
+		ADB494F91EDF5F36007255EF /* StringsGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringsGenerator.h; sourceTree = "<group>"; };
+		ADB494FA1EDF5F36007255EF /* StringsGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringsGenerator.m; sourceTree = "<group>"; };
+		ADB494FB1EDF5F36007255EF /* ThemesGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemesGenerator.h; sourceTree = "<group>"; };
+		ADB494FC1EDF5F36007255EF /* ThemesGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemesGenerator.m; sourceTree = "<group>"; };
+		ADB4950A1EDF5F68007255EF /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = R.objc/main.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		06803EAA1ED5BDED0006208A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				421EA130CC908CFB125D57F3 /* libPods-R.objc.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		06803EA41ED5BDED0006208A = {
+			isa = PBXGroup;
+			children = (
+				AD928D511EDC04CD00F2FF35 /* LICENSE */,
+				ADB4950A1EDF5F68007255EF /* main.m */,
+				ADB494E31EDF5F36007255EF /* Sources */,
+				06803EAE1ED5BDED0006208A /* Products */,
+				9DA791F98F13E3B29BB48D9C /* Pods */,
+				D9119D18AF3F35DB1740016F /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		06803EAE1ED5BDED0006208A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				06803EAD1ED5BDED0006208A /* Robjc */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9DA791F98F13E3B29BB48D9C /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				18C13112009EA32D40691109 /* Pods-R.objc.debug.xcconfig */,
+				2FF7613DC3430DBD2D0C30FC /* Pods-R.objc.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		ADB494E31EDF5F36007255EF /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				ADB495091EDF5F3F007255EF /* Utils */,
+				ADB494E41EDF5F36007255EF /* BaseGenerator.h */,
+				ADB494E51EDF5F36007255EF /* BaseGenerator.m */,
+				ADB494EA1EDF5F36007255EF /* GeneratedStructures.h */,
+				ADB494EB1EDF5F36007255EF /* GeneratedStructures.m */,
+				ADB494EC1EDF5F36007255EF /* ImagesGenerator.h */,
+				ADB494ED1EDF5F36007255EF /* ImagesGenerator.m */,
+				ADB494EE1EDF5F36007255EF /* Placeholders.h */,
+				ADB494EF1EDF5F36007255EF /* ResourceFinder.h */,
+				ADB494F01EDF5F36007255EF /* ResourceFinder.m */,
+				ADB494F11EDF5F36007255EF /* RGenerator.h */,
+				ADB494F21EDF5F36007255EF /* RGenerator.m */,
+				ADB494F31EDF5F36007255EF /* SeguesGenerator.h */,
+				ADB494F41EDF5F36007255EF /* SeguesGenerator.m */,
+				ADB494F71EDF5F36007255EF /* StoryboardsGenerator.h */,
+				ADB494F81EDF5F36007255EF /* StoryboardsGenerator.m */,
+				ADB494F91EDF5F36007255EF /* StringsGenerator.h */,
+				ADB494FA1EDF5F36007255EF /* StringsGenerator.m */,
+				ADB494FB1EDF5F36007255EF /* ThemesGenerator.h */,
+				ADB494FC1EDF5F36007255EF /* ThemesGenerator.m */,
+			);
+			name = Sources;
+			path = R.objc/Sources;
+			sourceTree = "<group>";
+		};
+		ADB495091EDF5F3F007255EF /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				ADB494E81EDF5F36007255EF /* FormattedStringParser.h */,
+				ADB494E91EDF5F36007255EF /* FormattedStringParser.m */,
+				ADB494F51EDF5F36007255EF /* Session.h */,
+				ADB494F61EDF5F36007255EF /* Session.m */,
+				ADB494E61EDF5F36007255EF /* CommonUtils.h */,
+				ADB494E71EDF5F36007255EF /* CommonUtils.m */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		D9119D18AF3F35DB1740016F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ABD65E8A82B84A1A097BF99A /* libPods-R.objc.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		06803EAC1ED5BDED0006208A /* R.objc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 06803EB41ED5BDEE0006208A /* Build configuration list for PBXNativeTarget "R.objc" */;
+			buildPhases = (
+				E9072FBF0519547AF83D11C0 /* [CP] Check Pods Manifest.lock */,
+				06803EA91ED5BDED0006208A /* Sources */,
+				06803EAA1ED5BDED0006208A /* Frameworks */,
+				06056E3A1ED6370900DFCF79 /* CopyFiles */,
+				1D7FD1387FA1E9A2978866D5 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = R.objc;
+			productName = ResourceObjC;
+			productReference = 06803EAD1ED5BDED0006208A /* Robjc */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		06803EA51ED5BDED0006208A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = Sysdata;
+				TargetAttributes = {
+					06803EAC1ED5BDED0006208A = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = R7FQ553TEY;
+						ProvisioningStyle = Manual;
+					};
+				};
+			};
+			buildConfigurationList = 06803EA81ED5BDED0006208A /* Build configuration list for PBXProject "R.objc" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 06803EA41ED5BDED0006208A;
+			productRefGroup = 06803EAE1ED5BDED0006208A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				06803EAC1ED5BDED0006208A /* R.objc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1D7FD1387FA1E9A2978866D5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-R.objc/Pods-R.objc-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E9072FBF0519547AF83D11C0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		06803EA91ED5BDED0006208A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				ADB4950B1EDF5F68007255EF /* main.m in Sources */,
+				ADB494FD1EDF5F36007255EF /* BaseGenerator.m in Sources */,
+				ADB494FE1EDF5F36007255EF /* CommonUtils.m in Sources */,
+				ADB495051EDF5F36007255EF /* Session.m in Sources */,
+				ADB495081EDF5F36007255EF /* ThemesGenerator.m in Sources */,
+				ADB495041EDF5F36007255EF /* SeguesGenerator.m in Sources */,
+				ADB495061EDF5F36007255EF /* StoryboardsGenerator.m in Sources */,
+				ADB494FF1EDF5F36007255EF /* FormattedStringParser.m in Sources */,
+				ADB495011EDF5F36007255EF /* ImagesGenerator.m in Sources */,
+				ADB495031EDF5F36007255EF /* RGenerator.m in Sources */,
+				ADB495001EDF5F36007255EF /* GeneratedStructures.m in Sources */,
+				ADB495021EDF5F36007255EF /* ResourceFinder.m in Sources */,
+				ADB495071EDF5F36007255EF /* StringsGenerator.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		06803EB21ED5BDEE0006208A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		06803EB31ED5BDEE0006208A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		06803EB51ED5BDEE0006208A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 18C13112009EA32D40691109 /* Pods-R.objc.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				DEVELOPMENT_TEAM = R7FQ553TEY;
+				PRODUCT_NAME = Robjc;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+			};
+			name = Debug;
+		};
+		06803EB61ED5BDEE0006208A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2FF7613DC3430DBD2D0C30FC /* Pods-R.objc.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				DEVELOPMENT_TEAM = R7FQ553TEY;
+				PRODUCT_NAME = Robjc;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		06803EA81ED5BDED0006208A /* Build configuration list for PBXProject "R.objc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06803EB21ED5BDEE0006208A /* Debug */,
+				06803EB31ED5BDEE0006208A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		06803EB41ED5BDEE0006208A /* Build configuration list for PBXNativeTarget "R.objc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				06803EB51ED5BDEE0006208A /* Debug */,
+				06803EB61ED5BDEE0006208A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 06803EA51ED5BDED0006208A /* Project object */;
+}

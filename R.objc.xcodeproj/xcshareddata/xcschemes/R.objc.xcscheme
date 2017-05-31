@@ -16,8 +16,8 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "06803EAC1ED5BDED0006208A"
                BuildableName = "Robjc"
-               BlueprintName = "ResourceObjC"
-               ReferencedContainer = "container:ResourceObjC.xcodeproj">
+               BlueprintName = "R.objc"
+               ReferencedContainer = "container:R.objc.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,8 +34,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "06803EAC1ED5BDED0006208A"
             BuildableName = "Robjc"
-            BlueprintName = "ResourceObjC"
-            ReferencedContainer = "container:ResourceObjC.xcodeproj">
+            BlueprintName = "R.objc"
+            ReferencedContainer = "container:R.objc.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -57,24 +57,10 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "06803EAC1ED5BDED0006208A"
             BuildableName = "Robjc"
-            BlueprintName = "ResourceObjC"
-            ReferencedContainer = "container:ResourceObjC.xcodeproj">
+            BlueprintName = "R.objc"
+            ReferencedContainer = "container:R.objc.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "--sysdata"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "-p"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "~/Documents/R.objc/ResourceObjCTest/ResourceObjCTest"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -90,8 +76,8 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "06803EAC1ED5BDED0006208A"
             BuildableName = "Robjc"
-            BlueprintName = "ResourceObjC"
-            ReferencedContainer = "container:ResourceObjC.xcodeproj">
+            BlueprintName = "R.objc"
+            ReferencedContainer = "container:R.objc.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
