@@ -1,8 +1,8 @@
 R.objc
 ======
-[![Version](https://img.shields.io/cocoapods/v/R.objc.svg?style=flat)](http://cocoapods.org/pods/R.objc)
-[![License](https://img.shields.io/cocoapods/l/R.objc.svg?style=flat)](http://cocoapods.org/pods/R.objc)
-[![Platform](https://img.shields.io/cocoapods/p/R.objc.svg?style=flat)](http://cocoapods.org/pods/R.objc)
+
+<http://cocoapods.org/pods/R.objc> <http://cocoapods.org/pods/R.objc>
+<http://cocoapods.org/pods/R.objc>
 
 ![](https://github.com/SysdataSpA/R.objc/blob/master/R.objc_example.gif)
 
@@ -49,8 +49,6 @@ this avoids including any binary files into your project.
 
 ### Manual
 
-Since there are some problems with Cocoapods, you can manually install R.objc
-
 1.  Download latest version from the [releases
     section](https://github.com/SysdataSpA/R.objc/releases)
 
@@ -82,26 +80,106 @@ to do anything.
 
 Normally, you would write code like this:
 
-`[self.buttonProceed setTitle:NSLocalizedString(@"home_proceed", nil)
-forState:UIControlStateNormal];`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[self.buttonProceed setTitle:NSLocalizedString(@"home_proceed", nil) forState:UIControlStateNormal];
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`self.welcomeLabel.text = [NSString
-stringWithFormat:NSLocalizedString(@"home_title_welcome", nil), @"John"];
-//"hello %@"`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+self.welcomeLabel.text = [NSString stringWithFormat:NSLocalizedString(@"home_title_welcome", nil), @"John"]; //"hello %@"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`self.radioButtonImageView.image = selected ? [UIImage
-imageNamed:@"checkedRadioButton"] : [UIImage
-imageNamed:@"uncheckedRadioButton"];`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+self.radioButtonImageView.image = selected ? [UIImage imageNamed:@"checkedRadioButton"] : [UIImage imageNamed:@"uncheckedRadioButton"];
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now you can write
 
-`[self.buttonProceed setTitle:R.string.localizable.homeProceed
-forState:UIControlStateNormal];`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[self.buttonProceed setTitle:R.string.localizable.homeProceed forState:UIControlStateNormal];
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`self.welcomeLabel.text = [R.string.localizable homeTitleWelcome:@"John"];`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+self.welcomeLabel.text = [R.string.localizable homeTitleWelcome:@"John"];
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`self.radioButtonImageView.image = selected ? R.image.checkedRadioButton :
-R.image.uncheckedRadioButton;`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+self.radioButtonImageView.image = selected ? R.image.checkedRadioButton : R.image.uncheckedRadioButton;
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+What can you do?
+----------------
+
+### Localizable strings
+
+You can access localized strings with compile time checked keys usign keypath
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+R.string.localizable.commonWarning
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The keypath is composed like this: `R.string.<string_file_name>.<string_key>`
+
+If you check the documentation of the string (alt+click) you'll see the original
+key and all the localized values
+
+You can access localized strings containing a string with format, passing
+directly parameters and obtaining the composed value
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[R.string.localizable alertMessage:@"username" value2:4.7];
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The methods is named like the key of the localized string with parameter 1
+implicit; all other parameters are named value and numbered progressively.
+Formats in the string are mapped by the objects the represent (eg. `%f` is
+mapped as a `double`, `%@` ad an `id`)
+
+### Images
+
+All images will be mapped, those in an asset catalogue and those outside.
+
+You can access by
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+R.image.navbarLogo
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You'll get a `UIImage*` directly.
+
+### Themes
+
+This part is just for internal use, maybe one day we'll publish out theme
+manager.
+
+### Storyboards
+
+All storyboards in the bundle will be mapped in a
+`R.storyboard.<storyboard_name>` path. You'll have an
+
+`instantiateInitialViewController` method and a method to instantiate a view
+controller for every storyboard identifier found.
+
+Example:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[R.storyboard.main instantiateInitialViewController];
+[R.storyboard.main loginViewController];
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Segues
+
+Like storyboards, in the segue object you'll find a list of all view controllers
+which are source of a segue. Starting from them, you can access their segues and
+get the segue identifier or perform segue passing source and sender objects
+
+Example:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+R.segue.myViewController.goToNextSegue.identifier // identifier of the segue
+[R.segue.myViewController.goToNextSegue.identifier performWithSource:self sender:userInfo]; // perform segue
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+ 
 
 Contribute
 ----------
