@@ -39,7 +39,7 @@
 /* Begin PBXFileReference section */
 		06056E451ED6ECCE00DFCF79 /* RGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RGenerator.h; sourceTree = "<group>"; };
 		06056E461ED6ECCE00DFCF79 /* RGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RGenerator.m; sourceTree = "<group>"; };
-		06056E481ED7091D00DFCF79 /* Placeholders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Placeholders.h; path = ../Templates/Placeholders.h; sourceTree = "<group>"; };
+		06056E481ED7091D00DFCF79 /* Placeholders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Placeholders.h; sourceTree = "<group>"; };
 		06056E561ED7570500DFCF79 /* ImagesGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagesGenerator.h; sourceTree = "<group>"; };
 		06056E571ED7570500DFCF79 /* ImagesGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagesGenerator.m; sourceTree = "<group>"; };
 		0617A9881ED9B46A007ECB92 /* StoryboardsGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StoryboardsGenerator.h; sourceTree = "<group>"; };
