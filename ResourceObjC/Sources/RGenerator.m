@@ -18,6 +18,7 @@
 #import "ImagesGenerator.h"
 #import "ThemesGenerator.h"
 #import "StoryboardsGenerator.h"
+#import "SeguesGenerator.h"
 
 @implementation RGenerator
 
@@ -53,6 +54,11 @@
     if ([[Session shared] resourcesToGenerate] & ResourceTypeStoryboards)
     {
         [generators addObject:[[StoryboardsGenerator alloc] initWithResourceFinder:self.finder]];
+    }
+    
+    if ([[Session shared] resourcesToGenerate] & ResourceTypeSegues)
+    {
+        [generators addObject:[[SeguesGenerator alloc] initWithResourceFinder:self.finder]];
     }
     
     // shared instance implementation

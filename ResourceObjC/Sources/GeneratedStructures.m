@@ -106,7 +106,7 @@
     }
     [completeSign appendFormat:@"- (%@)", self.returnType];
     
-    NSUInteger startIndex = 0;
+    NSUInteger startIndex = -1;
     if (self.arguments.count > 0)
     {
         NSRange argRange = [self.signature rangeOfString:@":"];
@@ -114,7 +114,7 @@
         {
             if (argRange.location != NSNotFound)
             {
-                [completeSign appendString:[self.signature substringWithRange:NSMakeRange(startIndex, argRange.location - startIndex + 1)]];
+                [completeSign appendString:[self.signature substringWithRange:NSMakeRange(startIndex + 1, argRange.location - startIndex)]];
                 
                 [completeSign appendString:[self.arguments[i] generateStructure]];
                 if (i < self.arguments.count-1)
@@ -123,7 +123,7 @@
                 }
                 startIndex = argRange.location;
                 
-                argRange = [self.signature rangeOfString:@":" options:NSLiteralSearch range:NSMakeRange(startIndex, argRange.location - startIndex) locale:nil];
+                argRange = [self.signature rangeOfString:@":" options:0 range:NSMakeRange(startIndex + 1, self.signature.length - startIndex - 1) locale:nil];
             }
         }
     }
@@ -151,7 +151,8 @@
 
 - (NSString *)generateStructure
 {
-    NSMutableString* impl = [NSMutableString stringWithString:[super generateStructure]];
+    NSMutableString* impl = [NSMutableString stringWithString:self.indent ? @"\n" : @""];
+    [impl appendString:[super generateStructure]];
     [impl replaceOccurrencesOfString:@";" withString:@"" options:0 range:[impl rangeOfString:impl]];
     [impl appendFormat:@"%@{%@%@%@}%@", (self.indent ? @"\n":@" "), (self.indent ? @"\t":@" "), self.implementation, (self.indent ? @"\n":@" "), (self.indent ? @"\n":@"")];
     return [impl copy];
@@ -175,7 +176,7 @@
 - (NSString *)generateStructure
 {
     NSMutableString *retval = [NSMutableString stringWithString:[super generateStructure]];
-    [retval replaceCharactersInRange:NSMakeRange(0, 1) withString:@"+"];
+    [retval replaceCharactersInRange:NSMakeRange(self.indent ? 1 : 0, 1) withString:@"+"];
     return [retval copy];
 }
 
