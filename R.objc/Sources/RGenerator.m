@@ -75,6 +75,15 @@
             return NO;
         }
         
+        if ([Session shared].refactorize)
+        {
+            success = [generator refactorizeWithError:error];
+            if (!success)
+            {
+                return NO;
+            }
+        }
+        
         // method in interface
         RClassMethodSignature* method = [[RClassMethodSignature alloc] initWithReturnType:[generator.className stringByAppendingString:@"*"] signature:generator.propertyName];
         [self.clazz.interface.methods addObject:method];

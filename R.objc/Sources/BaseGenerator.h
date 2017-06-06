@@ -25,6 +25,7 @@
 - (NSString*) className;
 - (NSString*) propertyName;
 - (BOOL)generateResourceFileWithError:(NSError**)error;
+- (BOOL)refactorizeWithError:(NSError**)error;
 
 @end
 

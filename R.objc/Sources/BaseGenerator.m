@@ -43,6 +43,11 @@
     return YES;
 }
 
+- (BOOL)refactorizeWithError:(NSError *__autoreleasing *)error
+{
+    return YES;
+}
+
 - (NSString *)resourceFileHeaderPath
 {
     return [self.finder.outputURL.path stringByAppendingPathComponent:@"R.h"];

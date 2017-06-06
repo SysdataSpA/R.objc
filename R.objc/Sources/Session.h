@@ -26,6 +26,7 @@ typedef NS_OPTIONS(NSUInteger, ResourceType) {
 
 @property (nonatomic, readonly) BOOL isVerboseLoggingEnabled;
 @property (nonatomic, readonly) BOOL isSysdataVersion;
+@property (nonatomic, readonly) BOOL refactorize;
 
 + (int) initWith:(int)argc params:(const char **)argv;
 + (Session*) shared;

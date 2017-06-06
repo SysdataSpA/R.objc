@@ -324,4 +324,84 @@
     }
 }
 
+#pragma mark - Refactor
+
+- (BOOL)refactorizeWithError:(NSError *__autoreleasing *)error
+{
+    NSArray* allFiles = [self.finder filesWithExtensions:@[@"h", @"m"]];
+    
+    NSString* baseString = @"R.string.";
+    
+    for (StringsResource* res in self.translationsByPath.allValues)
+    {
+        __block NSString* resourceString = [baseString stringByAppendingFormat:@"%@.", [CommonUtils codableNameFromString:res.methodName]];
+        
+        for (NSURL* url in allFiles)
+        {
+            NSString* content = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:error];
+            if (*error != nil)
+            {
+                [CommonUtils log:@"Error reading file: %@", url.path];
+                return NO;
+            }
+            
+            NSString* pattern = nil;
+            if ([Session shared].isSysdataVersion)
+            {
+                pattern = @"SDLocalizedString[FromTable]?\s?[(]\s?@[\"'][^\"'\)]*[\"']\s?.";
+            }
+            else
+            {
+                pattern = @"NSLocalizedString[FromTable]?\s?[(]\s?@[\"'][^\"'\)]*[\"']\s?.";
+            }
+            
+            NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:error];
+            if (*error != nil)
+            {
+                [CommonUtils log:@"Error in regex inside StringsGenerator.m"];
+                return NO;
+            }
+            
+            NSMutableString* newContent = [NSMutableString string];
+            __block NSRange lastResultRange = NSMakeRange(0, 0);
+            
+            [regex enumerateMatchesInString:content options:0 range:[content rangeOfString:content] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+                if (result)
+                {
+                    NSUInteger start = lastResultRange.location + lastResultRange.length;
+                    NSUInteger end = result.range.location - start;
+                    [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+                    lastResultRange = [result range];
+                    
+                    // find used key
+                    
+                    NSString* resultString = [content substringWithRange:result.range];
+                    NSRange keyRange = [resultString rangeOfString:@"@\"[^\"]*\"" options:NSRegularExpressionSearch];
+                    
+                    if (keyRange.length > 2)
+                    {
+                        NSString* key = [resultString substringWithRange:keyRange];
+                        key = [key substringWithRange:NSMakeRange(2, key.length-3)];
+                        NSString* refactoredString = [resourceString stringByAppendingString:[CommonUtils codableNameFromString:key]];
+                        [newContent appendString:refactoredString];
+                    }
+                }
+            }];
+            
+            NSUInteger start = lastResultRange.location + lastResultRange.length;
+            NSUInteger end = content.length - start;
+            [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+            [newContent writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:error];
+            
+            if (*error != nil)
+            {
+                [CommonUtils log:@"Error writing file at URL: %@", newContent];
+                return NO;
+            }
+        }
+    }
+    
+    return YES;
+}
+
 @end
