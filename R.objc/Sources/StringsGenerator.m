@@ -348,11 +348,11 @@
             NSString* pattern = nil;
             if ([Session shared].isSysdataVersion)
             {
-                pattern = @"SDLocalizedString[FromTable]?\s?[(]\s?@[\"'][^\"'\)]*[\"']\s?.";
+                pattern = @"SDLocalizedString[FromTable]?\s?[(]\s?@[\"']([^\"'\)]*)[\"']\s?[)]";
             }
             else
             {
-                pattern = @"NSLocalizedString[FromTable]?\s?[(]\s?@[\"'][^\"'\)]*[\"']\s?.";
+                pattern = @"NSLocalizedString[FromTable]?\s?[(]\s?@[\"']([^\"'\)]*)[\"']\s?[)]";
             }
             
             NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:error];
@@ -374,14 +374,16 @@
                     lastResultRange = [result range];
                     
                     // find used key
-                    
                     NSString* resultString = [content substringWithRange:result.range];
-                    NSRange keyRange = [resultString rangeOfString:@"@\"[^\"]*\"" options:NSRegularExpressionSearch];
-                    
-                    if (keyRange.length > 2)
+                    [CommonUtils logVerbose:@"Strings refactoring - match found: %@", resultString];
+                    NSString* key = nil;
+                    if (result.numberOfRanges > 1)
                     {
-                        NSString* key = [resultString substringWithRange:keyRange];
-                        key = [key substringWithRange:NSMakeRange(2, key.length-3)];
+                        key = [content substringWithRange:[result rangeAtIndex:1]];
+                    }
+                    
+                    if (key.length > 0)
+                    {
                         NSString* refactoredString = [resourceString stringByAppendingString:[CommonUtils codableNameFromString:key]];
                         [newContent appendString:refactoredString];
                     }
