@@ -354,6 +354,8 @@
         NSMutableString* newContent = [NSMutableString string];
         __block NSRange lastResultRange = NSMakeRange(0, 0);
         
+        __block int counter = 0;
+        
         [regex enumerateMatchesInString:content options:0 range:[content rangeOfString:content] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
             if (result)
             {
@@ -364,7 +366,6 @@
                 
                 // find used key
                 NSString* resultString = [content substringWithRange:result.range];
-                [CommonUtils logVerbose:@"Strings refactoring - match found in file %@: %@", filename, resultString];
                 NSString* key = nil;
                 if (result.numberOfRanges > 1)
                 {
@@ -373,11 +374,17 @@
                 
                 if (key.length > 0)
                 {
+                    counter++;
                     NSString* refactoredString = [resourceString stringByAppendingString:[CommonUtils codableNameFromString:key]];
                     [newContent appendString:refactoredString];
                 }
             }
         }];
+        
+        if (counter > 0)
+        {
+            [CommonUtils log:@"%i strings found in file %@", counter, filename];
+        }
         
         NSUInteger start = lastResultRange.location + lastResultRange.length;
         NSUInteger end = content.length - start;

@@ -113,6 +113,10 @@
             {
                 NSDictionary* objects = scene[@"objects"];
                 NSDictionary* viewController = objects[@"viewController"];
+                if (viewController == nil)
+                {
+                    viewController = objects[@"navigationController"];
+                }
                 if ([viewController isKindOfClass:[NSDictionary class]])
                 {
                     NSString* identifier = viewController[@"_storyboardIdentifier"];
@@ -186,6 +190,200 @@
     }
     
     return [self writeStringInRFilesWithError:error];
+}
+
+- (NSString *)refactorizeFile:(NSString *)filename withContent:(NSString *)content withError:(NSError *__autoreleasing *)error
+{
+    NSString* baseString = @"R.storyboard.";
+    
+    NSString* storyboardPattern = @"\\[UIStoryboard\\sstoryboardWithName:@\"(\\w*)\"\\sbundle:(\\w*)\\]";
+    
+    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:storyboardPattern options:0 error:error];
+    if (*error != nil)
+    {
+        [CommonUtils log:@"Error in regex inside StoryboardsGenerator.m"];
+        return NO;
+    }
+    
+    NSMutableString* newContent = [NSMutableString string];
+    __block NSRange lastResultRange = NSMakeRange(0, 0);
+    
+    __block int counter = 0;
+    
+    [regex enumerateMatchesInString:content options:NSMatchingReportCompletion range:[content rangeOfString:content] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        if (result)
+        {
+            NSUInteger start = lastResultRange.location + lastResultRange.length;
+            NSUInteger end = result.range.location - start;
+            
+            // find used key and capture groups
+            NSString* resultString = [content substringWithRange:result.range];
+            
+            NSString* keyGroup = nil;
+            
+            if (result.numberOfRanges > 1)
+            {
+                keyGroup = [content substringWithRange:[result rangeAtIndex:1]];
+            }
+            
+            [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+            NSString* refactoredString = nil;
+            if (keyGroup.length > 0)
+            {
+                counter++;
+                keyGroup = [CommonUtils codableNameFromString:keyGroup];
+                refactoredString = [NSString stringWithFormat:@"%@%@", baseString, keyGroup];
+            }
+            else
+            {
+                refactoredString = resultString;
+            }
+            [newContent appendString:refactoredString];
+            lastResultRange = [result range];
+        }
+    }];
+    
+    if (counter > 0)
+    {
+        [CommonUtils log:@"%i storyboards found in file %@", counter, filename];
+    }
+    NSUInteger start = lastResultRange.location + lastResultRange.length;
+    NSUInteger end = content.length - start;
+    [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+    
+    
+    // find instantiateInitialViewController occurrences
+    NSString* instantiateInitialPattern = @"\\[?(.*)\\s?\\.?instantiateInitialViewController\\]?";
+    
+    NSRegularExpression* instantiateInitialRegex = [NSRegularExpression regularExpressionWithPattern:instantiateInitialPattern options:0 error:error];
+    if (*error != nil)
+    {
+        [CommonUtils log:@"Error in regex inside StoryboardsGenerator.m"];
+        return NO;
+    }
+    
+    content = newContent;
+    newContent = [NSMutableString string];
+    lastResultRange = NSMakeRange(0, 0);
+    
+    counter = 0;
+    
+    [instantiateInitialRegex enumerateMatchesInString:content options:NSMatchingReportCompletion range:[content rangeOfString:content] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        if (result)
+        {
+            NSUInteger start = lastResultRange.location + lastResultRange.length;
+            NSUInteger end = result.range.location - start;
+            
+            // find used key and capture groups
+            NSString* resultString = [content substringWithRange:result.range];
+            
+            NSString* callerGroup = nil;
+            
+            if (result.numberOfRanges > 1)
+            {
+                callerGroup = [content substringWithRange:[result rangeAtIndex:1]];
+            }
+            
+            [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+            NSString* refactoredString = nil;
+            if (callerGroup.length > 0)
+            {
+                counter++;
+                refactoredString = [NSString stringWithFormat:@"%@.instantiateInitialViewController", callerGroup];
+            }
+            else
+            {
+                refactoredString = resultString;
+            }
+            
+            
+            [newContent appendString:refactoredString];
+            lastResultRange = [result range];
+        }
+    }];
+    
+    if (counter > 0)
+    {
+        [CommonUtils log:@"%i storyboards instantiateInitialViewController found in file %@", counter, filename];
+    }
+    start = lastResultRange.location + lastResultRange.length;
+    end = content.length - start;
+    [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+    
+    // find instantiateViewControllerWithIdentifier: occurrences
+    NSString* vcPattern = @"\\[(.*)\\sinstantiateViewControllerWithIdentifier:@\"(\\w*)\"\\]";
+    
+    NSRegularExpression* vcRegex = [NSRegularExpression regularExpressionWithPattern:vcPattern options:0 error:error];
+    if (*error != nil)
+    {
+        [CommonUtils log:@"Error in regex inside StoryboardsGenerator.m"];
+        return NO;
+    }
+    
+    content = newContent;
+    newContent = [NSMutableString string];
+    lastResultRange = NSMakeRange(0, 0);
+    
+    counter = 0;
+    
+    __weak typeof (self) weakSelf = self;
+    [vcRegex enumerateMatchesInString:content options:NSMatchingReportCompletion range:[content rangeOfString:content] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        if (result)
+        {
+            NSUInteger start = lastResultRange.location + lastResultRange.length;
+            NSUInteger end = result.range.location - start;
+            
+            // find used key and capture groups
+            NSString* resultString = [content substringWithRange:result.range];
+            
+            NSString* keyGroup = nil;
+            NSString* callerGroup = nil;
+            
+            if (result.numberOfRanges > 1)
+            {
+                callerGroup = [content substringWithRange:[result rangeAtIndex:1]];
+                keyGroup = [content substringWithRange:[result rangeAtIndex:2]];
+            }
+            
+            [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+            NSString* refactoredString = nil;
+            if (keyGroup.length > 0)
+            {
+                counter++;
+                
+                BOOL storyboardFound = NO;
+                for (StoryboardResource* res in weakSelf.storyboards)
+                {
+                    if ([res.viewControllers containsObject:keyGroup])
+                    {
+                        storyboardFound = YES;
+                        keyGroup = [CommonUtils codableNameFromString:keyGroup];
+                        refactoredString = [NSString stringWithFormat:@"%@.%@", callerGroup, keyGroup];
+                    }
+                }
+                if (!storyboardFound)
+                {
+                    refactoredString = resultString;
+                }
+            }
+            else
+            {
+                refactoredString = resultString;
+            }
+            [newContent appendString:refactoredString];
+            lastResultRange = [result range];
+        }
+    }];
+    
+    if (counter > 0)
+    {
+        [CommonUtils log:@"%i storyboards instantiateViewControllerWithIdentifier: found in file %@", counter, filename];
+    }
+    start = lastResultRange.location + lastResultRange.length;
+    end = content.length - start;
+    [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+    
+    return newContent;
 }
 
 @end
