@@ -187,4 +187,125 @@
     return @"NSString*";
 }
 
+- (NSString *)refactorizeFile:(NSString *)filename withContent:(NSString *)content withError:(NSError *__autoreleasing *)error
+{
+    NSString* baseString = @"R.theme";
+    
+    NSString* constantPattern = @"SDThemeManagerValueForConstant\\(@\"(\\w*)\"\\)";
+    
+    
+    NSRegularExpression* constantRegex = [NSRegularExpression regularExpressionWithPattern:constantPattern options:0 error:error];
+    if (*error != nil)
+    {
+        [CommonUtils log:@"Error in regex inside ThemesGenerator.m"];
+        return NO;
+    }
+    
+    NSMutableString* newContent = [NSMutableString string];
+    __block NSRange lastResultRange = NSMakeRange(0, 0);
+    
+    __block int counter = 0;
+    
+    [constantRegex enumerateMatchesInString:content options:NSMatchingReportCompletion range:[content rangeOfString:content] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        if (result)
+        {
+            NSUInteger start = lastResultRange.location + lastResultRange.length;
+            NSUInteger end = result.range.location - start;
+            
+            // find used key and capture groups
+            NSString* resultString = [content substringWithRange:result.range];
+            
+            NSString* keyGroup = nil;
+            
+            if (result.numberOfRanges > 1)
+            {
+                keyGroup = [content substringWithRange:[result rangeAtIndex:1]];
+            }
+            
+            [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+            NSString* refactoredString = nil;
+            if (keyGroup.length > 0)
+            {
+                counter++;
+                keyGroup = [CommonUtils codableNameFromString:keyGroup];
+                refactoredString = [NSString stringWithFormat:@"%@.constants.%@", baseString, keyGroup];
+            }
+            else
+            {
+                refactoredString = resultString;
+            }
+            [newContent appendString:refactoredString];
+            lastResultRange = [result range];
+        }
+    }];
+    
+    if (counter > 0)
+    {
+        [CommonUtils log:@"%i theme constants found in file %@", counter, filename];
+    }
+    NSUInteger start = lastResultRange.location + lastResultRange.length;
+    NSUInteger end = content.length - start;
+    [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+    content = newContent;
+    
+    NSString* stylePattern = @"SDThemeManagerApplyStyle\\(@\"(\\w*)\",\\s?(\\w*)\\)";
+    
+    NSRegularExpression* stylesRegex = [NSRegularExpression regularExpressionWithPattern:stylePattern options:0 error:error];
+    if (*error != nil)
+    {
+        [CommonUtils log:@"Error in regex inside ThemesGenerator.m"];
+        return NO;
+    }
+    
+    newContent = [NSMutableString string];
+    lastResultRange = NSMakeRange(0, 0);
+    
+    counter = 0;
+    
+    [stylesRegex enumerateMatchesInString:content options:NSMatchingReportCompletion range:[content rangeOfString:content] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        if (result)
+        {
+            NSUInteger start = lastResultRange.location + lastResultRange.length;
+            NSUInteger end = result.range.location - start;
+            
+            // find used key and capture groups
+            NSString* resultString = [content substringWithRange:result.range];
+            
+            NSString* keyGroup = nil;
+            NSString* objectGroup = nil;
+            
+            if (result.numberOfRanges > 2)
+            {
+                keyGroup = [content substringWithRange:[result rangeAtIndex:1]];
+                objectGroup = [content substringWithRange:[result rangeAtIndex:2]];
+            }
+            
+            [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+            NSString* refactoredString = nil;
+            if (keyGroup.length > 0 && objectGroup.length > 0)
+            {
+                counter++;
+                keyGroup = [CommonUtils codableNameFromString:keyGroup];
+                refactoredString = [NSString stringWithFormat:@"[%@.styles %@:%@]", baseString, keyGroup, objectGroup];
+            }
+            else
+            {
+                refactoredString = resultString;
+            }
+            [newContent appendString:refactoredString];
+            lastResultRange = [result range];
+        }
+    }];
+    
+    if (counter > 0)
+    {
+        [CommonUtils log:@"%i theme styles found in file %@", counter, filename];
+    }
+    start = lastResultRange.location + lastResultRange.length;
+    end = content.length - start;
+    [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+    
+    return newContent;
+}
+
 @end
