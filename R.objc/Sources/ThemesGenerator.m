@@ -23,6 +23,7 @@
 #define EDGE_IDENTIFIER          @"edge:"
 
 #define CONSTANTS_KEY            @"constants"
+#define DYNAMIC_CONSTANTS_KEY    @"dynamicconstants"
 #define STYLES_KEY               @"styles"
 
 @interface ThemesGenerator ()
@@ -83,7 +84,7 @@
                 NSDictionary* contentOfKey = theme[firstLevelKey];
                 // si uniscono in un unico dizionario tutte le chiavi di primo livello distinguendo solo le costanti
                 NSString* keyToConsider;
-                if ([firstLevelKey.lowercaseString isEqualToString:CONSTANTS_KEY])
+                if ([firstLevelKey.lowercaseString isEqualToString:CONSTANTS_KEY] || [firstLevelKey.lowercaseString isEqualToString:DYNAMIC_CONSTANTS_KEY])
                 {
                     keyToConsider = CONSTANTS_KEY;
                 } else {
@@ -227,7 +228,6 @@
             if (keyGroup.length > 0)
             {
                 counter++;
-                keyGroup = [CommonUtils codableNameFromString:keyGroup];
                 refactoredString = [NSString stringWithFormat:@"%@.constants.%@", baseString, keyGroup];
             }
             else
