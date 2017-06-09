@@ -43,9 +43,9 @@
     return YES;
 }
 
-- (BOOL)refactorizeWithError:(NSError *__autoreleasing *)error
+- (NSString *)refactorizeFile:(NSString *)filename withContent:(NSString *)content withError:(NSError *__autoreleasing *)error
 {
-    return YES;
+    return content;
 }
 
 - (NSString *)resourceFileHeaderPath

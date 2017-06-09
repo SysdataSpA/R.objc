@@ -34,5 +34,6 @@ typedef NS_OPTIONS(NSUInteger, ResourceType) {
 - (NSURL*) baseURL;
 - (NSArray<NSURL *>*) excludedDirs;
 - (ResourceType)resourcesToGenerate;
+- (void)endSession;
 
 @end

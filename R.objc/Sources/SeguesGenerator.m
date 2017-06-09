@@ -250,10 +250,8 @@
 
 #pragma mark - Refactor
 
-- (BOOL)refactorizeWithError:(NSError *__autoreleasing *)error
+- (NSString *)refactorizeFile:(NSString *)filename withContent:(NSString *)content withError:(NSError *__autoreleasing *)error
 {
-    NSArray* allFiles = [self.finder filesWithExtensions:@[@"h", @"m"]];
-    
     NSString* baseString = @"R.segue.";
     
     for (SegueResource* res in self.resources)
@@ -265,99 +263,79 @@
         
         __block NSString* resourceString = [baseString stringByAppendingFormat:@"%@.", [CommonUtils codableNameFromString:res.methodName]];
         
-        for (NSURL* url in allFiles)
+        NSMutableString* newContent = [NSMutableString string];
+        NSArray* lines = [content componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+        
+        for (NSInteger i = 0; i < lines.count; i++)
         {
-            NSString* content = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:error];
+            if (i > 0)
+            {
+                [newContent appendString:@"\n"];
+            }
+            
+            NSString* line = lines[i];
+            if (line.length == 0)
+            {
+                continue;
+            }
+            
+            NSString* pattern = @"(\\w*) [performSegueWithIdentifier:]{27} ?@\"(\\w*)\" sender:(\\w*)";
+            
+            NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:error];
             if (*error != nil)
             {
-                [CommonUtils log:@"Error reading file: %@", url.path];
+                [CommonUtils log:@"Error in regex inside SeguesGenerator.m"];
                 return NO;
             }
-            else
-            {
-                [CommonUtils logVerbose:@"Start refactoring of %@", url.path];
-            }
             
-            NSMutableString* newContent = [NSMutableString string];
-            NSArray* lines = [content componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+            __block NSRange lastResultRange = NSMakeRange(0, 0);
             
-            for (NSInteger i = 0; i < lines.count; i++)
-            {
-                if (i > 0)
+            [regex enumerateMatchesInString:line options:NSMatchingReportCompletion range:[line rangeOfString:line] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+                if (result)
                 {
-                    [newContent appendString:@"\n"];
-                }
-                
-                NSString* line = lines[i];
-                if (line.length == 0)
-                {
-                    continue;
-                }
-                
-                NSString* pattern = @"(\\w*) [performSegueWithIdentifier:]{27} ?@\"(\\w*)\" sender:(\\w*)";
-                
-                NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:error];
-                if (*error != nil)
-                {
-                    [CommonUtils log:@"Error in regex inside SeguesGenerator.m"];
-                    return NO;
-                }
-                
-                __block NSRange lastResultRange = NSMakeRange(0, 0);
-                
-                [regex enumerateMatchesInString:line options:NSMatchingReportCompletion range:[line rangeOfString:line] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
-                    if (result)
+                    NSUInteger start = lastResultRange.location + lastResultRange.length;
+                    NSUInteger end = result.range.location - start;
+                    
+                    // find used key and capture groups
+                    NSString* resultString = [line substringWithRange:result.range];
+                    [CommonUtils logVerbose:@"match found in file %@ - line %ld: %@", filename, i, resultString];
+                    
+                    NSString* callerGroup = nil;
+                    NSString* keyGroup = nil;
+                    NSString* senderGroup = nil;
+                    
+                    if (result.numberOfRanges > 3)
                     {
-                        NSUInteger start = lastResultRange.location + lastResultRange.length;
-                        NSUInteger end = result.range.location - start;
-                        
-                        // find used key and capture groups
-                        NSString* resultString = [line substringWithRange:result.range];
-                        [CommonUtils logVerbose:@"match found in file %@ - line %ld: %@", url.lastPathComponent, i, resultString];
-                        
-                        NSString* callerGroup = nil;
-                        NSString* keyGroup = nil;
-                        NSString* senderGroup = nil;
-                        
-                        if (result.numberOfRanges > 3)
-                        {
-                            callerGroup = [line substringWithRange:[result rangeAtIndex:1]];
-                            keyGroup = [line substringWithRange:[result rangeAtIndex:2]];
-                            senderGroup = [line substringWithRange:[result rangeAtIndex:3]];
-                        }
-                        
-                        [newContent appendString:[line substringWithRange:NSMakeRange(start, end)]];
-                        NSString* refactoredString = nil;
-                        if (keyGroup.length > 0 && callerGroup.length > 0 && senderGroup.length > 0 && [res.segues containsObject:keyGroup])
-                        {
-                            keyGroup = [CommonUtils codableNameFromString:keyGroup];
-                            refactoredString = [NSString stringWithFormat:@"%@%@ performWithSource:%@ sender:%@", resourceString, keyGroup, callerGroup, senderGroup];
-                        }
-                        else
-                        {
-                            refactoredString = resultString;
-                        }
-                        [newContent appendString:refactoredString];
-                        lastResultRange = [result range];
+                        callerGroup = [line substringWithRange:[result rangeAtIndex:1]];
+                        keyGroup = [line substringWithRange:[result rangeAtIndex:2]];
+                        senderGroup = [line substringWithRange:[result rangeAtIndex:3]];
                     }
-                }];
-                
-                NSUInteger start = lastResultRange.location + lastResultRange.length;
-                NSUInteger end = line.length - start;
-                [newContent appendString:[line substringWithRange:NSMakeRange(start, end)]];
-            }
+                    
+                    [newContent appendString:[line substringWithRange:NSMakeRange(start, end)]];
+                    NSString* refactoredString = nil;
+                    if (keyGroup.length > 0 && callerGroup.length > 0 && senderGroup.length > 0 && [res.segues containsObject:keyGroup])
+                    {
+                        keyGroup = [CommonUtils codableNameFromString:keyGroup];
+                        refactoredString = [NSString stringWithFormat:@"%@%@ performWithSource:%@ sender:%@", resourceString, keyGroup, callerGroup, senderGroup];
+                    }
+                    else
+                    {
+                        refactoredString = resultString;
+                    }
+                    [newContent appendString:refactoredString];
+                    lastResultRange = [result range];
+                }
+            }];
             
-            [newContent writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:error];
-            
-            if (*error != nil)
-            {
-                [CommonUtils log:@"Error writing file at URL: %@", newContent];
-                return NO;
-            }
+            NSUInteger start = lastResultRange.location + lastResultRange.length;
+            NSUInteger end = line.length - start;
+            [newContent appendString:[line substringWithRange:NSMakeRange(start, end)]];
         }
+        
+        content = newContent;
     }
     
-    return YES;
+    return content;
 }
 
 @end

@@ -75,15 +75,6 @@
             return NO;
         }
         
-        if ([Session shared].refactorize)
-        {
-            success = [generator refactorizeWithError:error];
-            if (!success)
-            {
-                return NO;
-            }
-        }
-        
         // method in interface
         RClassMethodSignature* method = [[RClassMethodSignature alloc] initWithReturnType:[generator.className stringByAppendingString:@"*"] signature:generator.propertyName];
         [self.clazz.interface.methods addObject:method];
@@ -109,6 +100,58 @@
     
     NSString* basePath = [self.resourceFileHeaderPath stringByReplacingOccurrencesOfString:self.resourceFileHeaderPath.lastPathComponent withString:@""];
     [CommonUtils log:@"R files written in %@", basePath];
+    
+    if ([Session shared].refactorize)
+    {
+        NSArray* allFiles = nil;
+        if ([Session shared].refactorize)
+        {
+            allFiles = [self.finder filesWithExtensions:@[@"h", @"m"]];
+        }
+        
+        for (NSURL* url in allFiles)
+        {
+            if ([url.lastPathComponent isEqualToString:@"R.h"] ||
+                [url.lastPathComponent isEqualToString:@"R.m"])
+            {
+                continue;
+            }
+            NSString* content = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:error];
+            if (*error != nil)
+            {
+                [CommonUtils log:@"Error reading file: %@", url.path];
+                return NO;
+            }
+            else
+            {
+                for (BaseGenerator<GeneratorProtocol>* generator in generators)
+                {
+                    [CommonUtils log:@"%@ starts refactoring of file %@", NSStringFromClass([generator class]), url.lastPathComponent];
+                    
+                    NSError* error = nil;
+                    content = [generator refactorizeFile:url.lastPathComponent withContent:content withError:&error];
+                    
+                    if (error)
+                    {
+                        [CommonUtils log:@"Error refactoring file %@", url.lastPathComponent];
+                        return NO;
+                    }
+                    
+                    [content writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:&error];
+                    
+                    if (error != nil)
+                    {
+                        [CommonUtils log:@"Error writing file: %@", url.lastPathComponent];
+                        return NO;
+                    }
+                    else
+                    {
+                        [CommonUtils log:@"OK", NSStringFromClass([generator class]), url.lastPathComponent];
+                    }
+                }
+            }
+        }
+    }
     
     return YES;
 }

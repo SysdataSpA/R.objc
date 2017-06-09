@@ -141,47 +141,66 @@
     return [self writeStringInRFilesWithError:error];
 }
 
-//- (BOOL)writeInHeaderFileWithError:(NSError *__autoreleasing *)error
-//{
-//    NSMutableString *generatorImages = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.h"]];
-//    [generatorImages replaceOccurrencesOfString:GENERATOR_CLASS withString:self.className options:0 range:[generatorImages rangeOfString:generatorImages]];
-//    
-//    for (ImagesResource* res in self.images)
-//    {
-//        NSMutableString *method = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"PropertyTemplate.h"]];
-//        [method replaceOccurrencesOfString:PROPERTY_CLASS withString:@"UIImage" options:0 range:[method rangeOfString:method]];
-//        [method replaceOccurrencesOfString:PROPERTY_NAME withString:res.methodName options:0 range:[method rangeOfString:method]];
-//        [generatorImages insertString:method atIndex:[generatorImages rangeOfString:GENERATOR_INTERFACE_BODY].location];
-//    }
-//    [generatorImages replaceOccurrencesOfString:GENERATOR_INTERFACE_BODY withString:@"" options:0 range:[generatorImages rangeOfString:generatorImages]];
-//    
-//    if (![self writeString:generatorImages inFile:self.resourceFileHeaderPath beforePlaceholder:R_INTERFACE_HEADER withError:error])
-//    {
-//        return NO;
-//    }
-//    
-//    return YES;
-//}
-//
-//- (BOOL)writeInImplementationFileWithError:(NSError *__autoreleasing *)error
-//{
-//    NSMutableString *generatorImages = [[NSMutableString alloc] initWithString:[[TemplatesManager shared] contentForTemplate:@"GeneratorTemplate.m"]];
-//    [generatorImages replaceOccurrencesOfString:GENERATOR_CLASS withString:self.className options:0 range:[generatorImages rangeOfString:generatorImages]];
-//    
-//    for (ImagesResource* res in self.images)
-//    {
-//        NSString* methodString = [NSString stringWithFormat:@"- (UIImage*) %@ { return [UIImage imageNamed:@\"%@\"]; }\n", res.methodName, res.originalName];
-//        [generatorImages insertString:methodString atIndex:[generatorImages rangeOfString:GENERATOR_IMPLEMENTATION_BODY].location];
-//    }
-//    [generatorImages replaceOccurrencesOfString:GENERATOR_PRIVATE_INTERFACE_BODY withString:@"" options:0 range:[generatorImages rangeOfString:generatorImages]];
-//    [generatorImages replaceOccurrencesOfString:GENERATOR_IMPLEMENTATION_BODY withString:@"" options:0 range:[generatorImages rangeOfString:generatorImages]];
-//    
-//    if (![self writeString:generatorImages inFile:self.resourceFileImplementationPath beforePlaceholder:R_IMPLEMENTATION_HEADER withError:error])
-//    {
-//        return NO;
-//    }
-//    
-//    return YES;
-//}
+- (NSString *)refactorizeFile:(NSString *)filename withContent:(NSString *)content withError:(NSError *__autoreleasing *)error
+{
+    NSString* baseString = @"R.image.";
+    
+    NSString* pattern = @"\\[UIImage\\simageNamed:@\"(\\w*)\"\\]";;
+    
+    NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:error];
+    if (*error != nil)
+    {
+        [CommonUtils log:@"Error in regex inside ImagesGenerator.m"];
+        return NO;
+    }
+    
+    NSMutableString* newContent = [NSMutableString string];
+    __block NSRange lastResultRange = NSMakeRange(0, 0);
+    
+    __block int counter = 0;
+    
+    [regex enumerateMatchesInString:content options:NSMatchingReportCompletion range:[content rangeOfString:content] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+        if (result)
+        {
+            NSUInteger start = lastResultRange.location + lastResultRange.length;
+            NSUInteger end = result.range.location - start;
+            
+            // find used key and capture groups
+            NSString* resultString = [content substringWithRange:result.range];
+            
+            NSString* keyGroup = nil;
+            
+            if (result.numberOfRanges > 1)
+            {
+                keyGroup = [content substringWithRange:[result rangeAtIndex:1]];
+            }
+            
+            [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+            NSString* refactoredString = nil;
+            if (keyGroup.length > 0)
+            {
+                counter++;
+                keyGroup = [CommonUtils codableNameFromString:keyGroup];
+                refactoredString = [NSString stringWithFormat:@"%@%@", baseString, keyGroup];
+            }
+            else
+            {
+                refactoredString = resultString;
+            }
+            [newContent appendString:refactoredString];
+            lastResultRange = [result range];
+        }
+    }];
+    
+    if (counter > 0)
+    {
+        [CommonUtils log:@"%i images found in file %@", counter, filename];
+    }
+    NSUInteger start = lastResultRange.location + lastResultRange.length;
+    NSUInteger end = content.length - start;
+    [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+    
+    return newContent;
+}
 
 @end

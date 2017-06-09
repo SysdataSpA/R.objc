@@ -43,6 +43,7 @@ int main(int argc, const char * argv[]) {
         {
             return -1;
         }
+        [[Session shared] endSession];
     }
     return 0;
 }

@@ -326,84 +326,66 @@
 
 #pragma mark - Refactor
 
-- (BOOL)refactorizeWithError:(NSError *__autoreleasing *)error
+- (NSString *)refactorizeFile:(NSString *)filename withContent:(NSString *)content withError:(NSError *__autoreleasing *)error
 {
-    NSArray* allFiles = [self.finder filesWithExtensions:@[@"h", @"m"]];
-    
     NSString* baseString = @"R.string.";
+    
+    NSString* pattern = nil;
+    if ([Session shared].isSysdataVersion)
+    {
+        pattern = @"SDLocalizedString[FromTable]?\s?[(]\s?@[\"']([^\"'\)]*)[\"']\s?[)]";
+    }
+    else
+    {
+        pattern = @"NSLocalizedString[FromTable]?\s?[(]\s?@[\"']([^\"'\)]*)[\"']\s?[)]";
+    }
     
     for (StringsResource* res in self.translationsByPath.allValues)
     {
         __block NSString* resourceString = [baseString stringByAppendingFormat:@"%@.", [CommonUtils codableNameFromString:res.methodName]];
         
-        for (NSURL* url in allFiles)
+        NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:error];
+        if (*error != nil)
         {
-            NSString* content = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:error];
-            if (*error != nil)
-            {
-                [CommonUtils log:@"Error reading file: %@", url.path];
-                return NO;
-            }
-            
-            NSString* pattern = nil;
-            if ([Session shared].isSysdataVersion)
-            {
-                pattern = @"SDLocalizedString[FromTable]?\s?[(]\s?@[\"']([^\"'\)]*)[\"']\s?[)]";
-            }
-            else
-            {
-                pattern = @"NSLocalizedString[FromTable]?\s?[(]\s?@[\"']([^\"'\)]*)[\"']\s?[)]";
-            }
-            
-            NSRegularExpression* regex = [NSRegularExpression regularExpressionWithPattern:pattern options:0 error:error];
-            if (*error != nil)
-            {
-                [CommonUtils log:@"Error in regex inside StringsGenerator.m"];
-                return NO;
-            }
-            
-            NSMutableString* newContent = [NSMutableString string];
-            __block NSRange lastResultRange = NSMakeRange(0, 0);
-            
-            [regex enumerateMatchesInString:content options:0 range:[content rangeOfString:content] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
-                if (result)
-                {
-                    NSUInteger start = lastResultRange.location + lastResultRange.length;
-                    NSUInteger end = result.range.location - start;
-                    [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
-                    lastResultRange = [result range];
-                    
-                    // find used key
-                    NSString* resultString = [content substringWithRange:result.range];
-                    [CommonUtils logVerbose:@"Strings refactoring - match found: %@", resultString];
-                    NSString* key = nil;
-                    if (result.numberOfRanges > 1)
-                    {
-                        key = [content substringWithRange:[result rangeAtIndex:1]];
-                    }
-                    
-                    if (key.length > 0)
-                    {
-                        NSString* refactoredString = [resourceString stringByAppendingString:[CommonUtils codableNameFromString:key]];
-                        [newContent appendString:refactoredString];
-                    }
-                }
-            }];
-            
-            NSUInteger start = lastResultRange.location + lastResultRange.length;
-            NSUInteger end = content.length - start;
-            [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
-            [newContent writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:error];
-            
-            if (*error != nil)
-            {
-                [CommonUtils log:@"Error writing file at URL: %@", newContent];
-                return NO;
-            }
+            [CommonUtils log:@"Error in regex inside StringsGenerator.m"];
+            return NO;
         }
+        
+        NSMutableString* newContent = [NSMutableString string];
+        __block NSRange lastResultRange = NSMakeRange(0, 0);
+        
+        [regex enumerateMatchesInString:content options:0 range:[content rangeOfString:content] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+            if (result)
+            {
+                NSUInteger start = lastResultRange.location + lastResultRange.length;
+                NSUInteger end = result.range.location - start;
+                [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+                lastResultRange = [result range];
+                
+                // find used key
+                NSString* resultString = [content substringWithRange:result.range];
+                [CommonUtils logVerbose:@"Strings refactoring - match found in file %@: %@", filename, resultString];
+                NSString* key = nil;
+                if (result.numberOfRanges > 1)
+                {
+                    key = [content substringWithRange:[result rangeAtIndex:1]];
+                }
+                
+                if (key.length > 0)
+                {
+                    NSString* refactoredString = [resourceString stringByAppendingString:[CommonUtils codableNameFromString:key]];
+                    [newContent appendString:refactoredString];
+                }
+            }
+        }];
+        
+        NSUInteger start = lastResultRange.location + lastResultRange.length;
+        NSUInteger end = content.length - start;
+        [newContent appendString:[content substringWithRange:NSMakeRange(start, end)]];
+        content = newContent;
     }
     
-    return YES;
+    return content;
 }
 
 @end

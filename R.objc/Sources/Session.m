@@ -23,6 +23,8 @@ typedef NS_ENUM(NSUInteger, ArgType) {
 
 @interface Session ()
 
+@property (nonatomic, strong) NSDate* startDate;
+
 @property (nonatomic, assign) BOOL isVerboseLoggingEnabled;
 @property (nonatomic, assign) BOOL isSysdataVersion;
 @property (nonatomic, assign) BOOL refactorize;
@@ -38,6 +40,7 @@ static Session* _session;
 + (int) initWith:(int)argc params:(const char **)argv
 {
     _session = [Session new];
+    _session.startDate = [NSDate date];
     ArgType argType = ArgTypeBaseUnknown;
     
     _session._baseURL = nil;
@@ -182,6 +185,11 @@ static Session* _session;
         result = result | ResourceTypeThemes;
     }
     return result;
+}
+
+- (void)endSession
+{
+    [CommonUtils log:@"Ended in %.3f s", [[NSDate date] timeIntervalSinceDate:self.startDate]];
 }
 
 @end
