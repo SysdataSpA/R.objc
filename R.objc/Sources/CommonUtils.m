@@ -81,12 +81,9 @@
 
 + (NSString *)classNameFromFilename:(NSString *)filename removingExtension:(NSString *)extension
 {
-    NSString* retval = [NSString stringWithFormat:@"%@%@", [filename substringToIndex:1].uppercaseString, [filename substringFromIndex:1]];
-    if (extension.length > 0)
-    {
-        retval = [retval stringByReplacingOccurrencesOfString:extension withString:@""];
-    }
-    retval = [retval stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString* retval = filename;
+    retval = [CommonUtils codableNameFromString:retval];
+    retval = [NSString stringWithFormat:@"%@%@", [retval substringToIndex:1].uppercaseString, [retval substringFromIndex:1]];
     return retval;
 }
 
@@ -97,7 +94,7 @@
     {
         retval = [retval stringByReplacingOccurrencesOfString:extension withString:@""];
     }
-    retval = [retval stringByReplacingOccurrencesOfString:@" " withString:@""];
+    retval = [CommonUtils codableNameFromString:retval];
     return retval;
 }
 
