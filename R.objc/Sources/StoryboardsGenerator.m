@@ -117,6 +117,14 @@
                 {
                     viewController = objects[@"navigationController"];
                 }
+                if (viewController == nil)
+                {
+                    viewController = objects[@"pageViewController"];
+                }
+                if (viewController == nil)
+                {
+                    viewController = objects[@"viewControllerPlaceholder"];
+                }
                 if ([viewController isKindOfClass:[NSDictionary class]])
                 {
                     NSString* identifier = viewController[@"_storyboardIdentifier"];
