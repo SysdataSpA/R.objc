@@ -61,10 +61,42 @@
         }
         [newComponents addObject:newComp];
     }
-    NSString *strippedString = [newComponents componentsJoinedByString:@""];
+    __block NSString *strippedString = [newComponents componentsJoinedByString:@""];
     if (strippedString.length >= 2)
     {
-        strippedString = [NSString stringWithFormat:@"%@%@", [strippedString substringToIndex:1].lowercaseString, [strippedString substringFromIndex:1]];
+        NSRegularExpression* regex = [NSRegularExpression
+                                      regularExpressionWithPattern:@"^([A-Z]+)"
+                                      options:0
+                                      error:nil];
+        
+        __block BOOL prefixFound = NO;
+        [regex enumerateMatchesInString:strippedString options:NSMatchingReportCompletion range:[strippedString rangeOfString:strippedString] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
+            if (result)
+            {
+                NSString* resultString = [strippedString substringWithRange:result.range];
+                
+                NSString* prefix = nil;
+                
+                if (result.numberOfRanges > 1)
+                {
+                    prefix = [strippedString substringWithRange:[result rangeAtIndex:1]];
+                }
+                
+               if (prefix.length > 2)
+               {
+                   prefixFound = YES;
+                   prefix = [prefix substringToIndex:prefix.length-1].lowercaseString;
+                   //prefix = [NSString stringWithFormat:@"%@%@", [strippedString substringToIndex:prefix.length-1], [strippedString substringFromIndex:prefix.length-1].uppercaseString];
+                   strippedString = [NSString stringWithFormat:@"%@%@", prefix, [strippedString substringFromIndex:prefix.length]];
+                   *stop = YES;
+               }
+            }
+        }];
+        
+        if (!prefixFound)
+        {
+            strippedString = [NSString stringWithFormat:@"%@%@", [strippedString substringToIndex:1].lowercaseString, [strippedString substringFromIndex:1]];
+        }
     }
 
     NSRegularExpression* regExpression = [NSRegularExpression
@@ -89,7 +121,7 @@
 
 + (NSString *)methodNameFromFilename:(NSString *)filename removingExtension:(NSString *)extension
 {
-     NSString* retval = [NSString stringWithFormat:@"%@%@", [filename substringToIndex:1].lowercaseString, [filename substringFromIndex:1]];
+    NSString* retval = filename;
     if (extension.length > 0)
     {
         retval = [retval stringByReplacingOccurrencesOfString:extension withString:@""];
