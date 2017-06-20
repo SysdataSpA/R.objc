@@ -50,10 +50,20 @@
 
 - (NSString *)resourceFileHeaderPath
 {
-    return [self.finder.outputURL.path stringByAppendingPathComponent:@"R.h"];
+    return [self.finder.outputURL.path stringByAppendingPathComponent:@"R_temp.h"];
 }
 
 - (NSString *)resourceFileImplementationPath
+{
+    return [self.finder.outputURL.path stringByAppendingPathComponent:@"R_temp.m"];
+}
+
+- (NSString *)outputFileHeaderPath
+{
+    return [self.finder.outputURL.path stringByAppendingPathComponent:@"R.h"];
+}
+
+- (NSString *)outputFileImplementationPath
 {
     return [self.finder.outputURL.path stringByAppendingPathComponent:@"R.m"];
 }

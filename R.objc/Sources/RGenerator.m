@@ -99,7 +99,10 @@
     }
     
     NSString* basePath = [self.resourceFileHeaderPath stringByReplacingOccurrencesOfString:self.resourceFileHeaderPath.lastPathComponent withString:@""];
-    [CommonUtils log:@"R files written in %@", basePath];
+    [CommonUtils log:@"Temp R files written in %@", basePath];
+    
+    // check if R_temp file are different from R files and then replace them
+    [self checkRFilesAndReplaceIfNeededWithError:error];
     
     if ([Session shared].refactorize)
     {
@@ -246,6 +249,90 @@
     }
     
     return YES;
+}
+
+- (void) checkRFilesAndReplaceIfNeededWithError:(NSError *__autoreleasing *)error
+{
+    NSFileManager* fileMan = [NSFileManager defaultManager];
+    
+    NSString* rTempHPath = self.resourceFileHeaderPath;
+    NSString* rTempMPath = self.resourceFileImplementationPath;
+    
+    if (![fileMan fileExistsAtPath:rTempHPath])
+    {
+        // error: temp files don't exist
+        *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotOpenFile userInfo:@{NSFilePathErrorKey:rTempHPath}];
+        [CommonUtils log:@"Cannot find R_temp.h file at path %@ with error %@", rTempHPath, [*error localizedDescription]];
+        return;
+    }
+    if (![fileMan fileExistsAtPath:rTempMPath])
+    {
+        // error: temp files don't exist
+        *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotOpenFile userInfo:@{NSFilePathErrorKey:rTempMPath}];
+        [CommonUtils log:@"Cannot find R_temp.m file at path %@ with error %@", rTempMPath, [*error localizedDescription]];
+        return ;
+    }
+    
+    NSString* rHPath = self.outputFileHeaderPath;
+    NSString* rMPath = self.outputFileImplementationPath;
+    if ([fileMan fileExistsAtPath:rHPath])
+    {
+        // check if new R_temp files are different from old R files
+        BOOL equalH = [fileMan contentsEqualAtPath:rHPath andPath:rTempHPath];
+        BOOL equalM = [fileMan contentsEqualAtPath:rMPath andPath:rTempMPath];
+        if (equalH && equalM)
+        {
+            [CommonUtils log:@"No need to update R files"];
+            BOOL removed = [fileMan removeItemAtPath:rTempHPath error:nil];
+            if (!removed)
+            {
+                [CommonUtils logVerbose:@"Cannot remove fiel at path %@", rTempHPath];
+            }
+            removed = [fileMan removeItemAtPath:rTempMPath error:nil];
+            if (!removed)
+            {
+                [CommonUtils logVerbose:@"Cannot remove fiel at path %@", rTempMPath];
+            }
+            return;
+        }
+        
+        // R files already exist: file replacing is needed
+        [CommonUtils logVerbose:@"R temp files exist at path %@", rHPath];
+        BOOL removed = [fileMan removeItemAtPath:rHPath error:error];
+        
+        if (!removed)
+        {
+            *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotRemoveFile userInfo:@{NSFilePathErrorKey:rHPath}];
+            [CommonUtils log:@"Cannot remove R.h file at path %@ with error %@", rHPath, [*error localizedDescription]];
+            return;
+        }
+        
+        removed = [fileMan removeItemAtPath:rMPath error:error];
+        
+        if (!removed)
+        {
+            *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotRemoveFile userInfo:@{NSFilePathErrorKey:rMPath}];
+            [CommonUtils log:@"Cannot remove R.m file at path %@ with error %@", rMPath, [*error localizedDescription]];
+            return;
+        }
+    }
+    
+    // moving R_temp files to R files
+    BOOL moved = [fileMan moveItemAtPath:rTempHPath toPath:rHPath error:error];
+    if (!moved)
+    {
+        *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotMoveFile userInfo:@{NSFilePathErrorKey:rTempHPath}];
+        [CommonUtils log:@"Cannot move R_temp.h file from path %@ to path %@ with error %@", rTempHPath, rHPath, [*error localizedDescription]];
+        return;
+    }
+    
+    moved = [fileMan moveItemAtPath:rTempMPath toPath:rMPath error:error];
+    if (!moved)
+    {
+        *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotMoveFile userInfo:@{NSFilePathErrorKey:rTempMPath}];
+        [CommonUtils log:@"Cannot move R_temp.m file from path %@ to path %@ with error %@", rTempMPath, rMPath, [*error localizedDescription]];
+        return;
+    }
 }
 
 @end

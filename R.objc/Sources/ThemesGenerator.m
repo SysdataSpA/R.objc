@@ -107,7 +107,7 @@
     // generate methods declaration for RStyle
     RProperty* identifierProp = [[RProperty alloc] initWithClass:@"NSString*" name:@"identifier"];
     [clazz.interface.properties addObject:identifierProp];
-    RMethodSignature* performMethod =  [[RMethodSignature alloc] initWithReturnType:@"void" signature:@"applyToObject:"];
+    RMethodSignature* performMethod =  [[RMethodSignature alloc] initWithReturnType:@"void" signature:@"applyTo:"];
     RMethodArgument* objectArg = [[RMethodArgument alloc] initWithType:@"id" name:@"object"];
     [performMethod.arguments addObjectsFromArray:@[objectArg]];
     [clazz.interface.methods addObject:performMethod];
@@ -315,7 +315,7 @@
             {
                 counter++;
                 keyGroup = [CommonUtils codableNameFromString:keyGroup];
-                refactoredString = [NSString stringWithFormat:@"[%@.styles.%@ applyToObject:%@]", baseString, keyGroup, objectGroup];
+                refactoredString = [NSString stringWithFormat:@"[%@.styles.%@ applyTo:%@]", baseString, keyGroup, objectGroup];
             }
             else
             {

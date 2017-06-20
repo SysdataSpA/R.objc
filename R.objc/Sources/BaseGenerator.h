@@ -40,6 +40,8 @@
 
 - (NSString*)resourceFileHeaderPath;
 - (NSString*)resourceFileImplementationPath;
+- (NSString*)outputFileHeaderPath;
+- (NSString*)outputFileImplementationPath;
 
 - (BOOL)writeStringInRFilesWithError:(NSError *__autoreleasing *)error;
 @end
