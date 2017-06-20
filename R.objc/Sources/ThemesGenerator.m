@@ -46,7 +46,7 @@
 
 - (NSString *)className
 {
-    return @"Themes";
+    return @"RThemes";
 }
 
 - (NSString *)propertyName
@@ -100,11 +100,29 @@
 
 - (BOOL)writeInResourceFileWithError:(NSError *__autoreleasing *)error
 {
+    // generate RStyle class
+    RClass *clazz = [[RClass alloc] initWithName:@"RStyle"];
+    [self.otherClasses addObject:clazz];
+    
+    // generate methods declaration for RStyle
+    RProperty* identifierProp = [[RProperty alloc] initWithClass:@"NSString*" name:@"identifier"];
+    [clazz.interface.properties addObject:identifierProp];
+    RMethodSignature* performMethod =  [[RMethodSignature alloc] initWithReturnType:@"void" signature:@"applyToObject:"];
+    RMethodArgument* objectArg = [[RMethodArgument alloc] initWithType:@"id" name:@"object"];
+    [performMethod.arguments addObjectsFromArray:@[objectArg]];
+    [clazz.interface.methods addObject:performMethod];
+    
+    // generate methods implementation for RStyle
+    NSString* impl = @"SDThemeManagerApplyStyle(self.identifier, object);";
+    RMethodImplementation* performImpl = [[RMethodImplementation alloc] initWithReturnType:performMethod.returnType signature:performMethod.signature implementation:impl];
+    [performImpl.arguments addObjectsFromArray:performMethod.arguments];
+    [clazz.implementation.methods addObject:performImpl];
+    
     for (NSString* firstLevelKey in self.themesDictionary.allKeys)
     {
         // generates Themes interface methods
         NSString* methodName = [CommonUtils codableNameFromString:firstLevelKey];
-        NSString* className = [NSString stringWithFormat:@"%@%@", [methodName substringToIndex:1].uppercaseString, [methodName substringFromIndex:1]];
+        NSString* className = [NSString stringWithFormat:@"R%@%@", [methodName substringToIndex:1].uppercaseString, [methodName substringFromIndex:1]];
         RMethodSignature *method = [[RMethodSignature alloc] initWithReturnType:[className stringByAppendingString:@"*"] signature:methodName];
         [self.clazz.interface.methods addObject:method];
         
@@ -135,12 +153,23 @@
                 impl = [[RMethodImplementation alloc] initWithReturnType:valueType signature:key implementation:implString];
             } else {
                 NSString* codableKey = [CommonUtils codableNameFromString:key];
-                method = [[RMethodSignature alloc] initWithReturnType:@"void" signature:[codableKey stringByAppendingString:@":"]];
-                [method.arguments addObject:[[RMethodArgument alloc] initWithType:@"NSObject*" name:@"object"]];
+                method = [[RMethodSignature alloc] initWithReturnType:@"RStyle*" signature:codableKey];
                 
-                NSString* implString = [NSString stringWithFormat:@"SDThemeManagerApplyStyle(@\"%@\", object);", key];
-                impl = [[RMethodImplementation alloc] initWithReturnType:@"void" signature:[codableKey stringByAppendingString:@":"] implementation:implString];
-                [impl.arguments addObject:[[RMethodArgument alloc] initWithType:@"NSObject*" name:@"object"]];
+                // private property for segue
+                RProperty* prop = [[RProperty alloc] initWithClass:@"RStyle*" name:codableKey];
+                [clazz.extension.properties addObject:prop];
+                
+                // lazy property getter
+                NSMutableString* implString = [NSMutableString new];
+                [implString appendFormat:@"\n"];
+                [implString appendFormat:@"\tif (!_%@)\n", codableKey];
+                [implString appendString:@"\t{\n"];
+                [implString appendFormat:@"\t\t_%@ = [RStyle new];\n", codableKey];
+                [implString appendFormat:@"\t\t_%@.identifier = @\"%@\";\n", codableKey, key];
+                [implString appendString:@"\t}\n"];
+                [implString appendFormat:@"\treturn _%@;", codableKey];
+                impl = [[RMethodImplementation alloc] initWithReturnType:@"RStyle*" signature:codableKey implementation:implString];
+                impl.indent = YES;
             }
             // add method to interface and implementation
             [clazz.interface.methods addObject:method];
@@ -286,7 +315,7 @@
             {
                 counter++;
                 keyGroup = [CommonUtils codableNameFromString:keyGroup];
-                refactoredString = [NSString stringWithFormat:@"[%@.styles %@:%@]", baseString, keyGroup, objectGroup];
+                refactoredString = [NSString stringWithFormat:@"[%@.styles.%@ applyToObject:%@]", baseString, keyGroup, objectGroup];
             }
             else
             {
