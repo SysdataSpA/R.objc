@@ -55,7 +55,7 @@
             return nil;
         }
         self.contentByLocale = [NSMutableDictionary new];
-        _className = [CommonUtils classNameFromFilename:self.filename removingExtension:@".strings"];
+        _className = [NSString stringWithFormat:@"R%@", [CommonUtils classNameFromFilename:self.filename removingExtension:@".strings"]];
         _classType = [NSString stringWithFormat:@"%@*", self.className];
         _methodName = [CommonUtils methodNameFromFilename:self.filename removingExtension:@".strings"];
     }
@@ -87,7 +87,7 @@
 
 - (NSString *)className
 {
-    return @"Strings";
+    return @"RStrings";
 }
 
 - (NSString *)propertyName

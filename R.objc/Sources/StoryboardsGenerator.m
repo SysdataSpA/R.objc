@@ -43,7 +43,7 @@
 
 - (NSString *)classType
 {
-    return self.className ? [NSString stringWithFormat:@"%@*", self.className] : nil;
+    return self.className ? [NSString stringWithFormat:@"R%@*", self.className] : nil;
 }
 
 - (NSString *)methodName
@@ -72,7 +72,7 @@
 
 - (NSString *)className
 {
-    return @"Storyboards";
+    return @"RStoryboards";
 }
 
 - (NSString *)propertyName
@@ -161,7 +161,7 @@
         [self.clazz.interface.methods addObject:method];
         
         // storyboard resource class
-        RClass* clazz = [[RClass alloc] initWithName:res.className];
+        RClass* clazz = [[RClass alloc] initWithName:[NSString stringWithFormat:@"R%@", res.className]];
         [self.otherClasses addObject:clazz];
         
         // property declaration in extension and lazy getter implementation for every clazz
@@ -170,14 +170,14 @@
         RProperty* property = [[RProperty alloc] initWithClass:res.classType name:codableKey];
         [self.clazz.extension.properties addObject:property];
         
-        RLazyGetterImplementation *lazy = [[RLazyGetterImplementation alloc] initReturnType:res.className name:codableKey];
+        RLazyGetterImplementation *lazy = [[RLazyGetterImplementation alloc] initReturnType:[NSString stringWithFormat:@"R%@", res.className] name:codableKey];
         [self.clazz.implementation.lazyGetters addObject:lazy];
         
         // instantiateInitialViewController declaration and implementation in resource class
-        method = [[RMethodSignature alloc] initWithReturnType:@"id" signature:@"instantiateInitialViewController"];
+        method = [[RMethodSignature alloc] initWithReturnType:@"UIViewController*" signature:@"instantiateInitialViewController"];
         [clazz.interface.methods addObject:method];
         NSString* implString = [NSString stringWithFormat:@"return [[UIStoryboard storyboardWithName:@\"%@\" bundle:nil] instantiateInitialViewController];", res.name];
-        RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"id" signature:@"instantiateInitialViewController" implementation:implString];
+        RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"UIViewController*" signature:@"instantiateInitialViewController" implementation:implString];
         [clazz.implementation.methods addObject:impl];
         
         // sort view controllers in alphabetic order
@@ -187,12 +187,12 @@
             codableKey = [CommonUtils codableNameFromString:viewController];
             
             // method declaration for view controller
-            method = [[RMethodSignature alloc] initWithReturnType:@"id" signature:codableKey];
+            method = [[RMethodSignature alloc] initWithReturnType:@"UIViewController*" signature:codableKey];
             [clazz.interface.methods addObject:method];
             
             // implementation for view controller
             implString = [NSString stringWithFormat:@"return [[UIStoryboard storyboardWithName:@\"%@\" bundle:nil] instantiateViewControllerWithIdentifier:@\"%@\"];", res.name, viewController];
-            RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"id" signature:codableKey implementation:implString];
+            RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"UIViewController*" signature:codableKey implementation:implString];
             [clazz.implementation.methods addObject:impl];
         }
     }

@@ -45,7 +45,7 @@
 
 - (NSString *)classType
 {
-    return [self.sourceClassName stringByAppendingString:@"*"];
+    return [NSString stringWithFormat:@"R%@*", self.sourceClassName];
 }
 
 - (NSString *)methodName
@@ -73,7 +73,7 @@
 
 - (NSString *)className
 {
-    return @"Segues";
+    return @"RSegues";
 }
 
 - (NSString *)propertyName
@@ -203,7 +203,7 @@
             [self.clazz.interface.methods addObject:method];
             
             // segue resource class
-            RClass* clazz = [[RClass alloc] initWithName:res.sourceClassName];
+            RClass* clazz = [[RClass alloc] initWithName:[NSString stringWithFormat:@"R%@", res.sourceClassName]];
             [self.otherClasses addObject:clazz];
             
             // property declaration in extension and lazy getter implementation for every clazz
@@ -212,7 +212,7 @@
             RProperty* property = [[RProperty alloc] initWithClass:res.classType name:codableKey];
             [self.clazz.extension.properties addObject:property];
             
-            RLazyGetterImplementation *lazy = [[RLazyGetterImplementation alloc] initReturnType:res.sourceClassName name:codableKey];
+            RLazyGetterImplementation *lazy = [[RLazyGetterImplementation alloc] initReturnType:[NSString stringWithFormat:@"R%@", res.sourceClassName] name:codableKey];
             [self.clazz.implementation.lazyGetters addObject:lazy];
             
             // sort segues in alphabetic order

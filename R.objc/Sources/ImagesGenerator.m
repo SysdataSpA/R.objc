@@ -49,7 +49,7 @@
 
 - (NSString *)className
 {
-    return @"Images";
+    return @"RImages";
 }
 
 - (NSString *)propertyName
