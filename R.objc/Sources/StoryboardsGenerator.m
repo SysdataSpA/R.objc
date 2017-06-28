@@ -174,10 +174,10 @@
         [self.clazz.implementation.lazyGetters addObject:lazy];
         
         // instantiateInitialViewController declaration and implementation in resource class
-        method = [[RMethodSignature alloc] initWithReturnType:@"UIViewController*" signature:@"instantiateInitialViewController"];
+        method = [[RMethodSignature alloc] initWithReturnType:@"__kindof UIViewController*" signature:@"instantiateInitialViewController"];
         [clazz.interface.methods addObject:method];
         NSString* implString = [NSString stringWithFormat:@"return [[UIStoryboard storyboardWithName:@\"%@\" bundle:nil] instantiateInitialViewController];", res.name];
-        RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"UIViewController*" signature:@"instantiateInitialViewController" implementation:implString];
+        RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"__kindof UIViewController*" signature:@"instantiateInitialViewController" implementation:implString];
         [clazz.implementation.methods addObject:impl];
         
         // sort view controllers in alphabetic order
@@ -187,12 +187,12 @@
             codableKey = [CommonUtils codableNameFromString:viewController];
             
             // method declaration for view controller
-            method = [[RMethodSignature alloc] initWithReturnType:@"UIViewController*" signature:codableKey];
+            method = [[RMethodSignature alloc] initWithReturnType:@"__kindof UIViewController*" signature:codableKey];
             [clazz.interface.methods addObject:method];
             
             // implementation for view controller
             implString = [NSString stringWithFormat:@"return [[UIStoryboard storyboardWithName:@\"%@\" bundle:nil] instantiateViewControllerWithIdentifier:@\"%@\"];", res.name, viewController];
-            RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"UIViewController*" signature:codableKey implementation:implString];
+            RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"__kindof UIViewController*" signature:codableKey implementation:implString];
             [clazz.implementation.methods addObject:impl];
         }
     }

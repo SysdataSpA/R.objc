@@ -183,7 +183,7 @@
     RProperty* identifierProp = [[RProperty alloc] initWithClass:@"NSString*" name:@"identifier"];
     [clazz.interface.properties addObject:identifierProp];
     RMethodSignature* performMethod =  [[RMethodSignature alloc] initWithReturnType:@"void" signature:@"performWithSource:sender:"];
-    RMethodArgument* sourceArg = [[RMethodArgument alloc] initWithType:@"UIViewController*" name:@"sourceViewController"];
+    RMethodArgument* sourceArg = [[RMethodArgument alloc] initWithType:@"__kindof UIViewController*" name:@"sourceViewController"];
     RMethodArgument* senderArg = [[RMethodArgument alloc] initWithType:@"id" name:@"sender"];
     [performMethod.arguments addObjectsFromArray:@[sourceArg, senderArg]];
     [clazz.interface.methods addObject:performMethod];
