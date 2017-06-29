@@ -145,7 +145,7 @@
                         {
                             NSString* identifier = segue[@"_identifier"];
                             
-                            if ([identifier isKindOfClass:[NSString class]])
+                            if ([identifier isKindOfClass:[NSString class]] && identifier.length > 0)
                             {
                                 [res.segues addObject:identifier];
                             }
