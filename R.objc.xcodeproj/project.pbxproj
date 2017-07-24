@@ -194,7 +194,7 @@
 				TargetAttributes = {
 					06803EAC1ED5BDED0006208A = {
 						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = R7FQ553TEY;
+						DevelopmentTeam = ZT38DY35DB;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -367,7 +367,7 @@
 			baseConfigurationReference = 18C13112009EA32D40691109 /* Pods-R.objc.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
-				DEVELOPMENT_TEAM = R7FQ553TEY;
+				DEVELOPMENT_TEAM = ZT38DY35DB;
 				PRODUCT_NAME = Robjc;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
@@ -378,7 +378,7 @@
 			baseConfigurationReference = 2FF7613DC3430DBD2D0C30FC /* Pods-R.objc.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "Mac Developer";
-				DEVELOPMENT_TEAM = R7FQ553TEY;
+				DEVELOPMENT_TEAM = ZT38DY35DB;
 				PRODUCT_NAME = Robjc;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
