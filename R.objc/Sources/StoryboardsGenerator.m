@@ -115,6 +115,18 @@
                 NSDictionary* viewController = objects[@"viewController"];
                 if (viewController == nil)
                 {
+                    viewController = objects[@"tableViewController"];
+                }
+                if (viewController == nil)
+                {
+                    viewController = objects[@"collectionViewController"];
+                }
+                if (viewController == nil)
+                {
+                    viewController = objects[@"tabBarController"];
+                }
+                if (viewController == nil)
+                {
                     viewController = objects[@"navigationController"];
                 }
                 if (viewController == nil)
@@ -124,6 +136,18 @@
                 if (viewController == nil)
                 {
                     viewController = objects[@"viewControllerPlaceholder"];
+                }
+                if (viewController == nil)
+                {
+                    viewController = objects[@"splitViewController"];
+                }
+                if (viewController == nil)
+                {
+                    viewController = objects[@"glkViewController"];
+                }
+                if (viewController == nil)
+                {
+                    viewController = objects[@"avPlayerViewController"];
                 }
                 if ([viewController isKindOfClass:[NSDictionary class]])
                 {
