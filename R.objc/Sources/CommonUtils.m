@@ -48,9 +48,10 @@
 
 + (NSString*)codableNameFromString:(NSString*)string
 {
+    NSString* removedAccentsString = [string stringByFoldingWithOptions:NSDiacriticInsensitiveSearch locale:[NSLocale localeWithLocaleIdentifier:@"EN"]];
     NSMutableCharacterSet* charactersEligible = [NSMutableCharacterSet alphanumericCharacterSet];
     NSCharacterSet* charactersToRemove = [charactersEligible invertedSet];
-    NSArray* components = [string componentsSeparatedByCharactersInSet:charactersToRemove];
+    NSArray* components = [removedAccentsString componentsSeparatedByCharactersInSet:charactersToRemove];
     NSMutableArray* newComponents = [NSMutableArray new];
     for (NSString* comp in components)
     {
