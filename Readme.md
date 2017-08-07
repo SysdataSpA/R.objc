@@ -83,15 +83,6 @@ this avoids including any binary files into your project.
 
 7.  Repeat point 3 and 4 for every target in your project
 
-Options available to invoke the script:
-
--   `-p` (or --path): path to the root of the project or from where you want the
-    scan to begin
-
--   `-e` (or --excluded): excluded dir path; all dirs within this path will be
-    excluded; you can use `-e` option more than once
-
--   `-v` (or `--verbose`): verbose logging
 
  
 
@@ -113,6 +104,31 @@ Now you can write
 self.welcomeLabel.text = [R.string.localizable homeTitleWelcome:@"John"];
 self.radioButtonImageView.image = selected ? R.image.checkedRadioButton : R.image.uncheckedRadioButton;
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Available command line options
+
+You can add these options to customize R.objc behaviour:
+
+-   `-p` (or `--path`): **MANDATORY** path to the root of the project or from where you want the scan to begin
+
+-   `-e` (or `--excluded`): excluded dir path; all dirs within this path will be excluded; you can use `-e` option more than once
+
+-   `-v` (or `--verbose`): verbose logging
+
+-   `-s` (or `--sysdata`): for internal use only
+
+-   `-r` (or `--refactor`): R.objc will replace all occurrences of NSLocalizedString with the correct `R.string` reference
+
+-   `--skip-strings`: jump the strings step
+
+-   `--skip-images`: jump the images step
+
+-   `--skip-themes`: jump the themes step
+
+-   `--skip-storyboards`: jump the storyboards step
+
+-   `--skip-segues`: jump the segues step
+
 
 What can you do?
 ----------------
@@ -154,11 +170,6 @@ R.image.navbarLogo
 
 You'll get a `UIImage*` directly.
 
-### Themes
-
-This part is just for internal use, maybe one day we'll publish out theme
-manager.
-
 ### Storyboards
 
 All storyboards in the bundle will be mapped in a
@@ -185,6 +196,17 @@ Example:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 R.segue.myViewController.goToNextSegue.identifier // identifier of the segue
 [R.segue.myViewController.goToNextSegue.identifier performWithSource:self sender:userInfo]; // perform segue
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+### Themes
+
+If you are using [Giotto Theme Manager](https://github.com/SysdataSpA/Giotto), R.objc will search for theme_*.plist files in your project. You can then access to all your constants and styles.
+
+Example:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+[R.theme.styles.myStyle applyTo:self]; // apply the style MyStyle to object self
+R.theme.constants.COLOR_TEXT_LIGHT // reference to a constant in the theme
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
  

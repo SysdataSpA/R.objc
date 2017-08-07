@@ -209,11 +209,7 @@ static Session* _session;
 
 - (ResourceType)resourcesToGenerate
 {
-    ResourceType result = ResourceTypeStrings | ResourceTypeImages | ResourceTypeStoryboards | ResourceTypeSegues;
-    if (self.isSysdataVersion)
-    {
-        result = result | ResourceTypeThemes;
-    }
+    ResourceType result = ResourceTypeStrings | ResourceTypeImages | ResourceTypeStoryboards | ResourceTypeSegues | ResourceTypeThemes;
     return result;
 }
 
