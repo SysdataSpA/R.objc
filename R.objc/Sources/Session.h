@@ -27,6 +27,11 @@ typedef NS_OPTIONS(NSUInteger, ResourceType) {
 @property (nonatomic, readonly) BOOL isVerboseLoggingEnabled;
 @property (nonatomic, readonly) BOOL isSysdataVersion;
 @property (nonatomic, readonly) BOOL refactorize;
+@property (nonatomic, readonly) BOOL skipStrings;
+@property (nonatomic, readonly) BOOL skipImages;
+@property (nonatomic, readonly) BOOL skipThemes;
+@property (nonatomic, readonly) BOOL skipStoryboards;
+@property (nonatomic, readonly) BOOL skipSegues;
 
 + (int) initWith:(int)argc params:(const char **)argv;
 + (Session*) shared;

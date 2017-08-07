@@ -28,6 +28,11 @@ typedef NS_ENUM(NSUInteger, ArgType) {
 @property (nonatomic, assign) BOOL isVerboseLoggingEnabled;
 @property (nonatomic, assign) BOOL isSysdataVersion;
 @property (nonatomic, assign) BOOL refactorize;
+@property (nonatomic, assign) BOOL skipStrings;
+@property (nonatomic, assign) BOOL skipImages;
+@property (nonatomic, assign) BOOL skipThemes;
+@property (nonatomic, assign) BOOL skipStoryboards;
+@property (nonatomic, assign) BOOL skipSegues;
 @property (nonatomic, strong) NSURL* _baseURL;
 @property (nonatomic, strong) NSMutableArray<NSURL *>* _excludedDirs;
 
@@ -75,6 +80,31 @@ static Session* _session;
             [self shared].refactorize = true;
             continue;
         }
+        else if ([s isEqualToString:@"--skip-strings"])
+        {
+            [self shared].skipStrings = true;
+            continue;
+        }
+        else if ([s isEqualToString:@"--skip-images"])
+        {
+            [self shared].skipImages = true;
+            continue;
+        } 
+        else if ([s isEqualToString:@"--skip-themes"])
+        {
+            [self shared].skipThemes = true;
+            continue;
+        } 
+        else if ([s isEqualToString:@"--skip-storyboards"])
+        {
+            [self shared].skipStoryboards = true;
+            continue;
+        } 
+        else if ([s isEqualToString:@"--skip-segues"])
+        {
+            [self shared].skipSegues = true;
+            continue;
+        } 
         
         if (argType == ArgTypeBaseUnknown)
         {

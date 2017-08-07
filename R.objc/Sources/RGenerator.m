@@ -36,27 +36,27 @@
     
     NSMutableArray<BaseGenerator<GeneratorProtocol>*>* generators = [NSMutableArray new];
     
-    if ([[Session shared] resourcesToGenerate] & ResourceTypeStrings)
+    if (![Session shared].skipStrings && ([[Session shared] resourcesToGenerate] & ResourceTypeStrings))
     {
         [generators addObject:[[StringsGenerator alloc] initWithResourceFinder:self.finder]];
     }
     
-    if ([[Session shared] resourcesToGenerate] & ResourceTypeImages)
+    if (![Session shared].skipImages && ([[Session shared] resourcesToGenerate] & ResourceTypeImages))
     {
         [generators addObject:[[ImagesGenerator alloc] initWithResourceFinder:self.finder]];
     }
     
-    if ([[Session shared] resourcesToGenerate] & ResourceTypeThemes)
+    if (![Session shared].skipThemes && ([[Session shared] resourcesToGenerate] & ResourceTypeThemes))
     {
         [generators addObject:[[ThemesGenerator alloc] initWithResourceFinder:self.finder]];
     }
     
-    if ([[Session shared] resourcesToGenerate] & ResourceTypeStoryboards)
+    if (![Session shared].skipStoryboards && ([[Session shared] resourcesToGenerate] & ResourceTypeStoryboards))
     {
         [generators addObject:[[StoryboardsGenerator alloc] initWithResourceFinder:self.finder]];
     }
     
-    if ([[Session shared] resourcesToGenerate] & ResourceTypeSegues)
+    if (![Session shared].skipSegues && ([[Session shared] resourcesToGenerate] & ResourceTypeSegues))
     {
         [generators addObject:[[SeguesGenerator alloc] initWithResourceFinder:self.finder]];
     }
