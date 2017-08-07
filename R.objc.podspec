@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name                      = 'R.objc'
-  s.version                   = '0.4.0'
+  s.version                   = '0.5.0'
   s.summary                   = 'Get autocompleted localizable strings and asset catalogue images names'
   s.description               = <<-DESC
 Freely inspired by R.swift: get autocompleted localizable strings and asset catalogue images names.
