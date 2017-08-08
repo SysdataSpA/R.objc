@@ -21,7 +21,7 @@ You can have:
   s.homepage                  = 'https://github.com/SysdataSpA/R.objc'
   s.license                   = { :type => 'Apache License, Version 2.0', :file => 'LICENSE' }
   s.author                    = { 'Sysdata SpA' => 'team.mobile@sysdata.it' }
-  s.source                    = { :http => 'https://github.com/SysdataSpA/R.objc/releases/download/0.4.0/Robjc-0.4.0.zip' }
+  s.source                    = { :http => 'https://github.com/SysdataSpA/R.objc/releases/download/0.5.0/Robjc-0.5.0.zip' }
   s.preserve_paths            = "robjc"
   s.ios.deployment_target     = '8.0'
   s.tvos.deployment_target    = '9.0'
