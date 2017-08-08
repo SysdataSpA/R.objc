@@ -109,6 +109,7 @@ static Session* _session;
         if (argType == ArgTypeBaseUnknown)
         {
             [CommonUtils log:@"Invalid Argument: %@", s];
+            [CommonUtils log:@"Usage: Robjc -p \"<path_to_project_root\" [-e \"<excluded dir>\"][-v -s -r --skip-strings --skip-images --skip-themes --skip-storyboards --skip-segues]"];
             return -1;
         }
 
