@@ -218,6 +218,16 @@
             implString = [NSString stringWithFormat:@"return [[UIStoryboard storyboardWithName:@\"%@\" bundle:nil] instantiateViewControllerWithIdentifier:@\"%@\"];", res.name, viewController];
             RMethodImplementation* impl = [[RMethodImplementation alloc] initWithReturnType:@"__kindof UIViewController*" signature:codableKey implementation:implString];
             [clazz.implementation.methods addObject:impl];
+            
+            // method declaration for storyboard identifier
+            codableKey = [codableKey stringByAppendingString:@"Identifier"];
+            method = [[RMethodSignature alloc] initWithReturnType:@"NSString*" signature:codableKey];
+            [clazz.interface.methods addObject:method];
+            
+            // implementation for storyboard identifier
+            implString = [NSString stringWithFormat:@"return @\"%@\";", viewController];
+            impl = [[RMethodImplementation alloc] initWithReturnType:@"NSString*" signature:codableKey implementation:implString];
+            [clazz.implementation.methods addObject:impl];
         }
     }
     
