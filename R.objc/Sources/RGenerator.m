@@ -232,7 +232,18 @@
         }
     }
     
-    BOOL hCreated = [@"#import <UIKit/UIKit.h>\n\n" writeToFile:self.resourceFileHeaderPath atomically:YES encoding:NSUTF8StringEncoding error:error];
+    NSMutableString* importString = [NSMutableString stringWithString:@"#import <UIKit/UIKit.h>\n"];
+    if (!Session.shared.skipStrings && ([Session.shared resourcesToGenerate] & ResourceTypeStrings) && Session.shared.isSysdataVersion)
+    {
+        [importString appendString:@"@import Glotty;\n"];
+    }
+    if (!Session.shared.skipThemes && ([Session.shared resourcesToGenerate] & ResourceTypeThemes))
+    {
+        [importString appendString:@"@import Giotto;\n"];
+    }
+    [importString appendString:@"\n"];
+    
+    BOOL hCreated = [importString writeToFile:self.resourceFileHeaderPath atomically:YES encoding:NSUTF8StringEncoding error:error];
     if (!hCreated)
     {
         *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorCannotCreateFile userInfo:@{NSFilePathErrorKey:rHPath}];
