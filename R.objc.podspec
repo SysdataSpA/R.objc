@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
 
   s.name                      = 'R.objc'
-  s.version                   = '0.6.0'
+  s.version                   = '0.7.0'
   s.summary                   = 'Get autocompleted localizable strings and asset catalogue images names'
   s.description               = <<-DESC
 Freely inspired by R.swift: get autocompleted localizable strings and asset catalogue images names.
@@ -21,7 +21,7 @@ You can have:
   s.homepage                  = 'https://github.com/SysdataSpA/R.objc'
   s.license                   = { :type => 'Apache License, Version 2.0', :file => 'LICENSE' }
   s.author                    = { 'Sysdata SpA' => 'team.mobile@sysdata.it' }
-  s.source                    = { :http => 'https://github.com/SysdataSpA/R.objc/releases/download/0.6.0/Robjc-0.6.0.zip' }
+  s.source                    = { :http => 'https://github.com/SysdataSpA/R.objc/releases/download/0.7.0/Robjc-0.7.0.zip' }
   s.preserve_paths            = "robjc"
   s.ios.deployment_target     = '8.0'
   s.tvos.deployment_target    = '9.0'
