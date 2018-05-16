@@ -192,21 +192,9 @@
         {
             return @"UIFont*";
         }
-        if ([value hasPrefix:SIZE_IDENTIFIER])
+        if ([value hasPrefix:SIZE_IDENTIFIER] || [value hasPrefix:POINT_IDENTIFIER] || [value hasPrefix:RECT_IDENTIFIER] || [value hasPrefix:EDGE_IDENTIFIER])
         {
-            return @"CGSize";
-        }
-        if ([value hasPrefix:POINT_IDENTIFIER])
-        {
-            return @"CGPoint";
-        }
-        if ([value hasPrefix:RECT_IDENTIFIER])
-        {
-            return @"CGRect";
-        }
-        if ([value hasPrefix:EDGE_IDENTIFIER])
-        {
-            return @"UIEdgeInsets";
+            return @"NSValue*";
         }
         return @"NSString*";
     }
