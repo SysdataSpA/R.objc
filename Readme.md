@@ -83,9 +83,6 @@ this avoids including any binary files into your project.
 
 7.  Repeat point 3 and 4 for every target in your project
 
-
- 
-
 At every build, the generated file will update automatically and there's no need
 to do anything.
 
@@ -111,7 +108,7 @@ You can add these options to customize R.objc behaviour:
 
 -   `-p` (or `--path`): **MANDATORY** path to the root of the project or from where you want the scan to begin
 
--   `-e` (or `--excluded`): excluded dir path; all dirs within this path will be excluded; you can use `-e` option more than once
+-   `-e` (or `--excluded`): excluded dir path; all dirs within this path will be excluded; you can use `-e` option more than once, e.g. `-e $(SRCROOT)/Pods` `-e $(SRCROOT)/Carthage`
 
 -   `-v` (or `--verbose`): verbose logging
 
@@ -123,7 +120,7 @@ You can add these options to customize R.objc behaviour:
 
 -   `--skip-images`: jump the images step
 
--   `--skip-themes`: jump the themes step
+-   `--skip-themes`: jump the themes step. Use this to avoid Giotto import error
 
 -   `--skip-storyboards`: jump the storyboards step
 
@@ -209,7 +206,15 @@ Example:
 R.theme.constants.COLOR_TEXT_LIGHT // reference to a constant in the theme
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
- 
+### Troubleshooting
+1. You may want to exclude Pods and/or Carthage dirs. To do so pass:
+```-e $(SRCROOT)/Pods -e $(SRCROOT)/Carthage```
+2. ```R.h:2:9: Module 'Giotto' not found```
+Add `pod 'Giotto'` to Podfile or pass `--skip-themes` parameter.
+
+3. ```Duplicate interface definition for class 'R<some-resource-name>'```
+Check in the filesystem if there are more than one resource file with the same name:
+```find <path-project-dir> -iname *<some-resource-name>*``` Replace <some-resource-name> with actual resource from Xcode output.
 
 Contribute
 ----------
