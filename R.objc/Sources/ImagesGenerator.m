@@ -151,7 +151,7 @@
     if (*error != nil)
     {
         [CommonUtils log:@"Error in regex inside ImagesGenerator.m"];
-        return NO;
+        return @"";
     }
     
     NSMutableString* newContent = [NSMutableString string];

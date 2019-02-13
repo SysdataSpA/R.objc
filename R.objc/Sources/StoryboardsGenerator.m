@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #import "StoryboardsGenerator.h"
-#import <XMLDictionary/XMLDictionary.h>
+#import "XMLDictionary.h"
 
 
 @interface StoryboardResource : NSObject
@@ -244,7 +244,7 @@
     if (*error != nil)
     {
         [CommonUtils log:@"Error in regex inside StoryboardsGenerator.m"];
-        return NO;
+        return @"";
     }
     
     NSMutableString* newContent = [NSMutableString string];
@@ -301,7 +301,7 @@
     if (*error != nil)
     {
         [CommonUtils log:@"Error in regex inside StoryboardsGenerator.m"];
-        return NO;
+        return @"";
     }
     
     content = newContent;
@@ -359,7 +359,7 @@
     if (*error != nil)
     {
         [CommonUtils log:@"Error in regex inside StoryboardsGenerator.m"];
-        return NO;
+        return @"";
     }
     
     content = newContent;

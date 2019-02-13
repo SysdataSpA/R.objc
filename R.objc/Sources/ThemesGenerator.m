@@ -108,7 +108,7 @@
     RProperty* identifierProp = [[RProperty alloc] initWithClass:@"NSString*" name:@"identifier"];
     [clazz.interface.properties addObject:identifierProp];
     RMethodSignature* performMethod =  [[RMethodSignature alloc] initWithReturnType:@"void" signature:@"applyTo:"];
-    RMethodArgument* objectArg = [[RMethodArgument alloc] initWithType:@"id" name:@"object"];
+    RMethodArgument* objectArg = [[RMethodArgument alloc] initWithType:@"nullable id" name:@"object"];
     [performMethod.arguments addObjectsFromArray:@[objectArg]];
     [clazz.interface.methods addObject:performMethod];
     
@@ -216,7 +216,7 @@
     if (*error != nil)
     {
         [CommonUtils log:@"Error in regex inside ThemesGenerator.m"];
-        return NO;
+        return @"";
     }
     
     NSMutableString* newContent = [NSMutableString string];
@@ -271,7 +271,7 @@
     if (*error != nil)
     {
         [CommonUtils log:@"Error in regex inside ThemesGenerator.m"];
-        return NO;
+        return @"";
     }
     
     newContent = [NSMutableString string];

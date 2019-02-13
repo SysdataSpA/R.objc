@@ -263,7 +263,7 @@
             case PlaceholderTypeUnknown:
                 continue;
             case PlaceholderTypeObject:
-                [result appendString:[self parameterStringAtPosition:position ofType:@"NSString*"]];
+                [result appendString:[self parameterStringAtPosition:position ofType:@"nullable NSString*"]];
                 break;
             case PlaceholderTypeFloat:
                 [result appendString:[self parameterStringAtPosition:position ofType:@"double"]];
@@ -348,7 +348,7 @@
         if (*error != nil)
         {
             [CommonUtils log:@"Error in regex inside StringsGenerator.m"];
-            return NO;
+            return @"";
         }
         
         NSMutableString* newContent = [NSMutableString string];
@@ -365,7 +365,7 @@
                 lastResultRange = [result range];
                 
                 // find used key
-                NSString* resultString = [content substringWithRange:result.range];
+//                NSString* resultString = [content substringWithRange:result.range];
                 NSString* key = nil;
                 if (result.numberOfRanges > 1)
                 {

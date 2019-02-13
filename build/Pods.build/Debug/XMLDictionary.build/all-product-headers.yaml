@@ -1,0 +1,17 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [
+    {
+      'type': 'directory',
+      'name': "/Users/guidosabatini/LAVORO/Sysdata/R.objc/build/Debug/XMLDictionary",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "XMLDictionary.h",
+          'external-contents': "/Users/guidosabatini/LAVORO/Sysdata/R.objc/Pods/XMLDictionary/XMLDictionary/XMLDictionary.h"
+        }
+      ]
+    }
+  ]
+}

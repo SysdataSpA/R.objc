@@ -74,7 +74,7 @@
         [regex enumerateMatchesInString:strippedString options:NSMatchingReportCompletion range:[strippedString rangeOfString:strippedString] usingBlock:^(NSTextCheckingResult * _Nullable result, NSMatchingFlags flags, BOOL * _Nonnull stop) {
             if (result)
             {
-                NSString* resultString = [strippedString substringWithRange:result.range];
+//                NSString* resultString = [strippedString substringWithRange:result.range];
                 
                 NSString* prefix = nil;
                 

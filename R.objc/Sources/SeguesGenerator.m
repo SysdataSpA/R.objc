@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #import "SeguesGenerator.h"
-#import <XMLDictionary/XMLDictionary.h>
+#import "XMLDictionary.h"
 
 @interface SegueResource : NSObject
 @property (nonatomic, strong) NSMutableOrderedSet* segues;
@@ -285,7 +285,7 @@
             if (*error != nil)
             {
                 [CommonUtils log:@"Error in regex inside SeguesGenerator.m"];
-                return NO;
+                return @"";
             }
             
             __block NSRange lastResultRange = NSMakeRange(0, 0);

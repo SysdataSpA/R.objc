@@ -182,6 +182,8 @@
     
     [content appendString:interface];
     
+    [content appendString:@"NS_ASSUME_NONNULL_END"];
+    
     return [content writeToFile:self.resourceFileHeaderPath atomically:YES encoding:NSUTF8StringEncoding error:error];
 }
 
@@ -242,6 +244,7 @@
         [importString appendString:@"@import Giotto;\n"];
     }
     [importString appendString:@"\n"];
+    [importString appendString:@"\nNS_ASSUME_NONNULL_BEGIN\n\n"];
     
     BOOL hCreated = [importString writeToFile:self.resourceFileHeaderPath atomically:YES encoding:NSUTF8StringEncoding error:error];
     if (!hCreated)
