@@ -24,6 +24,5 @@ You can have:
   s.source                    = { :http => 'https://github.com/SysdataSpA/R.objc/releases/download/0.8.0/Robjc.zip' }
   s.preserve_paths            = "robjc"
   s.ios.deployment_target     = '8.0'
-  s.tvos.deployment_target    = '9.0'
 
 end
