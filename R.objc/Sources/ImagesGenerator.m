@@ -133,7 +133,7 @@
         [self.clazz.extension.properties addObject:property];
         
         // generate getter implementation
-        NSString* implString = [NSString stringWithFormat:@"return [UIImage imageNamed:@\"%@\"];", res.originalName];
+        NSString* implString = [NSString stringWithFormat:@"return [UIImage imageNamed:@\"%@\" inBundle:[NSBundle bundleForClass:self.class] compatibleWithTraitCollection:nil];", res.originalName];
         RMethodImplementation *impl = [[RMethodImplementation alloc] initWithReturnType:@"UIImage*" signature:res.methodName implementation:implString];
         [self.clazz.implementation.methods addObject:impl];
     }

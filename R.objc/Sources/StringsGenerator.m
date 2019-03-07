@@ -317,10 +317,10 @@
 {
     if (Session.shared.isSysdataVersion)
     {
-        return [NSString stringWithFormat:@"SDLocalizedStringFromTable(@\"%@\", @\"%@\")", key, table];
+        return [NSString stringWithFormat:@"SDLocalizedStringFromTableInBundleForClass(@\"%@\", @\"%@\", self.class)", key, table];
     } else {
         table = [table stringByReplacingOccurrencesOfString:@".strings" withString:@""];
-        return [NSString stringWithFormat:@"NSLocalizedStringFromTable(@\"%@\", @\"%@\", nil)", key, table];
+        return [NSString stringWithFormat:@"NSLocalizedStringFromTableInBundle(@\"%@\", @\"%@\", [NSBundle bundleForClass:self.class], nil)", key, table];
     }
 }
 
