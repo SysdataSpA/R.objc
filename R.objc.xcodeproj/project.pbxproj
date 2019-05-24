@@ -336,7 +336,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 7GWDGBPU6L;
+				DEVELOPMENT_TEAM = R7FQ553TEY;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = Robjc;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
@@ -345,8 +346,10 @@
 		AD2BFC0422147CB1001C4B15 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 7GWDGBPU6L;
+				DEVELOPMENT_TEAM = R7FQ553TEY;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_NAME = Robjc;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};
